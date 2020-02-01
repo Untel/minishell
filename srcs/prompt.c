@@ -12,22 +12,28 @@
 
 #include "minishell.h"
 
-int
-	interpreter(t_env *env, char *typed)
+char
+	*handle_closing_char(t_env *env, char *typed, char sep)
 {
-	char	**quotes;
+	char	*buffer;
+	char	*tmp;
 	int		quotes_count;
 	(void)env;
 
 	quotes_count = 0;
-	quotes = ft_split(typed, '"');
-	while (quotes[quotes_count])
+	tmp = typed;
+	while ((tmp = ft_strchr(tmp, sep)))
+		++quotes_count && ++tmp;
+	if (quotes_count > 0 && quotes_count % 2)
 	{
-		free(quotes[quotes_count]);
-		quotes_count++;
+		ft_printf("Quote? > ");
+		get_next_line(0, &buffer);
+		tmp = ft_strjoin(typed, buffer);
+		free(buffer);
+		free(typed);
+		return handle_closing_char(env, tmp, sep);
 	}
-	free(quotes);
-	return (SUC);
+	return (typed);
 }
 
 int
@@ -37,10 +43,10 @@ int
 
 	ft_printf("🔥  \033[0;32m%s\033[0m >> ", env->dir);
 	get_next_line(0, &buffer);
-	interpreter(env, buffer);
+	buffer = handle_closing_char(env, buffer, '"');
+	buffer = handle_closing_char(env, buffer, '\'');
 	if (ft_strncmp("exit", buffer, 5) == 0)
 		env->stop = 1;
-	free(buffer);
 	if (env->stop)
 		ft_printf("🖐  \033[0;31mGood bye!\033[0m\n");
 	else
