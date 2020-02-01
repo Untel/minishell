@@ -1,0 +1,6 @@
+test.c
+a.out
+.vscode
+.vscode/
+**/*.o
+libft.a
