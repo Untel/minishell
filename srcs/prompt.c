@@ -18,7 +18,6 @@ char
 	char	*buffer;
 	char	*tmp;
 	int		quotes_count;
-	(void)env;
 
 	quotes_count = 0;
 	tmp = typed;
@@ -47,6 +46,7 @@ int
 	buffer = handle_closing_char(env, buffer, '\'');
 	if (ft_strncmp("exit", buffer, 5) == 0)
 		env->stop = 1;
+	free(buffer);
 	if (env->stop)
 		ft_printf("🖐  \033[0;31mGood bye!\033[0m\n");
 	else
