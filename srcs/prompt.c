@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/01 21:11:05 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
+/*   Updated: 2020/02/01 21:14:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-# include "libft.h"
-# include "get_next_line.h"
-# include "ft_printf.h"
-# include <sys/wait.h>
-# include <unistd.h>
-# include <stdio.h>
-# define SUC 1
-# define ERR -1
-typedef struct	s_env
+#include "minishell.h"
+
+int
+	prompt_line(t_env *env)
 {
-	char		*dir;
-	int			stop;
-}				t_env;
-int		prompt_line(t_env *env);
-#endif
+	char *buffer;
+
+	ft_printf("🔥 \033[0;32m%s\033[0m >> ", env->dir);
+	get_next_line(0, &buffer);
+	free(buffer);
+	if (ft_strncmp("exit", buffer, 5) == 0)
+		env->stop = 1;
+	if (!env->stop)
+		prompt_line(env);
+	else
+		ft_printf("🖐 \033[0;31mGood bye!\033[0m\n");
+	return (SUC);
+}

@@ -6,14 +6,18 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/01 20:35:38 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/01 21:11:41 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(void)
+int
+	main(void)
 {
-	ft_printf("Oy\n");
+	t_env env;
+
+	env = (t_env) { .dir = "AShellM", .stop = 0 };
+	prompt_line(&env);
 	return (0);
 }
