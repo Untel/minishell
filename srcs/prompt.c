@@ -23,10 +23,10 @@ int
 	quotes = ft_split(typed, '"');
 	while (quotes[quotes_count])
 	{
-		printf("==> '%s'\n", quotes[quotes_count++]);
+		free(quotes[quotes_count]);
+		quotes_count++;
 	}
-	if (quotes_count % 2)
-	
+	free(quotes);
 	return (SUC);
 }
 

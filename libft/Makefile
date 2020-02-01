@@ -34,7 +34,7 @@ SRCS			= $(STR) $(CHAR) $(PRINT) $(MEM) $(MATH) $(LIST) $(WCHAR) $(FILES) $(PRIN
 OBJS			= $(SRCS:.c=.o)
 
 CFLAGS			= -Wall -Wextra -Werror -I $(INCLUDES_DIR)
-CC				= gcc
+CC				= clang
 AR				= ar rc
 RM				= rm -f
 NAME			= libft.a
