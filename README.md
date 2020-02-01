@@ -1,3 +1,3 @@
 # minishell
 
-Usage: make run
+Usage: `make run`
