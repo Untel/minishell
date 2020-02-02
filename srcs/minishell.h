@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/02 16:26:58 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/02 16:27:11 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef enum	s_sep
 	END = ';',
 }				t_sep;
 
-typedef struct
 typedef struct	s_shell
 {
 	char		*input;				//malloced
