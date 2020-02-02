@@ -9,7 +9,8 @@ SRCS_DIR			= srcs
 SRCS_FILES			= \
 	main.c\
 	prompt.c\
-	input.c
+	input.c\
+	commands.c
 
 SRCS				= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 

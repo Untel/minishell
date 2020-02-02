@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/01/21 18:05:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/02 18:46:17 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char			*ft_strupcase(const char *str);
 char			*ft_strlowcase(const char *str);
 char			*ft_strcapitalize(const char *str);
+char			*ft_strslice(char *str, size_t start, size_t count);
 void			*ft_memset(void *b, int c, size_t len);
 void			*ft_memmove(void *dst, const void *src, size_t len);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
