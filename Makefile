@@ -8,7 +8,8 @@ LIBS				= $(LIBFT_LINK)
 SRCS_DIR			= srcs
 SRCS_FILES			= \
 	main.c\
-	prompt.c
+	prompt.c\
+	input.c
 
 SRCS				= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
