@@ -6,19 +6,19 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/01 21:57:06 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/02 16:22:03 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char
-	*handle_closing_char(t_env *env, char *typed, char sep)
+	*handle_closing_char(t_shell *sh, char *typed, char sep)
 {
 	char	*buffer;
 	char	*tmp;
 	int		quotes_count;
-	(void)env;
+	(void)sh;
 
 	quotes_count = 0;
 	tmp = typed;
@@ -31,25 +31,34 @@ char
 		tmp = ft_strjoin(typed, buffer);
 		free(buffer);
 		free(typed);
-		return handle_closing_char(env, tmp, sep);
+		return handle_closing_char(sh, tmp, sep);
 	}
 	return (typed);
 }
 
 int
-	prompt_line(t_env *env)
+	to_command_list(t_shell *sh)
+{
+	(void)sh;
+	return (SUC);
+}
+
+int
+	prompt_line(t_shell *sh)
 {
 	char *buffer;
 
-	ft_printf("🔥  \033[0;32m%s\033[0m >> ", env->dir);
+	getcwd(sh->dir, BUFFER_SIZE);
+	ft_printf("🔥  \033[0;32m%s\033[0m$ ", sh->dir);
 	get_next_line(0, &buffer);
-	buffer = handle_closing_char(env, buffer, '"');
-	buffer = handle_closing_char(env, buffer, '\'');
+	// to_command_list(sh);
+	buffer = handle_closing_char(sh, buffer, '"');
+	buffer = handle_closing_char(sh, buffer, '\'');
 	if (ft_strncmp("exit", buffer, 5) == 0)
-		env->stop = 1;
-	if (env->stop)
+		sh->stop = 1;
+	if (sh->stop)
 		ft_printf("🖐  \033[0;31mGood bye!\033[0m\n");
 	else
-		prompt_line(env);
+		prompt_line(sh);
 	return (SUC);
 }

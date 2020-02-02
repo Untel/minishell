@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/01 21:11:05 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/02 16:26:58 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,23 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <stdio.h>
+# define FALSE 0
 # define SUC 1
 # define ERR -1
-typedef struct	s_env
+
+typedef enum	s_sep
 {
-	char		*dir;
+	PIPE = '|',
+	END = ';',
+}				t_sep;
+
+typedef struct
+typedef struct	s_shell
+{
+	char		*input;				//malloced
+	char		dir[BUFFER_SIZE];
 	int			stop;
-}				t_env;
-int		prompt_line(t_env *env);
+}				t_shell;
+
+int		prompt_line(t_shell *sh);
 #endif
