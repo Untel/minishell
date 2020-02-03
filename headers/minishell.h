@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 22:58:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 23:30:09 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct	s_shell
 	int			stop;
 	t_list		*cmds;
 	char		dir[BUFFER_SIZE];
+	char		printed_dir[BUFFER_SIZE];
 	t_list		*env;
 }				t_shell;
 

@@ -31,11 +31,14 @@ FILES			= $(addprefix $(FILES_DIR)/, $(_FILES))
 PRINTF			= $(addprefix $(PRINTF_DIR)/, $(_PRINTF))
 
 SRCS			= $(STR) $(CHAR) $(PRINT) $(MEM) $(MATH) $(LIST) $(WCHAR) $(FILES) $(PRINTF)
-OBJS			= $(SRCS:.c=.o)
-
+OBJSC			= $(SRCS:.c=.o)
+OBJSS			= $(SRCS:.s=.o)
+OBJS			= $(OBJSS) $(OBJSC)
 CFLAGS			= -Wall -Wextra -Werror -I $(INCLUDES_DIR)
 CC				= clang
 AR				= ar rc
+AS				= nasm
+ASFLAGS			= -fmacho64
 RM				= rm -f
 NAME			= libft.a
 
