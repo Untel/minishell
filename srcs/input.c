@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 18:57:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 19:34:17 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ int
 			}
 			continue;
 		}
+		else if (sh->input[i] == '\\' && !rd.simple_q)
+		{
+			printf("yo\n");
+			i++;
+			continue;
+		}
 		else if (!rd.double_q && !rd.simple_q)
 		{
 			if(sh->input[i] == ' ')
@@ -93,8 +99,6 @@ int
 				rd.idx = i + 1;
 			}
 		}
-		else if (sh->input[i] == '\\' && !rd.simple_q)
-			i++;
 	}
 	if (rd.simple_q || rd.double_q)
 		return ask_closing_quote(sh);

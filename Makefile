@@ -10,7 +10,9 @@ SRCS_FILES			= \
 	main.c\
 	prompt.c\
 	input.c\
-	commands.c
+	commands.c\
+	env.c\
+	free_env.c
 
 SRCS				= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
@@ -29,6 +31,7 @@ all:				makelib
 
 $(NAME):			$(OBJS)
 					$(CC) $(OBJS) $(LIBS) -o $(NAME)
+
 
 bonus:				all
 
