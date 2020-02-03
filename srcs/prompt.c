@@ -6,50 +6,26 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/01 21:57:06 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/02 22:08:58 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char
-	*handle_closing_char(t_env *env, char *typed, char sep)
-{
-	char	*buffer;
-	char	*tmp;
-	int		quotes_count;
-
-	quotes_count = 0;
-	tmp = typed;
-	while ((tmp = ft_strchr(tmp, sep)))
-		++quotes_count && ++tmp;
-	if (quotes_count > 0 && quotes_count % 2)
-	{
-		ft_printf("Quote? > ");
-		get_next_line(0, &buffer);
-		tmp = ft_strjoin(typed, buffer);
-		free(buffer);
-		free(typed);
-		return handle_closing_char(env, tmp, sep);
-	}
-	return (typed);
-}
-
 int
-	prompt_line(t_env *env)
+	prompt_line(t_shell *sh)
 {
-	char *buffer;
-
-	ft_printf("🔥  \033[0;32m%s\033[0m >> ", env->dir);
-	get_next_line(0, &buffer);
-	buffer = handle_closing_char(env, buffer, '"');
-	buffer = handle_closing_char(env, buffer, '\'');
-	if (ft_strncmp("exit", buffer, 5) == 0)
-		env->stop = 1;
-	free(buffer);
-	if (env->stop)
+	getcwd(sh->dir, BUFFER_SIZE);
+	ft_printf("🔥 \033[0;32m%s\033[0m$ ", sh->dir);
+	get_next_line(0, &(sh->input));
+	sanitize_input(sh);
+	if (ft_strncmp("exit", sh->input, 5) == 0)
+		sh->stop = 1;
+	free(sh->input);
+	if (sh->stop)
 		ft_printf("🖐  \033[0;31mGood bye!\033[0m\n");
 	else
-		prompt_line(env);
+		prompt_line(sh);
+	system("leaks minishell");
 	return (SUC);
 }
