@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 22:12:52 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/03 23:07:15 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int
 	else if (exec_is(cmd, BUILTIN_CD))
 		ret = change_directory(sh, cmd);
 	else if (0) //Find executable cmd->argv[0] in all dir defined in $PATH
+		;
+	else if (0) //try to cd, if ret falsem say msg
 		;
 	else
 		ft_printf(MSG_404_CMD, cmd->argv[0]) && (ret = 1);

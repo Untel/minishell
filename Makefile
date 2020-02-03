@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/03 22:17:07 by riblanc          ###   ########.fr        #
+#    Updated: 2020/02/03 23:01:11 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ all:		makelib
 			@$(MAKE) $(NAME)
 
 $(NAME):	$(OBJ)
-			$(CC) $(LIBS)  $(CFLAGS) -o $@ $^
+			$(CC) $(LIBS) $(CFLAGS) -o $@ $^
 
 makelib:	
 			$(LIBFT_MAKE)
