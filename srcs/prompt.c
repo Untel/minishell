@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 21:20:28 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 22:41:53 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int
 int
 	prompt_line(t_shell *sh)
 {
-	getcwd(sh->dir, BUFFER_SIZE);
 	ft_printf(MSG_PROMPT, sh->dir);
 	get_next_line(0, &(sh->input));
 	sanitize_input(sh);
