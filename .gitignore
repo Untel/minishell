@@ -1,6 +1,10 @@
+./objs
 **/*.o
+**/*.d
 **/*.a
 **/*.out
 **/*.test
+.*.swp
+**/.*.swp
 .vscode
 minishell

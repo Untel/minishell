@@ -1,60 +1,87 @@
-LIBFT_LINK			= -L$(LIBFT_PATH) -lft
-LIBFT_PATH			= ./libft
-LIBFT_MAKE			= @$(MAKE) -C $(LIBFT_PATH)
-LIBFT_INCL			= -I $(LIBFT_PATH) -I $(LIBFT_PATH)/headers
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
+#    Updated: 2020/02/03 21:25:12 by riblanc          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-LIBS				= $(LIBFT_LINK)
-
-SRCS_DIR			= srcs
-SRCS_FILES			= \
-	main.c\
-	prompt.c\
-	input.c\
-	commands.c\
-	env.c\
-	free_env.c
-
-SRCS				= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
-
-INCLUDES			= -I./srcs $(LIBFT_INCL)
-
-CC					= clang
-CFLAGS				= -Wall -Wextra -Werror $(INCLUDES)
-OBJS				= $(SRCS:.c=.o)
 NAME				= minishell
 
-ARGS				= 
+###	Libft
+LIBFT_LINK	=	-L$(LIBFT_PATH) -lft
+LIBFT_PATH	=	./libft
+LIBFT_MAKE	=	@$(MAKE) -C $(LIBFT_PATH)
+LIBFT_INCL	=	-I $(LIBFT_PATH) -I $(LIBFT_PATH)/headers
+LIBS		=	$(LIBFT_LINK)
 
+### Sources
+SRCS_DIR	=	./srcs
+SRCS_FILES	= 	main.c\
+				prompt.c\
+				input.c\
+				commands.c\
+				env.c\
+				free_env.c
+SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
-all:				makelib
-					@$(MAKE) $(NAME)
+### Headers 
+INCLUDES	=	-I./headers $(LIBFT_INCL)
 
-$(NAME):			$(OBJS)
-					$(CC) $(OBJS) $(LIBS) -o $(NAME)
+### Compiler
+CC			=	clang
+CFLAGS		=	-Wall -Wextra -Werror
 
+### Objects
+OBJ_DIR		=	./objs
+OBJS		=	$(SRCS_FILES:.c=.o)
+OBJ      	=	$(addprefix $(OBJ_DIR)/,$(OBJS))
+DEP			=	$(OBJ:%.o=%.d)
 
-bonus:				all
+### run
+ARGS		= 
 
-run:				all
-					./$(NAME) $(ARGS)		
+################################################################################
 
-makelib:			
-					$(LIBFT_MAKE)
+all:		makelib
+			@$(MAKE) $(NAME)
+
+$(NAME):	$(OBJ)
+			$(CC) $(LIBS)  $(CFLAGS) -o $@ $^
+
+makelib:	
+			$(LIBFT_MAKE)
+
+-include $(DEP)
+$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -MMD $(INCLUDES) -o $@ -c $<
+
+bonus:		all
+
+run:		all
+			./$(NAME) $(ARGS)		
 
 norme:
-					$(LIBFT_MAKE) norme
-					norminette $(SRCS)
+			$(LIBFT_MAKE) norme
+			norminette $(SRCS)
 
 clean:
-					$(RM) $(OBJS)
+			$(RM) $(OBJ)
 
 fclean:
-					$(RM) $(OBJS)
-					$(RM) $(NAME)
-					$(LIBFT_MAKE) fclean
+			$(RM) -r $(OBJ_DIR)
+			$(RM) $(NAME)
+			$(LIBFT_MAKE) fclean
 
-re:					clean all
+re:			clean all
 
-fre:				fclean all
+fre:		fclean all
 
 .PHONY:				all clean fclean re fre norme bonus run makelib
+
+################################################################################
