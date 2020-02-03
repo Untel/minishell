@@ -1,12 +1,20 @@
-LIBFT_LINK			= -L$(LIBFT_PATH) -lft
-LIBFT_PATH			= ./libft
-LIBFT_MAKE			= @$(MAKE) -C $(LIBFT_PATH)
-LIBFT_INCL			= -I $(LIBFT_PATH) -I $(LIBFT_PATH)/headers
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
+#    Updated: 2020/02/03 21:35:42 by adda-sil         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-LIBS				= $(LIBFT_LINK)
+NAME		= minishell
 
-SRCS_DIR			= srcs
-SRCS_FILES			= \
+### Sources
+SRCS_DIR	= srcs
+SRCS_FILES	= \
 	main.c\
 	prompt.c\
 	input.c\
@@ -15,48 +23,68 @@ SRCS_FILES			= \
 	free_env.c\
 	execute.c\
 	change_directory.c
+SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
-SRCS				= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
+###	Libft
+LIBFT_LINK	=	-L$(LIBFT_PATH) -lft
+LIBFT_PATH	=	./libft
+LIBFT_MAKE	=	@$(MAKE) -C $(LIBFT_PATH)
+LIBFT_INCL	=	-I $(LIBFT_PATH) -I $(LIBFT_PATH)/headers
+LIBS		=	$(LIBFT_LINK)
 
-INCLUDES			= -I./srcs $(LIBFT_INCL)
+### Headers 
+INCLUDES	=	-I./headers $(LIBFT_INCL)
 
-CC					= clang
-CFLAGS				= -Wall -Wextra -Werror $(INCLUDES)
-OBJS				= $(SRCS:.c=.o)
-NAME				= minishell
+### Compiler
+CC			=	clang
+CFLAGS		=	-Wall -Wextra -Werror
 
-ARGS				= 
+### Objects
+OBJ_DIR		=	./objs
+OBJS		=	$(SRCS_FILES:.c=.o)
+OBJ      	=	$(addprefix $(OBJ_DIR)/,$(OBJS))
+DEP			=	$(OBJ:%.o=%.d)
 
+### run
+ARGS		= 
 
-all:				makelib
-					@$(MAKE) $(NAME)
+################################################################################
 
-$(NAME):			$(OBJS)
-					$(CC) $(OBJS) $(LIBS) -o $(NAME)
+all:		makelib
+			@$(MAKE) $(NAME)
 
+$(NAME):	$(OBJ)
+			$(CC) $(LIBS)  $(CFLAGS) -o $@ $^
 
-bonus:				all
+makelib:	
+			$(LIBFT_MAKE)
 
-run:				all
-					./$(NAME) $(ARGS)		
+-include $(DEP)
+$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -MMD $(INCLUDES) -o $@ -c $<
 
-makelib:			
-					$(LIBFT_MAKE)
+bonus:		all
+
+run:		all
+			./$(NAME) $(ARGS)		
 
 norme:
-					$(LIBFT_MAKE) norme
-					norminette $(SRCS)
+			$(LIBFT_MAKE) norme
+			norminette $(SRCS)
 
 clean:
-					$(RM) $(OBJS)
+			$(RM) $(OBJ)
 
 fclean:
-					$(RM) $(OBJS)
-					$(RM) $(NAME)
-					$(LIBFT_MAKE) fclean
+			$(RM) -r $(OBJ_DIR)
+			$(RM) $(NAME)
+			$(LIBFT_MAKE) fclean
 
-re:					clean all
+re:			clean all
 
-fre:				fclean all
+fre:		fclean all
 
 .PHONY:				all clean fclean re fre norme bonus run makelib
+
+################################################################################
