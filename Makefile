@@ -8,7 +8,9 @@ LIBS				= $(LIBFT_LINK)
 SRCS_DIR			= srcs
 SRCS_FILES			= \
 	main.c\
-	prompt.c
+	prompt.c\
+	env.c\
+	free_env.c
 
 SRCS				= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
@@ -27,6 +29,7 @@ all:				makelib
 
 $(NAME):			$(OBJS)
 					$(CC) $(OBJS) $(LIBS) -o $(NAME)
+
 
 bonus:				all
 

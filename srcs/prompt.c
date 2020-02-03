@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/01 21:57:06 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 01:59:42 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int
 {
 	char *buffer;
 
-	ft_printf("🔥  \033[0;32m%s\033[0m >> ", env->dir);
+	ft_printf("🔥  \033[0;32m%s\033[0m » ", env->dir);
 	get_next_line(0, &buffer);
 	buffer = handle_closing_char(env, buffer, '"');
 	buffer = handle_closing_char(env, buffer, '\'');
