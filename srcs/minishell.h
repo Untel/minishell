@@ -43,7 +43,7 @@ typedef struct	s_shell
 	char		dir[BUFFER_SIZE];
 }				t_shell;
 
-void	err_shutdown(char *str);
+void	err_shutdown(t_shell *sh, char *str);
 /* Promt */
 int		prompt_line(t_shell *sh);
 int		sanitize_input(t_shell *sh);
@@ -53,4 +53,5 @@ int		ask_closing_quote(t_shell *sh);
 t_cmd	*new_command(t_shell *sh);
 char	*add_argument(t_cmd *cmd, char *str);
 char	*add_arg_to_last_cmd(t_shell *sh, char *str);
+void	free_command(t_list *lst);
 #endif

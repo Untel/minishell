@@ -59,6 +59,17 @@ char
 
 	el = ft_lstlast(sh->cmds);
 	if (!el)
-		err_shutdown("Error commands.c add_arg_to_last_cmd");
+		err_shutdown(sh, "Error commands.c add_arg_to_last_cmd");
 	return (add_argument((t_cmd *)el->content, str));
+}
+
+void
+	free_command(t_list *lst)
+{
+	t_cmd *cmd;
+
+	cmd = (t_cmd *)lst->content;
+	while (cmd->argc--)
+		free(cmd->argv[cmd->argc]);
+	free(cmd->argv);
 }

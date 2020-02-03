@@ -18,6 +18,7 @@ int
 	char	*tmp;
 	char	*buffer;
 
+	ft_lstclear(&sh->cmds, free_command);
 	ft_printf("Quote? > ");
 	get_next_line(0, &buffer);
 	tmp = ft_strjoin(sh->input, buffer);
