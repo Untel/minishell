@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/03 23:58:52 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 00:26:08 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ void	*get_value(t_list *lst_env, char *key)
 	return (NULL);
 }
 
-void	*unset_key(t_list **lst_env)
+int		ft_cmp_key(t_key *env, char *key)
 {
+	return (ft_strncmp(env->key, key, ft_strlen(key) + 1));
+}
+
+void	*unset_key(t_list **lst_env, char *key)
+{
+	ft_lstremove_if(lst_env, key, ft_cmp_key, free_env_unset);
 }

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 23:48:14 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 00:31:37 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 typedef	struct	s_list
 {
 	void			*content;
-	size_t			size;
 	struct s_list	*next;
+	size_t			size;
 }				t_list;
 int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
