@@ -12,7 +12,8 @@ SRCS_FILES			= \
 	input.c\
 	commands.c\
 	env.c\
-	free_env.c
+	free_env.c\
+	execute.c
 
 SRCS				= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
