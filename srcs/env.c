@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:11:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/03 18:42:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/03 19:31:29 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,22 @@ void	*set_value(t_list **lst_env, char *key, char *value)
 	free(var->value);
 	var->value = ft_strdup(value);
 	return (*lst_env);
+}
+
+void	*get_value(t_list *lst_env, char *key)
+{
+	int		found;
+
+	found = 0;
+	while (lst_env)
+	{
+		if (!strcmp(((t_key *)(*lst_env).content)->key, key) && (found = 1))
+			break ;
+		lst_env = lst_env->next;
+	}
+	if (found == 1)
+		return (((t_key *)(*lst_env).content)->value);
+	return (NULL);
 }
 
 void	print_lst_env(t_list *lst_env)

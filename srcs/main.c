@@ -6,44 +6,35 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 19:03:12 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/03 19:33:54 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_printf.h"
 
-__attribute__((destructor)) void quit(void)
+void
+	clear_last_prompt(t_shell *sh)
 {
-	for(;;)
-		;
+	ft_lstclear(&sh->cmds, free_command);
+	free(sh->input);
 }
 
-int	main(int ac, char **av, char **envp)
+void
+	err_shutdown(t_shell *sh, char *str)
 {
-	t_env	env;
-	t_list	*lst_env;
+	ft_printf("💩  \033[0;31m[Error]\033[0m %s\n", str);
+	clear_last_prompt(sh);
+	exit(1);
+}
 
-	(void)ac;
-	(void)av;
+int
+	main(void)
+{
+	t_shell sh;
 
-	// test
-	lst_env = create_env_list(envp);
-
-	set_value(&lst_env, "hello", "world");
-	print_lst_env(lst_env);
-	set_value(&lst_env, "USER", "test");
-	envp = convert_env_list(lst_env);
-	free_env_list(&lst_env);
-
-	// print new envp test
-	int		i = -1;
-	while (envp[++i])
-		printf("%s\n", envp[i]);
-	//
-	free_env_array(envp);
-
-	env = (t_env) { .dir = "AShellM", .stop = 0 };
-	prompt_line(&env);
+	sh = (t_shell) { .input = NULL, .dir = "AShellM", .stop = 0, .cmds = NULL };
+	prompt_line(&sh);
+	ft_lstclear(&sh.cmds, free_command);
+	system("leaks minishell");
 	return (0);
 }
