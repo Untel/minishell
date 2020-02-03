@@ -47,7 +47,8 @@ int
 			rd.double_q = !rd.double_q;
 		else if (sh->input[i] == '\'' && !rd.double_q)
 			rd.simple_q = !rd.simple_q;
-		else if (sh->input[i] == '"' || sh->input[i] == '\'' || sh->input[i] == ' ')
+		else if (sh->input[i] == '"' || sh->input[i] == '\'' ||
+			(!rd.double_q && !rd.simple_q && sh->input[i] == ' '))
 		{
 			sub = ft_substr(&(sh->input[idx]), 0, i - idx);
 			add_arg_to_last_cmd(sh, sub);

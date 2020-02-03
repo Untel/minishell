@@ -26,5 +26,6 @@ int
 
 	sh = (t_shell) { .input = NULL, .dir = "AShellM", .stop = 0, .cmds = NULL };
 	prompt_line(&sh);
+	system("leaks minishell");
 	return (0);
 }

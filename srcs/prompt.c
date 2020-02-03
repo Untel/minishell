@@ -26,6 +26,5 @@ int
 		ft_printf("🖐  \033[0;31mGood bye!\033[0m\n");
 	else
 		prompt_line(sh);
-	system("leaks minishell");
 	return (SUC);
 }
