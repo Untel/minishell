@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 17:07:56 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 19:26:48 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,6 @@ void
 	}
 	free(cmd->argv);
 	cmd->argv = NULL;
+	free(cmd);
+	cmd = NULL;
 }
