@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 21:19:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 22:12:52 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int
 	else if (exec_is(cmd, BUILTIN_UNSET))
 		;
 	else if (exec_is(cmd, BUILTIN_ENV))
-		;
+		print_lst_env(sh->env);
 	else if (exec_is(cmd, BUILTIN_CD))
 		ret = change_directory(sh, cmd);
 	else if (0) //Find executable cmd->argv[0] in all dir defined in $PATH

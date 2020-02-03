@@ -8,3 +8,5 @@
 **/.*.swp
 .vscode
 minishell
+.DS_Store
+tags
