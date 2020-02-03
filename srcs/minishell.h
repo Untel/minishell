@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/02 21:55:37 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 16:54:34 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct	s_reader
 {
 	int 		simple_q;
 	int			double_q;
+	int			idx;
 }				t_reader;
 
 typedef struct	s_cmd
@@ -42,6 +43,8 @@ typedef struct	s_shell
 	t_list		*cmds;
 	char		dir[BUFFER_SIZE];
 }				t_shell;
+
+void	clear_last_prompt(t_shell *sh);
 
 void	err_shutdown(t_shell *sh, char *str);
 /* Promt */

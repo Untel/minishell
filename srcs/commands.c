@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/02 22:09:56 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 17:04:28 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_cmd
 {
 	t_cmd	*cmd;
 	t_list	*el;
-	
+
 	if (!(cmd = malloc(sizeof(t_cmd))))
 		return (NULL);
 	*cmd = (t_cmd) { .input = NULL, .argc = 0, .argv = NULL };
@@ -45,10 +45,6 @@ char
 	new_argv[cmd->argc] = NULL;
 	free(cmd->argv);
 	cmd->argv = new_argv;
-	printf("Args (%d)\n", cmd->argc);
-	i = -1;
-	while (++i < cmd->argc)
-		printf("%d => %s\n", i, cmd->argv[i]);
 	return (str);
 }
 
@@ -58,6 +54,7 @@ char
 	t_list *el;
 
 	el = ft_lstlast(sh->cmds);
+	printf("Adding %s to %p\n", str, sh);
 	if (!el)
 		err_shutdown(sh, "Error commands.c add_arg_to_last_cmd");
 	return (add_argument((t_cmd *)el->content, str));
@@ -70,6 +67,10 @@ void
 
 	cmd = (t_cmd *)lst->content;
 	while (cmd->argc--)
+	{
 		free(cmd->argv[cmd->argc]);
+		cmd->argv[cmd->argc] = NULL;
+	}
 	free(cmd->argv);
+	cmd->argv = NULL;
 }
