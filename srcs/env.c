@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:11:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/03 21:01:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 22:19:29 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,7 @@ void	print_lst_env(t_list *lst_env)
 	while (lst_env)
 	{
 		key = (t_key *)(lst_env->content);
-		ft_printf("\e[31;1m%d\e[0m \"%s=%s\"\n", lst_env->size,
-				key->key, key->value);
+		ft_printf("%s=%s\n", key->key, key->value);
 		lst_env = lst_env->next;
 	}
 }

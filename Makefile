@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/03 21:35:42 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/02/03 22:17:07 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ makelib:
 -include $(DEP)
 $(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -MMD $(INCLUDES) -o $@ -c $<
+	$(CC) -MMD $(INCLUDES) -o $@ -c $<
 
 bonus:		all
 
