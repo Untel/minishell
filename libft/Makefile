@@ -19,6 +19,7 @@ _LIST			= ft_lstdelone.c ft_lstnew.c ft_lstadd_back.c ft_lstiter.c ft_lstsize.c 
 _WCHAR			= ft_wchar_to_char.c ft_is_wchar.c
 _FILES			= get_next_line.c
 _PRINTF			= ft_parseint.c ft_parsechar.c ft_parsebase.c ft_parsefloat.c ft_parseexp.c ft_convert_base.c ft_printf_utils.c ft_extract_flags.c ft_convert.c ft_printf.c
+_ASM			= list/ft_lstremove_if.s
 
 STR				= $(addprefix $(STR_DIR)/, $(_STR))
 CHAR			= $(addprefix $(CHAR_DIR)/, $(_CHAR))
@@ -31,21 +32,23 @@ FILES			= $(addprefix $(FILES_DIR)/, $(_FILES))
 PRINTF			= $(addprefix $(PRINTF_DIR)/, $(_PRINTF))
 
 SRCS			= $(STR) $(CHAR) $(PRINT) $(MEM) $(MATH) $(LIST) $(WCHAR) $(FILES) $(PRINTF)
-OBJS			= $(SRCS:.c=.o)
-
+OBJSC			= $(SRCS:.c=.o)
+OBJSS			= $(_ASM:.s=.o)
 CFLAGS			= -Wall -Wextra -Werror -I $(INCLUDES_DIR)
 CC				= clang
 AR				= ar rc
+AS				= nasm
+ASFLAGS			= -fmacho64
 RM				= rm -f
 NAME			= libft.a
 
-$(NAME):		$(OBJS) headers/libft.h
-				$(AR) $(NAME) $(OBJS)
+$(NAME):		$(OBJSS) $(OBJSC) headers/libft.h
+				$(AR) $(NAME) $(OBJSS) $(OBJSC)
 
 all:			$(NAME)
 
 clean:
-				$(RM) $(OBJS)
+				$(RM) $(OBJSS) $(OBJSC)
 
 fclean:			clean
 				$(RM) $(NAME)

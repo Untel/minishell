@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 19:34:17 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 22:34:01 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int
 	get_next_line(0, &buffer);
 	tmp = ft_strjoin(sh->input, buffer);
 	free(buffer);
-	free(sh->input);
+	clear_last_prompt(sh);
 	sh->input = tmp;
 	return (sanitize_input(sh));
 }

@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   change_directory.c                                 :+:      :+:    :+:   */
+/*   ft_strreplace.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 23:27:56 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/02/03 23:30:52 by adda-sil          #+#    #+#             */
+/*   Updated: 2020/02/03 23:34:10 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int
-	change_directory(t_shell *sh, t_cmd *cmd)
+char *
+	ft_strreplace(char *buffer, char *target, char *replace)
 {
-	(void)sh;
-	int ret;
-	char *dir;
+	char *place;
 
-	dir = !ft_strncmp(cmd->argv[1], "-", ft_strlen(cmd->argv[1]))
-		? get_value(sh->env, "OLDPWD") : cmd->argv[1];
-	ret = chdir(dir);
-	if (ret == ERR)
-		ft_printf(MSG_ERROR, strerror(errno));
-	else
-	{
-		set_value(&sh->env, "OLDPWD", sh->dir);
-		getcwd(sh->dir, BUFFER_SIZE);
-	}
-	return (ret != ERR);
+	place = ft_strstr(buffer, target);
+	place += ft_strcpy(place, replace);
 }
