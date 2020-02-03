@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 20:37:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 21:20:28 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ int
 	prompt_line(t_shell *sh)
 {
 	getcwd(sh->dir, BUFFER_SIZE);
-	ft_printf("🔥 \033[0;32m%s\033[0m$ ", sh->dir);
+	ft_printf(MSG_PROMPT, sh->dir);
 	get_next_line(0, &(sh->input));
 	sanitize_input(sh);
 	// print_commands(sh);
 	exec_lines(sh);
 	clear_last_prompt(sh);
 	if (sh->stop)
-		ft_printf("🖐  \033[0;31mGood bye!\033[0m\n");
+		ft_printf(MSG_EXIT);
 	else
 		prompt_line(sh);
 	return (SUC);
