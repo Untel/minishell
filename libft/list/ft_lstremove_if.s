@@ -1,8 +1,8 @@
 section .text
-	global _ft_list_remove_if
+	global _ft_lstremove_if
 	extern _free
 
-_ft_list_remove_if:
+_ft_lstremove_if:
 	mov r14, rdi
 
 .loop:

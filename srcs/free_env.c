@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 18:41:48 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/03 18:56:31 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 00:27:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ void	free_env_array(char **envp)
 	while (envp[++i])
 		free(envp[i]);
 	free(envp);
+}
+
+void	free_env_unset(void *content)
+{
+	free(((t_key *)content)->key);
+	free(((t_key *)content)->value);
+	free(content);
 }
 
 void	free_env_var(t_list *lst_env)

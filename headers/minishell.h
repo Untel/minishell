@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 23:30:09 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 00:15:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define MSG_EXIT		"🖐  \033[0;31mGood bye!\033[0m\n"
 typedef struct	s_reader
 {
-	int 		simple_q;
+	int			simple_q;
 	int			double_q;
 	int			idx;
 }				t_reader;
@@ -69,6 +69,8 @@ void	free_env_var(t_list *lst_env);
 void	free_env_list(t_list **env);
 void	*get_value(t_list *env, char *key);
 void	clear_last_prompt(t_shell *sh);
+void	*unset_key(t_list **lst_env, char *key);
+void	free_env_unset(void *content);
 
 void	err_shutdown(t_shell *sh, char *str);
 int		change_directory(t_shell *sh, t_cmd *cmd);

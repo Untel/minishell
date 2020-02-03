@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/03 23:01:11 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/02/04 00:00:11 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS_FILES	= \
 	input.c\
 	commands.c\
 	env.c\
+	env_utils.c\
 	free_env.c\
 	execute.c\
 	change_directory.c
