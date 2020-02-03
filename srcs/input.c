@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 18:56:20 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 18:57:15 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int
 			{
 				add_arg_to_last_cmd(sh, ft_substr(&(sh->input[rd.idx]), 0, i - rd.idx));
 				new_command(sh);
+				while (sh->input[i + 1] == ' ')
+					i++;
 				rd.idx = i + 1;
 			}
 		}
