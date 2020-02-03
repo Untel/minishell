@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 17:00:28 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/03 19:02:20 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int
 
 	sh = (t_shell) { .input = NULL, .dir = "AShellM", .stop = 0, .cmds = NULL };
 	prompt_line(&sh);
-	clear_last_prompt(&sh);
 	system("leaks minishell");
 	return (0);
 }
