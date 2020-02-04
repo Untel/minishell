@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 01:58:26 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 09:35:51 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ char			*ft_strrchr(const char *s, int c);
 char			*ft_strstr(const char *str, const char *to_find);
 char			*ft_strnstr(const char *str, const char *to_find, size_t len);
 char			*ft_strdup(const char *src);
+char			*ft_strndup(const char *src, size_t n);
+char			*ft_strdup_until(const char *src, char c);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_subwstr(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
