@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 17:12:31 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 18:29:15 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	*set_value(t_list **lst_env, char *key, char *value);
 void	free_env_array(char **envp);
 void	free_env_var(t_list *lst_env);
 void	free_env_list(t_list **env);
-void	*get_value(t_list *env, char *key);
+void	*get_value(t_list *env, char *key, char *def);
 void	clear_last_prompt(t_shell *sh);
 void	*unset_key(t_list **lst_env, char *key);
 void	free_env_unset(void *content);

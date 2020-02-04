@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/04 15:32:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 18:24:31 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*set_value(t_list **lst_env, char *key, char *value)
 	return (*lst_env);
 }
 
-void	*get_value(t_list *lst_env, char *key)
+void	*get_value(t_list *lst_env, char *key, char *def)
 {
 	int		found;
 
@@ -69,7 +69,8 @@ void	*get_value(t_list *lst_env, char *key)
 	}
 	if (found == 1)
 		return (((t_key *)(*lst_env).content)->value);
-	return (NULL);
+	else
+		return (def);
 }
 
 int		ft_cmp_key(t_key *env, char *key)

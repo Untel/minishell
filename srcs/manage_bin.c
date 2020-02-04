@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_bin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/04 10:49:55 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 18:32:04 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int		exec_bin(t_list *lst_env, t_cmd *cmd)
 	int		i;
 	int		ret;
 
-	paths = ft_split(get_value(lst_env, "PATH"), ':');
+	
+	paths = ft_split(get_value(lst_env, "PATH", NULL), ':');
 	tmp[1] = cmd->argv[0];
 	i = -1;
 	while (paths[++i])
