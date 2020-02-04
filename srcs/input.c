@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 13:41:25 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 14:25:31 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ char
 		key_len = 0;
 		tmp = ft_strndup(str, ptr - str);
 		ptr++;
-		while (ptr[key_len] && ptr[key_len] != ' ')
+		while (ptr[key_len] && !ft_strchr(" /", ptr[key_len]))
 			key_len++;
 		key = ft_strndup(ptr, key_len);
 		value = get_value(sh->env, key);

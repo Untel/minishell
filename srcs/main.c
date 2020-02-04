@@ -6,16 +6,11 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 03:14:21 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 14:35:11 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-__attribute__((destructor)) void quit(void)
-{
-	system("leaks minishell");
-}
 
 void
 	clear_last_prompt(t_shell *sh)
@@ -39,6 +34,7 @@ int
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, SIG_IGN);
 	sh = (t_shell) {
 		.input = NULL, .dir = "",
 		.stop = 0, .cmds = NULL,

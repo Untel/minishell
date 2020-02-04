@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:11:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/03 23:31:49 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 01:06:57 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,20 @@ t_list	*create_env_list(char **envp)
 	return (lst_env);
 }
 
-void	print_lst_env(t_list *lst_env)
+int		ft_env(t_list *lst_env, t_cmd *cmd)
 {
 	t_key *key;
 
+	if (cmd->argc > 1)
+	{
+		ft_printf("env: to many arguments\n");
+		return (0);
+	}
 	while (lst_env)
 	{
 		key = (t_key *)(lst_env->content);
 		ft_printf("%s=%s\n", key->key, key->value);
 		lst_env = lst_env->next;
 	}
+	return (SUC);
 }
