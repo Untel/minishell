@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 14:25:31 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 14:38:14 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,9 @@ int
 			handle_space(sh, &rd, &i);
 		else if (c == ';')
 			handle_separator(sh, &rd, sh->input + i);
-	copy_from_idx(sh, &rd, i);
-	add_arg_to_last_cmd(sh, rd.buffer);
+	if (rd.index != i)
+	{
+		copy_from_idx(sh, &rd, i);
+		add_arg_to_last_cmd(sh, rd.buffer);
+	}
 }
