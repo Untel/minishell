@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 22:12:16 by adda-sil          #+#    #+#             */
-/*   Updated: 2019/11/04 10:34:08 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 02:35:13 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*ft_strmjoin(int size, char **strs, char *sep)
 	char	*res;
 	int		i;
 	int		j;
+	int		k;
 	int		len;
 
 	len = ((size > 0 ? size - 1 : 0) * ft_strlen(sep)) + 1;
@@ -29,8 +30,9 @@ char	*ft_strmjoin(int size, char **strs, char *sep)
 	i = -1;
 	while (++i < size)
 	{
-		while (*strs[i])
-			*res++ = *strs[i]++;
+		k = -1;
+		while (strs[i][++k])
+			*res++ = strs[i][k];
 		j = -1;
 		if (i != size - 1)
 			while (sep[++j])

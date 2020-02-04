@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 23:07:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 02:12:58 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ int
 	exec_line(t_shell *sh, t_cmd *cmd)
 {
 	int ret;
+	int	tmp;
 
 	ret = 0;
 	if (cmd->argc == 0)
 		return (1);
-	// 	err_shutdown(sh, "Erreur aucun arguments");
+	//	err_shutdown(sh, "Erreur aucun arguments");
 	if (exec_is(cmd, BUILTIN_EXIT))
 		(sh->stop = 1) &&
 		(ret = 1);
@@ -44,11 +45,11 @@ int
 	else if (exec_is(cmd, BUILTIN_UNSET))
 		;
 	else if (exec_is(cmd, BUILTIN_ENV))
-		print_lst_env(sh->env);
+		ret = ft_env(sh->env, cmd);
 	else if (exec_is(cmd, BUILTIN_CD))
 		ret = change_directory(sh, cmd);
-	else if (0) //Find executable cmd->argv[0] in all dir defined in $PATH
-		;
+	else if ((tmp = exec_bin(sh->env, cmd)))
+		ret = tmp;
 	else if (0) //try to cd, if ret falsem say msg
 		;
 	else
