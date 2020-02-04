@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 17:09:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 20:08:47 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int
 	else if (exec_is(cmd, BUILTIN_EXPORT))
 		ret = export_env(sh, cmd);
 	else if (exec_is(cmd, BUILTIN_UNSET))
-		;
+		ret = unset_env(sh, cmd);
 	else if (exec_is(cmd, BUILTIN_ENV))
 		ret = ft_env(sh->env, cmd->argc);
 	else if (exec_is(cmd, BUILTIN_CD))
