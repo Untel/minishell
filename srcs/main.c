@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 07:31:03 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 10:41:36 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, SIG_IGN);
 	sh = (t_shell) {
 		.input = NULL, .dir = "",
 		.stop = 0, .cmds = NULL,

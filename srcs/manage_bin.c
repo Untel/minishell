@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/04 09:10:52 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 10:49:55 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,17 @@ int		fork_exec(t_list *lst_env, t_cmd *cmd, char *tmp[2])
 
 	child = -1;
 	envp = convert_env_list(lst_env);
+	ret = 0;
 	child = fork();
 	bin_path = ft_strmjoin(2, tmp, "/");
+	if (child == 0)
+		signal(SIGINT, SIG_DFL);
 	ret = try_exec(bin_path, cmd->argv, envp, child);
 	if (child == 0 && ret != 0)
-	{
 		exit(ret);
-		return (ret);
-	}
 	free(bin_path);
 	free_env_array(envp);
-	return (0);
+	return (ret);
 }
 
 int		exec_bin(t_list *lst_env, t_cmd *cmd)
@@ -103,7 +103,7 @@ int		exec_bin(t_list *lst_env, t_cmd *cmd)
 		free_env_array(paths);
 		return (0);
 	}
-	fork_exec(lst_env, cmd, tmp);
+	ret = fork_exec(lst_env, cmd, tmp);
 	free_env_array(paths);
 	return (1);
 }
