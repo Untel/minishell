@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 10:41:36 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 11:51:35 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ void
 	exit(1);
 }
 
+void
+	quit (int sig)
+{
+	printf("oh bah flute\n");
+}
+
+
 int
 	main(int ac, char **av, char **envp)
 {
@@ -35,6 +42,7 @@ int
 	(void)ac;
 	(void)av;
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, quit);
 	sh = (t_shell) {
 		.input = NULL, .dir = "",
 		.stop = 0, .cmds = NULL,
