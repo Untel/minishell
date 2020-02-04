@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 13:44:48 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 17:09:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ int
 		(sh->stop = 1) &&
 		(ret = 1);
 	else if (exec_is(cmd, BUILTIN_EXPORT))
-		;// TODO call the function as fn(cmd->argc - 1, &cmd->argv[1])
+		ret = export_env(sh, cmd);
 	else if (exec_is(cmd, BUILTIN_UNSET))
 		;
 	else if (exec_is(cmd, BUILTIN_ENV))
-		ret = ft_env(sh->env, cmd);
+		ret = ft_env(sh->env, cmd->argc);
 	else if (exec_is(cmd, BUILTIN_CD))
 		ret = change_directory(sh, cmd);
 	else if ((tmp = exec_bin(sh->env, cmd)))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_bin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/04 18:40:55 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 19:08:55 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,14 @@ int		exec_bin(t_list *lst_env, t_cmd *cmd)
 	int		i;
 	int		ret;
 
-
-	paths = ft_split(get_value(lst_env, "PATH"), ':');
+	paths = ft_split(get_value(lst_env, "PATH", NULL), ':');
 	if ((ret = ft_inset(cmd->argv[0], '/') != -1))
 	{
 		if (ret == 1)
 			tmp[0] = cmd->argv[0];
 		ret = fork_exec(lst_env, cmd, tmp, 1);
 	}
-	else
+	else if (paths)
 	{
 		tmp[1] = cmd->argv[0];
 		i = -1;
@@ -129,6 +128,7 @@ int		exec_bin(t_list *lst_env, t_cmd *cmd)
 		}
 		ret = fork_exec(lst_env, cmd, tmp, 2);
 	}
-	free_env_array(paths);
+	if (paths)
+		free_env_array(paths);
 	return (1);
 }
