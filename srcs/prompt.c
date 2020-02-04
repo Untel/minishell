@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 14:38:24 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 15:14:22 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int
 int
 	prompt_line(t_shell *sh)
 {
-	ft_printf(MSG_PROMPT, sh->dir);
+	ft_printf(MSG_PROMPT, sh->printed_dir);
 	if (ft_read(sh) == 0)
 		sh->stop = 1;
 	if (!sh->stop)
