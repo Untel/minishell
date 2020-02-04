@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 11:51:35 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 14:57:05 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,18 @@ void
 	exit(1);
 }
 
+int		g_ctrl_c = 0;
+
 void
 	quit (int sig)
 {
-	printf("oh bah flute\n");
-}
+	char	buf[BUFFER_SIZE];
 
+	getcwd(buf, BUFFER_SIZE);
+	ft_printf("\n");
+	ft_printf(MSG_PROMPT, buf);
+	return ;
+}
 
 int
 	main(int ac, char **av, char **envp)
@@ -41,8 +47,8 @@ int
 
 	(void)ac;
 	(void)av;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, quit);
+	signal(SIGINT, quit);
+//	signal(SIGQUIT, quit);
 	sh = (t_shell) {
 		.input = NULL, .dir = "",
 		.stop = 0, .cmds = NULL,
