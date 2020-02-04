@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 01:01:33 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 02:06:27 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,3 +105,17 @@ int
 		add_arg_to_last_cmd(sh, ft_substr(&(sh->input[rd.idx]), 0, i - rd.idx));
 	return (SUC);
 }
+
+// int
+// 	sanitize_input2(t_shell *sh)
+// {
+// 	int		i;
+// 	char	c;
+// 	char	*buffer;
+
+// 	i = -1;
+// 	new_command(sh);
+// 	while ((c = sh->input[++i]))
+// 		if (c == '\'')
+// 			handle_simple_quote();
+// }

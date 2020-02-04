@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 01:00:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 03:14:21 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int
 		.printed_dir = "",
 		.env = create_env_list(envp)
 	};
-	getcwd(sh.dir, BUFFER_SIZE);
+	format_directory(&sh);
 	prompt_line(&sh);
 	free_env_list(&sh.env);
 	ft_lstclear(&sh.cmds, free_command);
