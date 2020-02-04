@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/03 23:27:56 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 01:00:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ int
 	int ret;
 	char *dir;
 
-	dir = !ft_strncmp(cmd->argv[1], "-", ft_strlen(cmd->argv[1]))
-		? get_value(sh->env, "OLDPWD") : cmd->argv[1];
+	if (cmd->argc == 1)
+		dir = get_value(sh->env, "HOME");
+	else
+		dir = !ft_strncmp(cmd->argv[1], "-", ft_strlen(cmd->argv[1]))
+			? get_value(sh->env, "OLDPWD") : cmd->argv[1];
 	ret = chdir(dir);
 	if (ret == ERR)
 		ft_printf(MSG_ERROR, strerror(errno));
