@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/04 00:26:08 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 15:32:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+
+int
+	is_key_env_valid(char *key)
+{
+	int i;
+
+	i = 0;
+	if (!(ft_isalpha(*key) || *key == '_'))
+		return (0);
+	while (key[++i])
+		if (!(ft_isalnum(*key) || *key == '_'))
+			return (0);
+	return (1);
+}
 
 void	*set_value(t_list **lst_env, char *key, char *value)
 {
@@ -19,10 +33,12 @@ void	*set_value(t_list **lst_env, char *key, char *value)
 	int		found;
 
 	found = 0;
+	if (!is_key_env_valid(key))
+		return (0);
 	while (*lst_env)
 	{
 		if ((*lst_env)->next && (var = (t_key *)(*lst_env)->next->content))
-			if (!strcmp(var->key, key) && (found = 1))
+			if (!ft_strncmp(var->key, key, ft_strlen(key) + 1) && (found = 1))
 				break ;
 		lst_env = &(*lst_env)->next;
 	}

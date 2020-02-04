@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 14:38:14 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 15:37:02 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,8 +212,11 @@ int
 int
 	handle_space(t_shell *sh, t_read *rd, int *i)
 {
-	copy_from_idx(sh, rd, *i);
-	add_arg_to_last_cmd(sh, rd->buffer);
+	if (*i != rd->index)
+	{
+		copy_from_idx(sh, rd, *i);
+		add_arg_to_last_cmd(sh, rd->buffer);
+	}
 	while (sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	rd->index = *i + 1;
@@ -222,16 +225,18 @@ int
 }
 
 int
-	handle_separator(t_shell *sh, t_read *rd, char *input)
+	handle_separator(t_shell *sh, t_read *rd, int *i)
 {
-	int i;
-
-	i = 0;
-	add_arg_to_last_cmd(sh, rd->buffer);
+	if (*i != rd->index)
+	{
+		copy_from_idx(sh, rd, *i);
+		add_arg_to_last_cmd(sh, rd->buffer);
+	}
 	new_command(sh);
-	while (input[i] == ' ')
-		i++;
+	while (sh->input[*i] == ' ')
+		*i = *i + 1;
 	rd->buffer = NULL;
+	rd->index = *i + 1;
 	return (1);
 }
 
@@ -259,7 +264,7 @@ int
 		else if (c == ' ')
 			handle_space(sh, &rd, &i);
 		else if (c == ';')
-			handle_separator(sh, &rd, sh->input + i);
+			handle_separator(sh, &rd, &i);
 	if (rd.index != i)
 	{
 		copy_from_idx(sh, &rd, i);

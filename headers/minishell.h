@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 13:45:17 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/04 17:12:31 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct	s_key
 
 t_list	*create_env_list(char **envp);
 int		exec_lines(t_shell *sh);
-int		ft_env(t_list *lst_env, t_cmd *);
+int		ft_env(t_list *lst_env, int argc);
 char	**convert_env_list(t_list *lst_env);
 void	*set_value(t_list **lst_env, char *key, char *value);
 void	free_env_array(char **envp);
@@ -79,12 +79,13 @@ void	*get_value(t_list *env, char *key);
 void	clear_last_prompt(t_shell *sh);
 void	*unset_key(t_list **lst_env, char *key);
 void	free_env_unset(void *content);
-
+int		is_key_env_valid(char *key);
 /* PATH management */
 int		exec_bin(t_list *lst_env, t_cmd *cmd);
 
 void	err_shutdown(t_shell *sh, char *str);
 int		change_directory(t_shell *sh, t_cmd *cmd);
+int		export_env(t_shell *sh, t_cmd *cmd);
 /* Promt */
 int		prompt_line(t_shell *sh);
 int		sanitize_input(t_shell *sh);

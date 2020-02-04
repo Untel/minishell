@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/04 13:51:50 by riblanc          ###   ########.fr        #
+#    Updated: 2020/02/04 15:37:59 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRCS_FILES	= \
 	free_env.c\
 	execute.c\
 	change_directory.c\
-	manage_bin.c
+	manage_bin.c\
+	export.c
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
 ###	Libft
