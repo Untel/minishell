@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 19:06:06 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 19:48:16 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int
 		.printed_dir = "",
 		.env = create_env_list(envp)
 	};
+	set_value(&sh.env, "SHLVL", ft_itoa(
+		ft_atoi((char *)get_value(sh.env, "SHLVL", "0")) + 1));
 	format_directory(&sh);
 	prompt_line(&sh);
 	free_env_list(&sh.env);
