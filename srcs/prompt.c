@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 14:54:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 15:06:18 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int
 		{
 			free(old);
 			sh->stop = 1;
+			write(1, "  \n", 3);
 			break ;
 		}
 		tmp = old;
@@ -75,7 +76,7 @@ int
 		sh->stop = 1;
 	if (!sh->stop)
 	{
-		sanitize_input(sh);
+		sanitize_input2(sh);
 		// print_commands(sh);
 		exec_lines(sh);
 		clear_last_prompt(sh);

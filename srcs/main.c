@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 14:57:05 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/04 15:08:33 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void
 	char	buf[BUFFER_SIZE];
 
 	getcwd(buf, BUFFER_SIZE);
-	ft_printf("\n");
+	write(1, " \n", 2);
 	ft_printf(MSG_PROMPT, buf);
 	return ;
 }
@@ -55,7 +55,7 @@ int
 		.printed_dir = "",
 		.env = create_env_list(envp)
 	};
-	getcwd(sh.dir, BUFFER_SIZE);
+	format_directory(&sh);
 	prompt_line(&sh);
 	free_env_list(&sh.env);
 	ft_lstclear(&sh.cmds, free_command);
