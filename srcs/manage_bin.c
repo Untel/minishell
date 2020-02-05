@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/04 19:08:55 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/05 21:25:31 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int		try_exec(char *path, char **argv, char **envp, pid_t child)
 	else
 	{
 		ret = execve(path, argv, envp);
+		if (errno != 0)
+			ft_printf("AShellM: %s: %s\n", path, strerror(errno));
 		return (ret);
 	}
 	return (-1);
