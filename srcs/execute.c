@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 20:08:47 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 15:29:32 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int
 	ret = 0;
 	if (cmd->argc == 0)
 		return (1);
-	//	err_shutdown(sh, "Erreur aucun arguments");
 	if (exec_is(cmd, BUILTIN_EXIT))
 		(sh->stop = 1) &&
 		(ret = 1);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 20:07:36 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 15:28:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,9 @@ int
 	ft_printf(MSG_PROMPT, sh->printed_dir);
 	if (ft_read(sh) == 0)
 		sh->stop = 1;
-	if (!sh->stop)
+	if (!sh->stop && sanitize_input2(sh))
 	{
-		sanitize_input2(sh);
-		// print_commands(sh);
+		print_commands(sh);
 		exec_lines(sh);
 		clear_last_prompt(sh);
 	}
