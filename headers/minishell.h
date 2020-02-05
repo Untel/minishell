@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 16:46:34 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 17:02:30 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ typedef struct	s_cmd
 	int			argc;
 	char		**argv;
 	t_operator	op;
-	t_cmd		*left;
-	t_cmd		*right;
+	struct s_cmd	*left;
+	struct s_cmd	*right;
 }				t_cmd;
 
 typedef struct	s_shell

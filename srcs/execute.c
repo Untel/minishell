@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 15:29:32 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 17:08:21 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int
 		ret = change_directory(sh, cmd);
 	else if ((tmp = exec_bin(sh->env, cmd)))
 		ret = tmp;
-	else if (0) //try to cd, if ret falsem say msg
-		;
+	else if (test_dir("./", cmd->argv[0]) && cmd->argc == 1) //try to cd, if ret falsem say msg
+		ret = change_directory(sh, cmd);
 	else
 		ft_printf(MSG_404_CMD, cmd->argv[0]) && (ret = 1);
 	return (ret);

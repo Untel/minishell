@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 14:27:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 16:48:47 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,14 @@ int
 	(void)av;
 	signal(SIGINT, quit);
 //	signal(SIGQUIT, quit);
-	printf("Bru list\n");
-
 	sh = (t_shell) {
 		.input = NULL, .dir = "",
 		.stop = 0, .cmds = NULL,
 		.printed_dir = "",
 		.env = create_env_list(envp)
 	};
-	printf("BEf list\n\n");
 	tmp = ft_itoa(ft_atoi((char *)get_value(sh.env, "SHLVL", "0")) + 1);
-	printf("Aft list\n\n\n");
 	set_value(&sh.env, "SHLVL", tmp);
-
 	free(tmp);
 	tmp = NULL;
 	format_directory(&sh);
