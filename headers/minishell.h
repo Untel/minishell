@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 17:02:30 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 17:49:21 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct	s_shell
 	t_list		*cmds;
 	char		dir[BUFFER_SIZE];
 	char		printed_dir[BUFFER_SIZE];
+	int			last_ret;
 	t_list		*env;
 }				t_shell;
 
@@ -91,7 +92,7 @@ void	*unset_key(t_list **lst_env, char *key);
 void	free_env_unset(void *content);
 int		is_key_env_valid(char *key);
 /* PATH management */
-int		exec_bin(t_list *lst_env, t_cmd *cmd);
+int		exec_bin(t_shell *sh, t_cmd *cmd);
 int		unset_env(t_shell *sh, t_cmd *cmd);
 void	err_shutdown(t_shell *sh, char *str);
 int		change_directory(t_shell *sh, t_cmd *cmd);

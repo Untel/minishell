@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 17:08:21 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 19:04:28 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,48 @@ int
 int
 	exec_line(t_shell *sh, t_cmd *cmd)
 {
-	int ret;
 	int	tmp;
 
-	ret = 0;
 	if (cmd->argc == 0)
 		return (1);
 	if (exec_is(cmd, BUILTIN_EXIT))
-		(sh->stop = 1) &&
-		(ret = 1);
+		(sh->stop = 1);
 	else if (exec_is(cmd, BUILTIN_EXPORT))
-		ret = export_env(sh, cmd);
+		sh->last_ret = export_env(sh, cmd);
 	else if (exec_is(cmd, BUILTIN_UNSET))
-		ret = unset_env(sh, cmd);
+		sh->last_ret = unset_env(sh, cmd);
 	else if (exec_is(cmd, BUILTIN_ENV))
-		ret = ft_env(sh->env, cmd->argc);
+		sh->last_ret = ft_env(sh->env, cmd->argc);
 	else if (exec_is(cmd, BUILTIN_CD))
-		ret = change_directory(sh, cmd);
-	else if ((tmp = exec_bin(sh->env, cmd)))
-		ret = tmp;
+		sh->last_ret = change_directory(sh, cmd);
+	else if (exec_bin(sh, cmd))
+		;
 	else if (test_dir("./", cmd->argv[0]) && cmd->argc == 1) //try to cd, if ret falsem say msg
-		ret = change_directory(sh, cmd);
+		sh->last_ret = change_directory(sh, cmd);
 	else
-		ft_printf(MSG_404_CMD, cmd->argv[0]) && (ret = 1);
-	return (ret);
+		ft_printf(MSG_404_CMD, cmd->argv[0]) && (sh->last_ret = 127);
+	return (1);
+}
+
+int
+	print_command(t_shell *sh, t_cmd *cmd)
+{
+	int		i;
+	char	*str;
+	int		size;
+
+	i = -1;
+	str = NULL;
+	if (cmd->argc == 0)
+		printf("/!\ Commands without args\n");
+	else
+	{
+		size = cmd->argc - 1;
+		if (size)
+			str = ft_strmjoin(cmd->argc - 1, &cmd->argv[1], ", ");
+		printf("Executing '%s' with %d args: '%s' | LR %d\n", cmd->argv[0],
+			size, str ? str : "", sh->last_ret);
+	}
 }
 
 int
@@ -66,7 +84,10 @@ int
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-		exec_line(sh, cmd);
+		print_command(sh, cmd);
+		if (!(cmd->op == OR && sh->last_ret != 0)
+			&& !(cmd->op == AND && sh->last_ret == 0))
+			exec_line(sh, cmd);
 		lst = lst->next;
 	}
 	return (SUC);

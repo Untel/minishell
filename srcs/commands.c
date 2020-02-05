@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 16:44:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 17:30:29 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_cmd
 	if (!(cmd = malloc(sizeof(t_cmd))))
 		return (NULL);
 	*cmd = (t_cmd) { .input = NULL, .argc = 0, .argv = NULL,
-		.op = NONE, .left = NULL };
+		.op = op, .left = NULL, .right = NULL };
 	if (!(el = ft_lstnew(cmd, sizeof(t_cmd *))))
 	{
 		free(cmd);
@@ -30,7 +30,6 @@ t_cmd
 	}
 	if ((prev = ft_lstlast(sh->cmds)))
 	{
-		((t_cmd *)prev->content)->op = op;
 		cmd->left = prev->content;
 		((t_cmd *)prev->content)->right = cmd;
 		prev->next = el;

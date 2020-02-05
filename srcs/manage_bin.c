@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/05 17:16:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 19:04:13 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,19 +96,19 @@ int		fork_exec(t_list *lst_env, t_cmd *cmd, char *tmp[2], int nb)
 }
 
 
-int		exec_bin(t_list *lst_env, t_cmd *cmd)
+int		exec_bin(t_shell *sh, t_cmd *cmd)
 {
 	char	**paths;
 	char	*tmp[2];
 	int		i;
 	int		ret;
 
-	paths = ft_split(get_value(lst_env, "PATH", NULL), ':');
+	paths = ft_split(get_value(sh->env, "PATH", NULL), ':');
 	if ((ret = ft_inset(cmd->argv[0], '/') != -1))
 	{
 		if (ret == 1)
 			tmp[0] = cmd->argv[0];
-		ret = fork_exec(lst_env, cmd, tmp, 1);
+		ret = fork_exec(sh->env, cmd, tmp, 1);
 	}
 	else if (paths)
 	{
@@ -126,7 +126,7 @@ int		exec_bin(t_list *lst_env, t_cmd *cmd)
 			free_env_array(paths);
 			return (0);
 		}
-		ret = fork_exec(lst_env, cmd, tmp, 2);
+		ret = fork_exec(sh->env, cmd, tmp, 2);
 	}
 	if (paths)
 		free_env_array(paths);

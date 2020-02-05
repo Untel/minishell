@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 16:37:01 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 18:04:08 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,8 +235,9 @@ int
 	else
 		op = NONE;
 	if (*i != rd->index)
-		copy_from_idx(sh, rd, *i) && 
-			add_arg_to_last_cmd(sh, rd->buffer);	
+		copy_from_idx(sh, rd, *i);
+	if (rd->buffer)
+		add_arg_to_last_cmd(sh, rd->buffer);	
 	if (op == AND || op == OR)
 		*i = *i + 1;
 	new_command(sh, op);
@@ -286,7 +287,8 @@ int
 			return (ret);
 	}
 	if (rd.index != i)
-		copy_from_idx(sh, &rd, i)
-			&& add_arg_to_last_cmd(sh, rd.buffer);
+		copy_from_idx(sh, &rd, i);
+	if (rd.buffer)
+		add_arg_to_last_cmd(sh, rd.buffer);
 	return (ret);
 }
