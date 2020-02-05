@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 18:04:08 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 19:22:16 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,16 +122,28 @@ char
 
 	if((ptr = ft_strchr(str, '$')))
 	{
-		key_len = 0;
 		tmp = ft_strndup(str, ptr - str);
 		ptr++;
-		while (ptr[key_len] && !ft_strchr(" /", ptr[key_len]))
-			key_len++;
-		key = ft_strndup(ptr, key_len);
-		value = get_value(sh->env, key, NULL);
+		if (*ptr == '?')
+		{
+			key_len = 1;
+			value = ft_itoa(sh->last_ret);
+			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
+			free(value);
+			value = ft_strjoin(key, ptr + key_len);
+		}
+		else
+		{
+			while (ptr[key_len] && !ft_strchr(" /$", ptr[key_len]))
+				key_len++;
+			key = ft_strndup(ptr, key_len);
+			value = get_value(sh->env, key, NULL);
+			free(key);
+			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
+			value = ft_strjoin(key, ptr + key_len);
+		}
+		free(tmp);
 		free(key);
-		key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
-		value = ft_strjoin(key, ptr + key_len);
 		free(str);
 		return (replace_vars(sh, value));
 	}

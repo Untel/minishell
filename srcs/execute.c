@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 19:04:28 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 19:30:08 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ int
 	i = -1;
 	str = NULL;
 	if (cmd->argc == 0)
-		printf("/!\ Commands without args\n");
+		printf("/!\\ Commands without args\n");
 	else
 	{
 		size = cmd->argc - 1;
 		if (size)
 			str = ft_strmjoin(cmd->argc - 1, &cmd->argv[1], ", ");
-		printf("Executing '%s' with %d args: '%s' | LR %d\n", cmd->argv[0],
-			size, str ? str : "", sh->last_ret);
+		printf("Executing '%s' with %d args: '%s' | LR %d | OP %d\n", cmd->argv[0],
+			size, str ? str : "", sh->last_ret, cmd->op);
 	}
 }
 
@@ -85,8 +85,8 @@ int
 	{
 		cmd = (t_cmd *)lst->content;
 		print_command(sh, cmd);
-		if (!(cmd->op == OR && sh->last_ret != 0)
-			&& !(cmd->op == AND && sh->last_ret == 0))
+		if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
+			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
 			exec_line(sh, cmd);
 		lst = lst->next;
 	}
