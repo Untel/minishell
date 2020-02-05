@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:11:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/04 20:09:37 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 14:28:37 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_list	*create_env_list(char **envp)
 	int		i;
 
 	i = -1;
+	lst_env = NULL;
 	while (*(envp + ++i))
 	{
 		split_pos = ft_strchr(envp[i], '=') - envp[i];

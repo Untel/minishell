@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 20:17:00 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 17:49:21 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,26 @@ typedef struct	s_reader
 typedef struct	s_read
 {
 	char		*buffer;
-	char		*input;
 	int			index;
 }				t_read;
+
+typedef enum	e_operator
+{
+	NONE,
+	OR,
+	AND,
+	PIPE,
+	JOB,
+}				t_operator;
 
 typedef struct	s_cmd
 {
 	char		*input;
 	int			argc;
 	char		**argv;
+	t_operator	op;
+	struct s_cmd	*left;
+	struct s_cmd	*right;
 }				t_cmd;
 
 typedef struct	s_shell
@@ -57,6 +68,7 @@ typedef struct	s_shell
 	t_list		*cmds;
 	char		dir[BUFFER_SIZE];
 	char		printed_dir[BUFFER_SIZE];
+	int			last_ret;
 	t_list		*env;
 }				t_shell;
 
@@ -65,7 +77,6 @@ typedef struct	s_key
 	char	*key;
 	char	*value;
 }				t_key;
-
 
 t_list	*create_env_list(char **envp);
 int		exec_lines(t_shell *sh);
@@ -81,7 +92,7 @@ void	*unset_key(t_list **lst_env, char *key);
 void	free_env_unset(void *content);
 int		is_key_env_valid(char *key);
 /* PATH management */
-int		exec_bin(t_list *lst_env, t_cmd *cmd);
+int		exec_bin(t_shell *sh, t_cmd *cmd);
 int		unset_env(t_shell *sh, t_cmd *cmd);
 void	err_shutdown(t_shell *sh, char *str);
 int		change_directory(t_shell *sh, t_cmd *cmd);
@@ -94,7 +105,7 @@ int		format_directory(t_shell *sh);
 // int		ask_closing_quote(t_shell *sh);
 
 /* Command handling */
-t_cmd	*new_command(t_shell *sh);
+t_cmd	*new_command(t_shell *sh, t_operator op);
 char	*add_argument(t_cmd *cmd, char *str);
 char	*add_arg_to_last_cmd(t_shell *sh, char *str);
 void	free_command(t_list *lst);

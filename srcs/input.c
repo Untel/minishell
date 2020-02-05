@@ -6,21 +6,21 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 20:05:38 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 19:22:16 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int
-	ask_closing_quote(t_shell *sh, t_read *rd)
+	ask_closing_char(t_shell *sh, t_read *rd, char *ask)
 {
 	char	*tmp;
 	char	*tmps[2];
 	char	*buffer;
 
 	ft_lstclear(&sh->cmds, free_command);
-	ft_printf("Quote? > ");
+	ft_printf("%s> ", ask);
 	get_next_line(0, &buffer);
 	tmps[0] = sh->input;
 	tmps[1] = buffer;
@@ -122,16 +122,28 @@ char
 
 	if((ptr = ft_strchr(str, '$')))
 	{
-		key_len = 0;
 		tmp = ft_strndup(str, ptr - str);
 		ptr++;
-		while (ptr[key_len] && !ft_strchr(" /", ptr[key_len]))
-			key_len++;
-		key = ft_strndup(ptr, key_len);
-		value = get_value(sh->env, key, NULL);
+		if (*ptr == '?')
+		{
+			key_len = 1;
+			value = ft_itoa(sh->last_ret);
+			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
+			free(value);
+			value = ft_strjoin(key, ptr + key_len);
+		}
+		else
+		{
+			while (ptr[key_len] && !ft_strchr(" /$", ptr[key_len]))
+				key_len++;
+			key = ft_strndup(ptr, key_len);
+			value = get_value(sh->env, key, NULL);
+			free(key);
+			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
+			value = ft_strjoin(key, ptr + key_len);
+		}
+		free(tmp);
 		free(key);
-		key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
-		value = ft_strjoin(key, ptr + key_len);
 		free(str);
 		return (replace_vars(sh, value));
 	}
@@ -144,7 +156,7 @@ int
 	char *sub;
 	char *tmp;
 
-	sub = ft_substr(rd->input + rd->index, 0, idx - rd->index);
+	sub = ft_substr(sh->input + rd->index, 0, idx - rd->index);
 	sub = replace_vars(sh, sub);
 	if (rd->buffer)
 	{
@@ -155,6 +167,7 @@ int
 	free(rd->buffer);
 	rd->buffer = sub;
 	rd->index = idx + 1;
+	return (1);
 }
 
 int
@@ -213,10 +226,8 @@ int
 	handle_space(t_shell *sh, t_read *rd, int *i)
 {
 	if (*i != rd->index)
-	{
-		copy_from_idx(sh, rd, *i);
-		add_arg_to_last_cmd(sh, rd->buffer);
-	}
+		copy_from_idx(sh, rd, *i)
+			&& add_arg_to_last_cmd(sh, rd->buffer);
 	while (sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	rd->index = *i + 1;
@@ -227,14 +238,25 @@ int
 int
 	handle_separator(t_shell *sh, t_read *rd, int *i)
 {
+	t_operator op;
+
+	if (sh->input[*i] == '&')
+		op = (sh->input[*i + 1] == '&' ? AND : JOB);
+	else if (sh->input[*i] == '|')
+		op = (sh->input[*i + 1] == '|' ? OR : PIPE);
+	else
+		op = NONE;
 	if (*i != rd->index)
-	{
 		copy_from_idx(sh, rd, *i);
-		add_arg_to_last_cmd(sh, rd->buffer);
-	}
-	new_command(sh);
+	if (rd->buffer)
+		add_arg_to_last_cmd(sh, rd->buffer);	
+	if (op == AND || op == OR)
+		*i = *i + 1;
+	new_command(sh, op);
 	while (sh->input[*i] == ' ')
 		*i = *i + 1;
+	if (sh->input[*i + 1] == '&' || sh->input[*i + 1] == '|')
+		return (ft_printf(MSG_ERROR, "parse error") && 0);
 	rd->buffer = NULL;
 	rd->index = *i + 1;
 	return (1);
@@ -245,29 +267,40 @@ int
 {
 	int			i;
 	char		c;
-	t_read	rd;
+	t_read		rd;
+	int			ret;
 
 	i = -1;
-	rd = (t_read) { .buffer = NULL, .input = sh->input, .index = 0 };
-	new_command(sh);
+	ret = 1;
+	rd = (t_read) { .buffer = NULL, .index = 0 };
+	new_command(sh, NONE);
 	while ((c = sh->input[++i]))
+	{
 		if (c == '\'')
 		{
 			if (!handle_simple_quote(sh, &rd, &i))
-				return (ask_closing_quote(sh, &rd));
+				return (ask_closing_char(sh, &rd, "quote"));
 		}
 		else if (c == '"')
 		{
 			if (!handle_double_quote(sh, &rd, &i))
-				return (ask_closing_quote(sh, &rd));
+				return (ask_closing_char(sh, &rd, "dquote"));
+		}
+		else if (c == '(' || c == ')')
+		{
+			if (!handle_double_quote(sh, &rd, &i))
+				return (ask_closing_char(sh, &rd, "subsh"));
 		}
 		else if (c == ' ')
-			handle_space(sh, &rd, &i);
-		else if (c == ';')
-			handle_separator(sh, &rd, &i);
-	if (rd.index != i)
-	{
-		copy_from_idx(sh, &rd, i);
-		add_arg_to_last_cmd(sh, rd.buffer);
+			ret = handle_space(sh, &rd, &i);
+		else if (c == ';' || c == '&' || c == '|')
+			ret = handle_separator(sh, &rd, &i);
+		if (!ret)
+			return (ret);
 	}
+	if (rd.index != i)
+		copy_from_idx(sh, &rd, i);
+	if (rd.buffer)
+		add_arg_to_last_cmd(sh, rd.buffer);
+	return (ret);
 }

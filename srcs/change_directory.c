@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 19:41:03 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 17:09:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ int
 
 	if (cmd->argc == 1)
 	{
-		if (!(dir = get_value(sh->env, "HOME", NULL)))
+		if (ft_strncmp(cmd->argv[0], "cd", 3))
+			dir = cmd->argv[0];
+		else if (!(dir = get_value(sh->env, "HOME", NULL)))
 			return (ft_printf(MSG_ERROR, "no env HOME defined") && 0);
 	}
 	else

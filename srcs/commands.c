@@ -6,27 +6,36 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 00:50:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 17:30:29 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_cmd
-	*new_command(t_shell *sh)
+	*new_command(t_shell *sh, t_operator op)
 {
 	t_cmd	*cmd;
 	t_list	*el;
+	t_list	*prev;
 
 	if (!(cmd = malloc(sizeof(t_cmd))))
 		return (NULL);
-	*cmd = (t_cmd) { .input = NULL, .argc = 0, .argv = NULL };
+	*cmd = (t_cmd) { .input = NULL, .argc = 0, .argv = NULL,
+		.op = op, .left = NULL, .right = NULL };
 	if (!(el = ft_lstnew(cmd, sizeof(t_cmd *))))
 	{
 		free(cmd);
 		return (NULL);
 	}
-	ft_lstadd_back(&(sh->cmds), el);
+	if ((prev = ft_lstlast(sh->cmds)))
+	{
+		cmd->left = prev->content;
+		((t_cmd *)prev->content)->right = cmd;
+		prev->next = el;
+	}
+	else
+		ft_lstadd_front(&(sh->cmds), el);
 	return (cmd);
 }
 

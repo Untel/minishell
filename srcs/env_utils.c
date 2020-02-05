@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/04 18:24:31 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/05 19:03:15 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	*get_value(t_list *lst_env, char *key, char *def)
 	found = 0;
 	while (lst_env)
 	{
-		if (!strcmp(((t_key *)(*lst_env).content)->key, key) && (found = 1))
+		if (!ft_strncmp(((t_key *)(*lst_env).content)->key, key, ft_strlen(key) + 1) && (found = 1))
 			break ;
 		lst_env = lst_env->next;
 	}
