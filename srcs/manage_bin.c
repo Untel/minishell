@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/06 23:06:03 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/06 23:10:48 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,12 @@ int		test_dir(char *path, char *cmd)
 	if ((rep = opendir(path)) == NULL)
 		return (-1);
 	while ((file = readdir(rep)) != NULL)
-	{
-		printf("type: %d %s\n", file->d_type, file->d_name);
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
 			if (closedir(rep) == -1)
 				return (-1);
 			return (1);
 		}
-	}
 	if (closedir(rep) == -1)
 		return (-1);
 	return (0);
