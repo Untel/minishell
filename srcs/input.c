@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/06 16:24:20 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/06 16:31:58 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,22 +236,36 @@ int
 	return (1);
 }
 
+t_operator
+	get_operator(t_shell *sh, int *i)
+{
+	if (sh->input[*i] == '&')
+		return (sh->input[*i + 1] == '&' ? AND : JOB);
+	else if (sh->input[*i] == '|')
+		return (sh->input[*i + 1] == '|' ? OR : PIPE);
+	else if (sh->input[*i] == '<')
+	{
+		return (sh->input[*i + 1] == '<' ? REDIR_IN_END : REDIR_IN);
+	}
+	else if (sh->input[*i] == '>')
+	{
+		return (sh->input[*i + 1] == '>' ? REDIR_OUT_END : REDIR_OUT);
+	}
+	else
+		return (NONE);
+}
 int
 	handle_separator(t_shell *sh, t_read *rd, int *i)
 {
 	t_operator op;
 
-	if (sh->input[*i] == '&')
-		op = (sh->input[*i + 1] == '&' ? AND : JOB);
-	else if (sh->input[*i] == '|')
-		op = (sh->input[*i + 1] == '|' ? OR : PIPE);
-	else
-		op = NONE;
+	op = get_operator(sh, i);
 	if (*i != rd->index)
 		copy_from_idx(sh, rd, *i);
 	if (rd->buffer)
 		add_arg_to_last_cmd(sh, rd->buffer);	
-	if (op == AND || op == OR)
+	if (op == AND || op == OR
+		|| op == REDIR_IN_END || op == REDIR_OUT_END)
 		*i = *i + 1;
 	new_command(sh, op);
 	while (sh->input[*i] == ' ')

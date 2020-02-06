@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 17:49:21 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/06 20:30:26 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ typedef enum	e_operator
 	AND,
 	PIPE,
 	JOB,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_IN_END,
+	REDIR_OUT_END,
 }				t_operator;
 
 typedef struct	s_cmd
@@ -69,6 +73,7 @@ typedef struct	s_shell
 	char		dir[BUFFER_SIZE];
 	char		printed_dir[BUFFER_SIZE];
 	int			last_ret;
+	int			fd_pipe[2];
 	t_list		*env;
 }				t_shell;
 
