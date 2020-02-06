@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 19:22:16 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/06 16:24:20 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,8 +226,9 @@ int
 	handle_space(t_shell *sh, t_read *rd, int *i)
 {
 	if (*i != rd->index)
-		copy_from_idx(sh, rd, *i)
-			&& add_arg_to_last_cmd(sh, rd->buffer);
+		copy_from_idx(sh, rd, *i);
+	if (rd->buffer)
+		add_arg_to_last_cmd(sh, rd->buffer);
 	while (sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	rd->index = *i + 1;
