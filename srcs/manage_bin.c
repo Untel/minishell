@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/05 21:28:48 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/06 23:06:03 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int		test_dir(char *path, char *cmd)
 		return (-1);
 	while ((file = readdir(rep)) != NULL)
 	{
+		printf("type: %d %s\n", file->d_type, file->d_name);
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
 			if (closedir(rep) == -1)
@@ -88,7 +89,11 @@ int		fork_exec(t_list *lst_env, t_cmd *cmd, char *tmp[2], int nb)
 	else if (nb == 1)
 		bin_path = ft_strdup(tmp[0]);
 	if (child == 0)
+	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGTSTP, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
 	ret = try_exec(bin_path, cmd->argv, envp, child);
 	if (child == 0 && ret != 0)
 		exit(ret);
