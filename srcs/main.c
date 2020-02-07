@@ -6,11 +6,13 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 23:37:24 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/07 19:26:44 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <term.h>
+#include <ncurses.h>
 
 void
 	clear_last_prompt(t_shell *sh)
@@ -43,26 +45,33 @@ void
 int
 	main(int ac, char **av, char **envp)
 {
-	t_shell sh;
-	char	*tmp;
+	struct termios	s_termios;
+	struct termios	s_termios_backup;
+	t_shell			sh;
+	char			*tmp;
 
 	(void)ac;
 	(void)av;
-	signal(SIGINT, quit);
-	signal(SIGTSTP, quit);
-	sh = (t_shell) {
-		.input = NULL, .dir = "",
-		.stop = 0, .cmds = NULL,
-		.printed_dir = "", .last_ret = 0,
-		.env = create_env_list(envp)
-	};
-	tmp = ft_itoa(ft_atoi((char *)get_value(sh.env, "SHLVL", "0")) + 1);
-	set_value(&sh.env, "SHLVL", tmp);
-	free(tmp);
-	tmp = NULL;
-	format_directory(&sh);
-	prompt_line(&sh);
-	free_env_list(&sh.env);
-	ft_lstclear(&sh.cmds, free_command);
+	if (init_term(&s_termios, &s_termios_backup) == 0)
+	{
+		signal(SIGINT, quit);
+		signal(SIGTSTP, quit);
+		sh = (t_shell) {
+			.input = NULL, .dir = "",
+			.stop = 0, .cmds = NULL,
+			.printed_dir = "", .last_ret = 0,
+			.env = create_env_list(envp)
+		};
+		tmp = ft_itoa(ft_atoi((char *)get_value(sh.env, "SHLVL", "0")) + 1);
+		set_value(&sh.env, "SHLVL", tmp);
+		free(tmp);
+		tmp = NULL;
+		format_directory(&sh);
+		prompt_line(&sh);
+		free_env_list(&sh.env);
+		ft_lstclear(&sh.cmds, free_command);
+		if (tcsetattr(0, 0, &s_termios_backup) == -1)
+			return (-1);
+	}
 	return (0);
 }

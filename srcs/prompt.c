@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 17:41:50 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/07 19:44:54 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int
 	return (SUC);
 }
 
-int
+/*int
 	ft_read(t_shell *sh)
 {
 	char	*tmp;
@@ -66,6 +66,15 @@ int
 		sh->input = old;
 	}
 	return (ret);
+}
+*/
+
+int
+	ft_read(t_shell *sh)
+{
+	sh->input = read_input(ft_strlen(sh->printed_dir) + 7);
+	write(1, "\n", 1);
+	return ((sh->input == (char *)-1) ? 0 : 1);
 }
 
 int

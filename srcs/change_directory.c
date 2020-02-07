@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/05 17:09:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/07 19:39:01 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int
 	char *home;
 	getcwd(sh->dir, BUFFER_SIZE);
 	ft_strcpy(sh->printed_dir, sh->dir);
-	home = get_value(sh->env, "HOME", NULL);
-	if (home)
-		ft_strreplace(sh->printed_dir, home + 1, "🏡 ");
-	ft_strreplace(sh->printed_dir, ".Trash", "🗑 ");
-	ft_strreplace(sh->printed_dir, "usr", "👤 ");
-	ft_strreplace(sh->printed_dir, "bin", "🍆 ");
+//	home = get_value(sh->env, "HOME", NULL);
+//	if (home)
+//		ft_strreplace(sh->printed_dir, home + 1, "🏡 ");
+//	ft_strreplace(sh->printed_dir, ".Trash", "🗑 ");
+//	ft_strreplace(sh->printed_dir, "usr", "👤 ");
+//	ft_strreplace(sh->printed_dir, "bin", "🍆 ");
 }
 
 int
