@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/07 20:43:33 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/07 21:18:04 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 #include <term.h>
 #include <ncurses.h>
 
+__attribute__((destructor)) void lul(void)
+{
+	system("leaks minishell");
+}
+
 void
 	clear_last_prompt(t_shell *sh)
 {
 	ft_lstclear(&sh->cmds, free_command);
-	free(sh->input);
+	ft_memdel(&sh->input);
 }
 
 void
