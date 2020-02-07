@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/06 22:31:07 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/07 21:22:37 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,7 @@ int
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-		print_command(sh, cmd);
-		if (cmd->op == PIPE)
-		{
-			// printf("Receiving pipe\n");
-		}
-		if (lst->next && ((t_cmd *)lst->next->content)->op == PIPE)
-		{
-			pipe(sh->fd_pipe);
-			dup2(sh->fd_pipe[1], 1);
-			// printf("Opening pipe %d | %d \n", sh->fd_pipe[0], sh->fd_pipe[1]);
-			int fd3 = open("./test.txt", O_RDWR | O_CREAT);
-			ft_fprintf(fd3, "YO Opening pipe %d | %d \n", 0, 1);
-			close(sh->fd_pipe[1]);
-
-		}
+//		print_command(sh, cmd);
 		if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
 			exec_line(sh, cmd);

@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/04 19:10:52 by riblanc          ###   ########.fr        #
+#    Updated: 2020/02/07 19:33:25 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ SRCS_FILES	= \
 	execute.c\
 	change_directory.c\
 	manage_bin.c\
-	export.c
+	export.c\
+	init_termios.c\
+	list_utils.c
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
 ###	Libft
@@ -57,7 +59,7 @@ all:		makelib
 			@$(MAKE) $(NAME)
 
 $(NAME):	$(OBJ)
-			$(CC) $(LIBS) $(CFLAGS) -o $@ $^ -g3 #-fsanitize=address
+			$(CC) $(LIBS) $(CFLAGS) -o $@ $^ -g3 -lncurses #-fsanitize=address
 
 makelib:	
 			$(LIBFT_MAKE)

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/06 22:07:43 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/07 21:24:53 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,6 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 	}
 	else
 	{
-		
-		if (cmd->op == PIPE)
-		{
-			// close(sh->fd_pipe[1]);
-			printf("In child pipe %d | %d \n", sh->fd_pipe[0], sh->fd_pipe[1]);
-			dup2(sh->fd_pipe[0], 0);
-			close(sh->fd_pipe[0]);
-			printf("Receiving pipe %d | %d \n", sh->fd_pipe[0], sh->fd_pipe[1]);
-		}
-		// char buffer[BUFFER_SIZE + 1];
-		// int ret;
-		// while ((ret = read(0, buffer, BUFFER_SIZE)) != 0)
-		// {
-		// 	buffer[ret] = 0;
-        // 	printf("child reads %s", buffer);
-		// }
 		ret = execve(path, cmd->argv, envp);
 		if (errno != 0)
 			ft_printf("AShellM: %s: %s\n", path, strerror(errno));
@@ -64,14 +48,14 @@ int		test_dir(char *path, char *cmd)
 	if ((rep = opendir(path)) == NULL)
 		return (-1);
 	while ((file = readdir(rep)) != NULL)
-	{
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
+			if (file->d_type != 8)
+				return (0);
 			if (closedir(rep) == -1)
 				return (-1);
 			return (1);
 		}
-	}
 	if (closedir(rep) == -1)
 		return (-1);
 	return (0);
@@ -105,7 +89,11 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 	else if (nb == 1)
 		bin_path = ft_strdup(tmp[0]);
 	if (child == 0)
+	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGTSTP, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
 	ret = try_exec(sh, bin_path, cmd, envp, child);
 	if (child == 0 && ret != 0)
 		exit(ret);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/06 20:30:26 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/07 21:21:46 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@
 # include <sys/errno.h>
 # include <signal.h>
 # include <dirent.h>
+# include <termios.h>
+# include <curses.h>
+# include <term.h>
+# include "list.h"
 # define FALSE 0
 # define SUC 1
-# define ERR -1
 # define MSG_ERROR		"💩  \033[1;31mError\033[0m %s\n"
 # define MSG_404_CMD	"🤔  \033[1;33m%s\033[0m: command not found\n"
-# define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m$ "
+# define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m » "
 # define MSG_EXIT		"🖐  \033[1;31mGood bye!\033[0m\n"
 typedef struct	s_reader
 {
@@ -114,4 +117,8 @@ t_cmd	*new_command(t_shell *sh, t_operator op);
 char	*add_argument(t_cmd *cmd, char *str);
 char	*add_arg_to_last_cmd(t_shell *sh, char *str);
 void	free_command(t_list *lst);
+
+int init_term(struct termios *s_termios, struct termios *s_termios_backup);
+char	*read_input(int offset);
+
 #endif
