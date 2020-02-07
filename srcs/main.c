@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/07 19:26:44 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/07 20:43:33 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int
 	if (init_term(&s_termios, &s_termios_backup) == 0)
 	{
 		signal(SIGINT, quit);
-		signal(SIGTSTP, quit);
+		signal(SIGTSTP, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		sh = (t_shell) {
 			.input = NULL, .dir = "",
 			.stop = 0, .cmds = NULL,
