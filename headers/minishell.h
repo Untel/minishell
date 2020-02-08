@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/08 19:25:53 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/08 19:39:04 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,5 @@ void	free_command(t_list *lst);
 
 int init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(int offset);
-
+void	sigint_quit (int sig);
 #endif

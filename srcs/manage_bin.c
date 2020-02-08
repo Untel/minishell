@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/08 19:32:09 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/08 19:45:38 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,13 @@ int		ft_inset(char *str, char c)
 	return (-1);
 }
 
+void
+	sigint_void(int sig)
+{
+	write(1, "\r", 1);
+	return;
+}
+
 int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 {
 	pid_t	child;
@@ -88,6 +95,7 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 		bin_path = ft_strmjoin(2, tmp, "/");
 	else if (nb == 1)
 		bin_path = ft_strdup(tmp[0]);
+	signal(SIGINT, sigint_void);
 	if (child == 0)
 	{
 		signal(SIGINT, SIG_DFL);
@@ -96,6 +104,7 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 	}
 	tcsetattr(1, 0, &sh->old_term);
 	ret = try_exec(sh, bin_path, cmd, envp, child);
+	signal(SIGINT, sigint_quit);
 	tcsetattr(1, 0, &sh->term);
 	if (child == 0 && ret != 0)
 		exit(ret);

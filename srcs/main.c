@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/08 19:30:35 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/08 19:43:36 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ void
 int		g_ctrl_c = 0;
 
 void
-	quit (int sig)
+	sigint_quit (int sig)
 {
 	// char	buf[BUFFER_SIZE];
 
 	format_directory(&sh);
 	// getcwd(buf, BUFFER_SIZE);
-	// write(1, " \n", 2);
-	// ft_printf(MSG_PROMPT, buf);
+	write(1, " \n", 2);
+	ft_printf(MSG_PROMPT, sh.printed_dir);
 	// prompt_line(&sh);
 	return ;
 }
@@ -59,7 +59,7 @@ int
 
 	(void)ac;
 	(void)av;
-	signal(SIGINT, quit);
+	signal(SIGINT, sigint_quit);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	sh = (t_shell) {
