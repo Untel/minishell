@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/08 18:41:11 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/08 19:32:09 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-int		try_exec(char *path, char **argv, char **envp, pid_t child)
+int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 {
 	int		status;
 	int		ret;
@@ -29,7 +29,8 @@ int		try_exec(char *path, char **argv, char **envp, pid_t child)
 	}
 	else
 	{
-		ret = execve(path, argv, envp);
+		errno = 0;
+		ret = execve(path, cmd->argv, envp);
 		if (errno != 0)
 			ft_printf("AShellM: %s: %s\n", path, strerror(errno));
 		return (ret);
@@ -71,7 +72,7 @@ int		ft_inset(char *str, char c)
 	return (-1);
 }
 
-int		fork_exec(t_list *lst_env, t_cmd *cmd, char *tmp[2], int nb)
+int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 {
 	pid_t	child;
 	char	**envp;
@@ -80,7 +81,7 @@ int		fork_exec(t_list *lst_env, t_cmd *cmd, char *tmp[2], int nb)
 	int		ret;
 
 	child = -1;
-	envp = convert_env_list(lst_env);
+	envp = convert_env_list(sh->env);
 	ret = 0;
 	child = fork();
 	if (nb == 2)
@@ -93,7 +94,9 @@ int		fork_exec(t_list *lst_env, t_cmd *cmd, char *tmp[2], int nb)
 		signal(SIGTSTP, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 	}
-	ret = try_exec(bin_path, cmd->argv, envp, child);
+	tcsetattr(1, 0, &sh->old_term);
+	ret = try_exec(sh, bin_path, cmd, envp, child);
+	tcsetattr(1, 0, &sh->term);
 	if (child == 0 && ret != 0)
 		exit(ret);
 	free(bin_path);
@@ -114,7 +117,7 @@ int		exec_bin(t_shell *sh, t_cmd *cmd)
 	{
 		if (ret == 1)
 			tmp[0] = cmd->argv[0];
-		ret = fork_exec(sh->env, cmd, tmp, 1);
+		ret = fork_exec(sh, cmd, tmp, 1);
 	}
 	else if (paths)
 	{
@@ -132,7 +135,7 @@ int		exec_bin(t_shell *sh, t_cmd *cmd)
 			free_env_array(paths);
 			return (0);
 		}
-		ret = fork_exec(sh->env, cmd, tmp, 2);
+		ret = fork_exec(sh, cmd, tmp, 2);
 	}
 	if (paths)
 		free_env_array(paths);

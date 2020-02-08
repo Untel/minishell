@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/07 19:44:11 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/08 19:25:53 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ typedef enum	e_operator
 	AND,
 	PIPE,
 	JOB,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_IN_END,
+	REDIR_OUT_END,
 }				t_operator;
 
 typedef struct	s_cmd
@@ -60,19 +64,23 @@ typedef struct	s_cmd
 	int			argc;
 	char		**argv;
 	t_operator	op;
+	int			pipe[2];
 	struct s_cmd	*left;
 	struct s_cmd	*right;
 }				t_cmd;
 
 typedef struct	s_shell
 {
-	char		*input;				//malloced
-	int			stop;
-	t_list		*cmds;
-	char		dir[BUFFER_SIZE];
-	char		printed_dir[BUFFER_SIZE];
-	int			last_ret;
-	t_list		*env;
+	char			*input;				//malloced
+	int				stop;
+	t_list			*cmds;
+	char			dir[BUFFER_SIZE];
+	char			printed_dir[BUFFER_SIZE];
+	int				last_ret;
+	int				fd_pipe[2];
+	t_list			*env;
+	struct termios	old_term;
+	struct termios	term;
 }				t_shell;
 
 typedef struct	s_key

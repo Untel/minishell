@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/08 18:46:11 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/08 19:30:35 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <term.h>
 #include <ncurses.h>
 
+t_shell			sh;
 __attribute__((destructor)) void lul(void)
 {
 	system("leaks minishell");
@@ -23,13 +24,13 @@ void
 	clear_last_prompt(t_shell *sh)
 {
 	ft_lstclear(&sh->cmds, free_command);
-	ft_memdel(&sh->input);
+	ft_memdel((void **)&sh->input);
 }
 
 void
 	err_shutdown(t_shell *sh, char *str)
 {
-	ft_printf(MSG_ERROR, str);
+	ft_fprintf(2, MSG_ERROR, str);
 	clear_last_prompt(sh);
 	exit(1);
 }
@@ -39,11 +40,13 @@ int		g_ctrl_c = 0;
 void
 	quit (int sig)
 {
-	char	buf[BUFFER_SIZE];
+	// char	buf[BUFFER_SIZE];
 
-	getcwd(buf, BUFFER_SIZE);
-	write(1, " \n", 2);
-	ft_printf(MSG_PROMPT, buf);
+	format_directory(&sh);
+	// getcwd(buf, BUFFER_SIZE);
+	// write(1, " \n", 2);
+	// ft_printf(MSG_PROMPT, buf);
+	// prompt_line(&sh);
 	return ;
 }
 
@@ -52,7 +55,6 @@ int
 {
 	struct termios	s_termios;
 	struct termios	s_termios_backup;
-	t_shell			sh;
 	char			*tmp;
 
 	(void)ac;
@@ -68,10 +70,11 @@ int
 	};
 	tmp = ft_itoa(ft_atoi((char *)get_value(sh.env, "SHLVL", "0")) + 1);
 	set_value(&sh.env, "SHLVL", tmp);
-	free(tmp);
-	tmp = NULL;
+	ft_memdel((void **)&tmp);
 	if (init_term(&s_termios, &s_termios_backup) == 0)
 	{
+		sh.old_term = s_termios_backup;
+		sh.term = s_termios;
 		format_directory(&sh);
 		prompt_line(&sh);
 		free_env_list(&sh.env);

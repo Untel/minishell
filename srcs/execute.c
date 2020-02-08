@@ -6,11 +6,12 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/07 20:51:56 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/08 19:24:37 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <fcntl.h>
 #define BUILTIN_EXIT "exit"
 #define BUILTIN_EXPORT "export"
 #define BUILTIN_UNSET "unset"
@@ -49,7 +50,7 @@ int
 	else if (test_dir("./", cmd->argv[0]) && cmd->argc == 1)
 		sh->last_ret = change_directory(sh, cmd);
 	else
-		ft_printf(MSG_404_CMD, cmd->argv[0]) && (sh->last_ret = 127);
+		ft_fprintf(2, MSG_404_CMD, cmd->argv[0]) && (sh->last_ret = 127);
 	return (1);
 }
 
@@ -79,12 +80,12 @@ int
 {
 	t_cmd	*cmd;
 	t_list	*lst;
+	int		prev_fd;
 
 	lst = sh->cmds;
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-//		print_command(sh, cmd);
 		if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
 			exec_line(sh, cmd);
