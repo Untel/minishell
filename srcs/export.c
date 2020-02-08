@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:38:03 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 20:18:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/08 16:20:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int
 			return (0);
 		*pos++ = 0;
 		if (!set_value(&sh->env, cmd->argv[1], pos))
-			ft_printf(MSG_ERROR, "export: not an identifier: 8ab");
+			ft_fprintf(stderr, MSG_ERROR, "export: not an identifier: 8ab");
 	}
 	else
 		return (ft_env(sh->env, 1));
@@ -38,7 +38,7 @@ int
 
 	if (cmd->argc <= 1)
 	{
-		ft_printf(MSG_ERROR, "unset: not enough arguments");
+		ft_fprintf(stderr, MSG_ERROR, "unset: not enough arguments");
 		return (0);
 	}
 	i = 0;

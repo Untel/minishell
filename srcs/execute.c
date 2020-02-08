@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/07 21:22:37 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/08 18:48:23 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int
 	else if (test_dir("./", cmd->argv[0]) && cmd->argc == 1)
 		sh->last_ret = change_directory(sh, cmd);
 	else
-		ft_printf(MSG_404_CMD, cmd->argv[0]) && (sh->last_ret = 127);
+		ft_fprintf(stderr, MSG_404_CMD, cmd->argv[0]) && (sh->last_ret = 127);
 	return (1);
 }
 
@@ -80,12 +80,12 @@ int
 {
 	t_cmd	*cmd;
 	t_list	*lst;
+	int		prev_fd;
 
 	lst = sh->cmds;
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-//		print_command(sh, cmd);
 		if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
 			exec_line(sh, cmd);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/07 22:21:29 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/08 14:38:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ t_cmd
 	if (!(el = ft_lstnew(cmd, sizeof(t_cmd *))))
 	{
 		ft_memdel((void **)&cmd);
-		return (NULL);
-	}
-	if (pipe(cmd->pipe) != 0)
-	{
-		ft_memdel((void **)&cmd);
-		ft_memdel((void **)&el);
 		return (NULL);
 	}
 	if ((prev = ft_lstlast(sh->cmds)))

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/07 21:24:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/08 18:45:43 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 		return (-1);
 	if (child > 0)
 	{
-		// close(sh->fd_pipe[1]);
 		pid = waitpid(child, &status, 0);
 		return (status);
 	}
@@ -50,10 +49,10 @@ int		test_dir(char *path, char *cmd)
 	while ((file = readdir(rep)) != NULL)
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
-			if (file->d_type != 8)
-				return (0);
 			if (closedir(rep) == -1)
 				return (-1);
+			if (file->d_type != 8)
+				return (0);
 			return (1);
 		}
 	if (closedir(rep) == -1)
