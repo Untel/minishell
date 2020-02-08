@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/07 21:18:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/08 18:46:11 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,34 @@ int
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, quit);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	sh = (t_shell) {
+		.input = NULL, .dir = "",
+		.stop = 0, .cmds = NULL,
+		.printed_dir = "", .last_ret = 0,
+		.env = create_env_list(envp)
+	};
+	tmp = ft_itoa(ft_atoi((char *)get_value(sh.env, "SHLVL", "0")) + 1);
+	set_value(&sh.env, "SHLVL", tmp);
+	free(tmp);
+	tmp = NULL;
 	if (init_term(&s_termios, &s_termios_backup) == 0)
 	{
-		signal(SIGINT, quit);
-		signal(SIGTSTP, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		sh = (t_shell) {
-			.input = NULL, .dir = "",
-			.stop = 0, .cmds = NULL,
-			.printed_dir = "", .last_ret = 0,
-			.env = create_env_list(envp)
-		};
-		tmp = ft_itoa(ft_atoi((char *)get_value(sh.env, "SHLVL", "0")) + 1);
-		set_value(&sh.env, "SHLVL", tmp);
-		free(tmp);
-		tmp = NULL;
 		format_directory(&sh);
 		prompt_line(&sh);
 		free_env_list(&sh.env);
 		ft_lstclear(&sh.cmds, free_command);
 		if (tcsetattr(0, 0, &s_termios_backup) == -1)
 			return (-1);
+	}
+	else
+	{
+		get_next_line(0, &sh.input);
+		exec_lines(&sh);
+		clear_last_prompt(&sh);
+		free_env_list(&sh.env);
 	}
 	return (0);
 }
