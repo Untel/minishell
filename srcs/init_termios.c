@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 16:44:22 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 02:24:21 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 06:55:35 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ char	*read_input(int offset, t_shell *sh)
 		else if (buff[0] == 10)
 			return (convert_to_str(lst));
 		else if (buff[0] == 9)
-			match = print_match(sh, "*");
+			match = print_match(sh, lst, pos);
 		else if (lst->size < g_termx)
 			add_after(lst, buff[0], pos);
 		print_line(lst, pos * ((buff[0] != 9) ? -1 : 1), offset, &match);

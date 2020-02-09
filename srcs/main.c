@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 01:36:13 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 06:08:23 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 t_shell	sh;
 int		g_termx = 0;
 int		g_termy = 0;
+
 __attribute__((destructor)) void lul(void)
 {
 	system("leaks minishell");
@@ -73,7 +74,6 @@ int
 	(void)ac;
 	(void)av;
 	signal(SIGINT, sigint_quit);
-	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	sh = (t_shell) {
 		.input = NULL, .dir = "",

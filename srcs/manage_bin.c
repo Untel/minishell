@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 02:56:43 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 08:38:09 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int		test_dir(char *path, char *cmd)
 {
 	struct dirent	*file;
 	DIR				*rep;
+	int				ret;
 
 	file = NULL;
 	rep = NULL;
@@ -50,11 +51,13 @@ int		test_dir(char *path, char *cmd)
 	while ((file = readdir(rep)) != NULL)
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
+			if (file->d_type != 8)
+				ret = 0;
+			else
+				ret = 1;
 			if (closedir(rep) == -1)
 				return (-1);
-			if (file->d_type != 8)
-				return (0);
-			return (1);
+			return (ret);
 		}
 	if (closedir(rep) == -1)
 		return (-1);
