@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 06:08:23 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 09:51:20 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include <term.h>
 #include <ncurses.h>
 
-t_shell	sh;
+t_shell	g_sh;
 int		g_termx = 0;
 int		g_termy = 0;
 
-__attribute__((destructor)) void lul(void)
+/*__attribute__((destructor)) void lul(void)
 {
 	system("leaks minishell");
-}
+}*/
 
 void
 	clear_last_prompt(t_shell *sh)
@@ -39,28 +39,26 @@ void
 }
 
 void
-	sigint_quit (int sig)
+	sigint_quit(int sig)
 {
-	// char	buf[BUFFER_SIZE];
-
-	format_directory(&sh);
-	// getcwd(buf, BUFFER_SIZE);
+	(void)sig;
+	format_directory(&g_sh);
 	write(1, " \n", 2);
-	ft_printf(MSG_PROMPT, sh.printed_dir);
-	// prompt_line(&sh);
+	ft_printf(MSG_PROMPT, g_sh.printed_dir);
 	return ;
 }
 
-void handle_winch(int sig)
+void
+	handle_winch(int sig)
 {
+	(void)sig;
+	format_directory(&g_sh);
 	signal(SIGWINCH, SIG_IGN);
 	initscr();
 	refresh();
-	g_termx = COLS - (ft_strlen(sh.printed_dir) + 7);
+	g_termx = COLS - (ft_strlen(g_sh.printed_dir) + 7);
 	g_termy = LINES;
 	endwin();
-//	if (sig)
-//		ft_printf(MSG_PROMPT, sh.printed_dir);
 	signal(SIGWINCH, handle_winch);
 }
 
@@ -75,33 +73,33 @@ int
 	(void)av;
 	signal(SIGINT, sigint_quit);
 	signal(SIGQUIT, SIG_IGN);
-	sh = (t_shell) {
+	g_sh = (t_shell) {
 		.input = NULL, .dir = "",
 		.stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0,
 		.env = create_env_list(envp)
 	};
-	tmp = ft_itoa(ft_atoi((char *)get_value(sh.env, "SHLVL", "0")) + 1);
-	set_value(&sh.env, "SHLVL", tmp);
+	tmp = ft_itoa(ft_atoi((char *)get_value(g_sh.env, "SHLVL", "0")) + 1);
+	set_value(&g_sh.env, "SHLVL", tmp);
 	ft_memdel((void **)&tmp);
 	if (init_term(&s_termios, &s_termios_backup) == 0)
 	{
 		handle_winch(0);
-		sh.old_term = s_termios_backup;
-		sh.term = s_termios;
-		format_directory(&sh);
-		prompt_line(&sh);
-		free_env_list(&sh.env);
-		ft_lstclear(&sh.cmds, free_command);
+		g_sh.old_term = s_termios_backup;
+		g_sh.term = s_termios;
+		format_directory(&g_sh);
+		prompt_line(&g_sh);
+		free_env_list(&g_sh.env);
+		ft_lstclear(&g_sh.cmds, free_command);
 		if (tcsetattr(0, 0, &s_termios_backup) == -1)
 			return (-1);
 	}
 	else
 	{
-		get_next_line(0, &sh.input);
-		exec_lines(&sh);
-		clear_last_prompt(&sh);
-		free_env_list(&sh.env);
+		get_next_line(0, &g_sh.input);
+		exec_lines(&g_sh);
+		clear_last_prompt(&g_sh);
+		free_env_list(&g_sh.env);
 	}
 	return (0);
 }
