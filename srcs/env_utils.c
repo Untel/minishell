@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/05 19:03:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/09 09:04:24 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int
 	return (1);
 }
 
-void	*set_value(t_list **lst_env, char *key, char *value)
+void
+	*set_value(t_list **lst_env, char *key, char *value)
 {
 	t_key	*var;
 	int		found;
@@ -56,14 +57,16 @@ void	*set_value(t_list **lst_env, char *key, char *value)
 	return (*lst_env);
 }
 
-void	*get_value(t_list *lst_env, char *key, char *def)
+void
+	*get_value(t_list *lst_env, char *key, char *def)
 {
 	int		found;
 
 	found = 0;
 	while (lst_env)
 	{
-		if (!ft_strncmp(((t_key *)(*lst_env).content)->key, key, ft_strlen(key) + 1) && (found = 1))
+		if (!ft_strncmp(((t_key *)(*lst_env).content)->key, key,
+					ft_strlen(key) + 1) && (found = 1))
 			break ;
 		lst_env = lst_env->next;
 	}
@@ -73,12 +76,14 @@ void	*get_value(t_list *lst_env, char *key, char *def)
 		return (def);
 }
 
-int		ft_cmp_key(t_key *env, char *key)
+int
+	ft_cmp_key(t_key *env, char *key)
 {
 	return (ft_strncmp(env->key, key, ft_strlen(key) + 1));
 }
 
-void	*unset_key(t_list **lst_env, char *key)
+void
+	*unset_key(t_list **lst_env, char *key)
 {
 	ft_lstremove_if(lst_env, key, ft_cmp_key, free_env_unset);
 }
