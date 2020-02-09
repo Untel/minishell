@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/08 19:45:38 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/09 02:56:43 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 	if (child == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		signal(SIGTSTP, SIG_DFL);
+		signal(SIGTSTP, SIG_IGN);
 		signal(SIGQUIT, SIG_DFL);
 	}
 	tcsetattr(1, 0, &sh->old_term);

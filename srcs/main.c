@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/08 19:43:36 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/09 01:36:13 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include <term.h>
 #include <ncurses.h>
 
-t_shell			sh;
+t_shell	sh;
+int		g_termx = 0;
+int		g_termy = 0;
 __attribute__((destructor)) void lul(void)
 {
 	system("leaks minishell");
@@ -35,8 +37,6 @@ void
 	exit(1);
 }
 
-int		g_ctrl_c = 0;
-
 void
 	sigint_quit (int sig)
 {
@@ -48,6 +48,19 @@ void
 	ft_printf(MSG_PROMPT, sh.printed_dir);
 	// prompt_line(&sh);
 	return ;
+}
+
+void handle_winch(int sig)
+{
+	signal(SIGWINCH, SIG_IGN);
+	initscr();
+	refresh();
+	g_termx = COLS - (ft_strlen(sh.printed_dir) + 7);
+	g_termy = LINES;
+	endwin();
+//	if (sig)
+//		ft_printf(MSG_PROMPT, sh.printed_dir);
+	signal(SIGWINCH, handle_winch);
 }
 
 int
@@ -73,6 +86,7 @@ int
 	ft_memdel((void **)&tmp);
 	if (init_term(&s_termios, &s_termios_backup) == 0)
 	{
+		handle_winch(0);
 		sh.old_term = s_termios_backup;
 		sh.term = s_termios;
 		format_directory(&sh);

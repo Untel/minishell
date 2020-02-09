@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/08 19:39:04 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/08 22:50:35 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,10 @@ char	*add_argument(t_cmd *cmd, char *str);
 char	*add_arg_to_last_cmd(t_shell *sh, char *str);
 void	free_command(t_list *lst);
 
-int init_term(struct termios *s_termios, struct termios *s_termios_backup);
-char	*read_input(int offset);
+int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
+char	*read_input(int offset, t_shell *sh);
 void	sigint_quit (int sig);
+int		match(char *s1, char *s2);
+int		print_match(t_shell *sh, char *str);
+
 #endif
