@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 09:33:26 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 15:03:52 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char
 		}
 		else
 		{
-			while (ptr[key_len] && !ft_strchr(" /$", ptr[key_len]))
+			while (ptr[key_len + 1] && !ft_strchr(" /$", ptr[key_len]))
 				key_len++;
 			key = ft_strndup(ptr, key_len);
 			value = get_value(sh->env, key, NULL);
