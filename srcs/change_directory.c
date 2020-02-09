@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/08 19:28:54 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 09:02:34 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,17 @@ int
 	format_directory(t_shell *sh)
 {
 	char *home;
+
 	getcwd(sh->dir, BUFFER_SIZE);
 	ft_strcpy(sh->printed_dir, sh->dir);
-//	home = get_value(sh->env, "HOME", NULL);
-//	if (home)
-//		ft_strreplace(sh->printed_dir, home + 1, "🏡 ");
-//	ft_strreplace(sh->printed_dir, ".Trash", "🗑 ");
-//	ft_strreplace(sh->printed_dir, "usr", "👤 ");
-//	ft_strreplace(sh->printed_dir, "bin", "🍆 ");
 }
 
 int
 	change_directory(t_shell *sh, t_cmd *cmd)
 {
-	int ret;
-	char *dir;
-	char *old;
+	int		ret;
+	char	*dir;
+	char	*old;
 
 	if (cmd->argc == 1)
 	{
