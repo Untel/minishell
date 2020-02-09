@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/08 19:24:37 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 09:05:31 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ int
 	return (ft_strncmp(
 		str,
 		cmd->argv[0],
-		ft_strlen(cmd->argv[0])
-	) == 0);
+		ft_strlen(cmd->argv[0])) == 0);
 }
 
 int
@@ -70,7 +69,8 @@ int
 		size = cmd->argc - 1;
 		if (size)
 			str = ft_strmjoin(cmd->argc - 1, &cmd->argv[1], ", ");
-		printf("Executing '%s' with %d args: '%s' | LR %d | OP %d\n", cmd->argv[0],
+		printf("Executing '%s' with %d args: '%s' | LR %d | OP %d\n",
+				cmd->argv[0],
 			size, str ? str : "", sh->last_ret, cmd->op);
 	}
 }
