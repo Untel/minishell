@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/08 22:53:15 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 09:33:26 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int
 
 	ft_lstclear(&sh->cmds, free_command);
 	offset = ft_printf("%s> ", ask);
-	//get_next_line(0, &buffer);
 	buffer = read_input(offset, sh);
 	write(1, "\n", 1);
 	tmps[0] = sh->input;
@@ -36,84 +35,6 @@ int
 	return (sanitize_input2(sh));
 }
 
-// int
-// 	handle_quote(t_shell *sh, t_reader *rd, int i)
-// {
-// 	char	*sub;
-// 	int		should_cpy;
-
-// 	should_cpy = 0;
-// 	if (sh->input[i] == '"' && !(rd->simple_q))
-// 	{
-// 		should_cpy = rd->double_q == 1;
-// 		rd->double_q = !(rd->double_q);
-// 	}
-// 	else if (sh->input[i] == '\'' && !(rd->double_q))
-// 	{
-// 		should_cpy = rd->simple_q == 1;
-// 		rd->simple_q = !(rd->simple_q);
-// 	}
-// 	if (should_cpy)
-// 	{
-// 		sub = ft_substr(&(sh->input[rd->idx + 1]), 0, i - rd->idx - 1);
-// 		add_arg_to_last_cmd(sh, sub);
-// 		return (SUC);
-// 	}
-// 	return (0);
-// }
-
-// int
-// 	sanitize_input(t_shell *sh)
-// {
-// 	t_reader	rd;
-// 	int			i;
-
-// 	rd = (t_reader) { .simple_q = 0, .double_q = 0, .idx = 0 };
-// 	i = -1;
-// 	new_command(sh);
-// 	while (sh->input[++i])
-// 	{
-// 		if (sh->input[i] == '"' || sh->input[i] == '\'')
-// 		{
-// 			if (handle_quote(sh, &rd, i))
-// 			{
-// 				while (sh->input[i + 1] == ' ')
-// 					i++;
-// 				rd.idx = i + 1;
-// 			}
-// 			continue;
-// 		}
-// 		else if (sh->input[i] == '\\' && !rd.simple_q)
-// 		{
-// 			i++;
-// 			continue;
-// 		}
-// 		else if (!rd.double_q && !rd.simple_q)
-// 		{
-// 			if(sh->input[i] == ' ')
-// 			{
-// 				add_arg_to_last_cmd(sh, ft_substr(&(sh->input[rd.idx]), 0, i - rd.idx));
-// 				while (sh->input[i + 1] == ' ')
-// 					i++;
-// 				rd.idx = i + 1;
-// 			}
-// 			else if (sh->input[i] == ';')
-// 			{
-// 				add_arg_to_last_cmd(sh, ft_substr(&(sh->input[rd.idx]), 0, i - rd.idx));
-// 				new_command(sh);
-// 				while (sh->input[i + 1] == ' ')
-// 					i++;
-// 				rd.idx = i + 1;
-// 			}
-// 		}
-// 	}
-// 	if (rd.simple_q || rd.double_q)
-// 		return ask_closing_quote(sh);
-// 	if (rd.idx != i)
-// 		add_arg_to_last_cmd(sh, ft_substr(&(sh->input[rd.idx]), 0, i - rd.idx));
-// 	return (SUC);
-// }
-
 char
 	*replace_vars(t_shell *sh, char *str)
 {
@@ -123,7 +44,7 @@ char
 	char	*key;
 	char	*value;
 
-	if((ptr = ft_strchr(str, '$')))
+	if ((ptr = ft_strchr(str, '$')))
 	{
 		tmp = ft_strndup(str, ptr - str);
 		ptr++;
@@ -176,10 +97,10 @@ int
 int
 	handle_double_quote(t_shell *sh, t_read *rd, int *i)
 {
-	char *tmp;
-	char *sub;
-	char *vars;
-	int	len;
+	char	*tmp;
+	char	*sub;
+	char	*vars;
+	int		len;
 
 	if (!(tmp = ft_strchr(sh->input + *i + 1, '"')))
 		return (0);
@@ -203,9 +124,9 @@ int
 int
 	handle_simple_quote(t_shell *sh, t_read *rd, int *i)
 {
-	char *tmp;
-	char *sub;
-	int	len;
+	char	*tmp;
+	char	*sub;
+	int		len;
 
 	if (!(tmp = ft_strchr(sh->input + *i + 1, '\'')))
 		return (0);
@@ -257,6 +178,7 @@ t_operator
 	else
 		return (NONE);
 }
+
 int
 	handle_separator(t_shell *sh, t_read *rd, int *i)
 {
@@ -266,7 +188,7 @@ int
 	if (*i != rd->index)
 		copy_from_idx(sh, rd, *i);
 	if (rd->buffer)
-		add_arg_to_last_cmd(sh, rd->buffer);	
+		add_arg_to_last_cmd(sh, rd->buffer);
 	if (op == AND || op == OR
 		|| op == REDIR_IN_END || op == REDIR_OUT_END)
 		*i = *i + 1;
