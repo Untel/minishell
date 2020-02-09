@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 16:55:39 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 18:17:37 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,18 @@ void	print_line(t_data *lst, int pos, int offset, int *match)
 	int			del;
 
 	del = 127;
-	i = -1;
 	if (pos < 0)
-		ft_printf("\n%*s\e[A", *match - 1, " ");
+	{
+		i = -1;
+		while (++i <= (*match / g_termx))
+		{
+			write(1, "\n", 1);
+			ft_printf("%*s", *match, " ");
+		}
+		i = -1;
+		while (++i <= (*match / g_termx))
+			write(1, "\e[A", 3);
+	}
 	pos *= (pos < 0) ? -1 : 1;
 	write(1, "\r", 1);
 	while (--offset >= 0)

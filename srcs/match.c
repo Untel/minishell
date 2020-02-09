@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 17:46:22 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 18:20:02 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		match(char *s1, char *s2)
 		return (match(s1, s2 + 1));
 	if (*s1 == *s2 && *s1 != '\0' && *s2 != '\0')
 		return (match(s1 + 1, s2 + 1));
-	if (*s1 == *s2 && *s1 == '\0' && *s2 == '\0')
+	if (*s1 == *s2 && *s1 == '\0')
 		return (1);
 	return (0);
 }
@@ -133,8 +133,7 @@ int		print_highlight(t_shell *sh, t_data *lst, int pos, char *str, int nb_elem, 
 		return (-1);
 	while ((file = readdir(rep)) != NULL)
 	{
-		if (match(file->d_name, str) && ft_strncmp(file->d_name, "..", 3) &&
-				ft_strncmp(file->d_name, ".", 2))
+		if (match(file->d_name, str))
 		{
 			if (j % nb_elem == i % nb_elem)
 			{
@@ -158,6 +157,7 @@ int		print_match(t_shell *sh, t_data *lst, int pos, int offset)
 	int				size;
 	char			*str;
 	int				i;
+	int				j;
 	int				nb_elem;
 	int				ret;
 
@@ -177,7 +177,9 @@ int		print_match(t_shell *sh, t_data *lst, int pos, int offset)
 			size = print_highlight(sh, lst, pos, str, nb_elem *
 					((ret == 9) ? 1 : -1), i - (ret == 10));
 			i += (ret == 9);
-			ft_printf("\e[A");
+			j = -1;
+			while (++j <= (size / g_termx))
+				ft_printf("\e[A");
 			print_line(lst, pos, offset, &size);
 			if (ret == 10)
 				break ;
@@ -185,7 +187,7 @@ int		print_match(t_shell *sh, t_data *lst, int pos, int offset)
 		else
 			break ;
 	}
-	print_line(lst, -pos, offset, &g_termx);
+	print_line(lst, -pos, offset, &size);
 	free(str);
 	return (size);
 }
