@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 16:53:51 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 17:46:22 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ int		print_highlight(t_shell *sh, t_data *lst, int pos, char *str, int nb_elem, 
 	size = 0;
 	add = nb_elem < 0 ? 1 : 0;
 	nb_elem *= nb_elem < 0 ? -1 : 1;
-	nb_elem -= 2;
 	if ((rep = opendir(sh->dir)) == NULL)
 		return (-1);
 	while ((file = readdir(rep)) != NULL)
