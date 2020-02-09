@@ -1,0 +1,24 @@
+salut
+[?1049h[1;84r(B[m[4l[?7h[H[2J[84;1H[?1049l[?1l>🔥  [1;32m/Users/riblanc/Documents/42-Cursus/minishell[0m »  
+🔥  [1;32m/Users/riblanc/Documents/42-Cursus/minishell[0m » 
+🖐  [1;31mGood bye![0m
+Process:         minishell [471]
+Path:            /Volumes/VOLUME/*/minishell
+Load Address:    0x103431000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [99639]
+
+Date/Time:       2020-02-09 17:08:31.513 +0100
+Launch Time:     2020-02-09 17:08:27.574 +0100
+OS Version:      Mac OS X 10.14.6 (18G103)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 10.3 (10G8)
+----
+
+leaks Report Version: 4.0
+Process 471: 442 nodes malloced for 2309 KB
+Process 471: 0 leaks for 0 total leaked bytes.
+

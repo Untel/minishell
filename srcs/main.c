@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 15:05:32 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 17:33:14 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void
 	signal(SIGWINCH, SIG_IGN);
 	initscr();
 	refresh();
-	g_termx = COLS - (ft_strlen(g_sh.printed_dir) + 7);
+	g_termx = COLS;
 	g_termy = LINES;
 	endwin();
 	signal(SIGWINCH, handle_winch);
@@ -95,8 +95,10 @@ int
 			return (-1);
 	}
 	else
+	if (1)
 	{
 		get_next_line(0, &g_sh.input);
+		sanitize_input2(&g_sh);
 		exec_lines(&g_sh);
 		clear_last_prompt(&g_sh);
 		free_env_list(&g_sh.env);

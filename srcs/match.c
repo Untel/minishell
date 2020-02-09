@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 15:47:51 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 16:53:51 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,9 @@ void	add_str_to_lst(int pos, char *str, char *filename, t_data *lst)
 	offset = 0;
 	while (str[offset] && offset < size)
 		++offset;
-	offset -= size == -1;
-	while (++offset < ft_strlen(filename))// && tmp && tmp->prev)
-	{
+	offset -= (size < 0);
+	while (++offset < ft_strlen(filename))
 		add_after(lst, filename[offset], pos);
-	}
 }
 
 int		print_highlight(t_shell *sh, t_data *lst, int pos, char *str, int nb_elem, int i)
@@ -131,11 +129,13 @@ int		print_highlight(t_shell *sh, t_data *lst, int pos, char *str, int nb_elem, 
 	size = 0;
 	add = nb_elem < 0 ? 1 : 0;
 	nb_elem *= nb_elem < 0 ? -1 : 1;
+	nb_elem -= 2;
 	if ((rep = opendir(sh->dir)) == NULL)
 		return (-1);
 	while ((file = readdir(rep)) != NULL)
 	{
-		if (match(file->d_name, str))
+		if (match(file->d_name, str) && ft_strncmp(file->d_name, "..", 3) &&
+				ft_strncmp(file->d_name, ".", 2))
 		{
 			if (j % nb_elem == i % nb_elem)
 			{
@@ -151,7 +151,7 @@ int		print_highlight(t_shell *sh, t_data *lst, int pos, char *str, int nb_elem, 
 	}
 	if (closedir(rep) == -1)
 		return (-1);
-	return (size);
+	return (size + 10);
 }
 
 int		print_match(t_shell *sh, t_data *lst, int pos, int offset)
@@ -186,6 +186,7 @@ int		print_match(t_shell *sh, t_data *lst, int pos, int offset)
 		else
 			break ;
 	}
+	print_line(lst, -pos, offset, &g_termx);
 	free(str);
 	return (size);
 }
