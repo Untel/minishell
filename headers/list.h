@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 11:49:54 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/07 19:08:32 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 09:24:17 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int				delone(t_data *lst, int pos);
 */
 
 void			affiche_inv(t_data *lst);
+char			*convert_to_str(t_data *lst);
 void			free_all(t_data *lst);
 #endif
 

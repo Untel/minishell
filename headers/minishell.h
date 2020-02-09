@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 06:55:54 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 09:28:56 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,12 @@ t_cmd	*new_command(t_shell *sh, t_operator op);
 char	*add_argument(t_cmd *cmd, char *str);
 char	*add_arg_to_last_cmd(t_shell *sh, char *str);
 void	free_command(t_list *lst);
+
+/* input handling */
+void	handle_arrows(char buff[3], int *pos, t_data *lst);
+void	handle_backspace(char buff[3], int *pos, t_data *lst);
+int		handle_ctrl_d(char buff[3], int *pos, t_data *lst);
+void	handle_ctrl_u(t_data *lst, int pos);
 
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(int offset, t_shell *sh);
