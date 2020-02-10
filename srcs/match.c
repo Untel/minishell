@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 19:53:27 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 22:03:38 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	add_str_to_lst(int pos, char *str, char *filename, t_data *lst)
 	offset = 0;
 	while (str[offset] && offset < size)
 		++offset;
-	offset -= (size <= 0);
+	offset -= (size < 0 || (size == 0 && (tmp->c == 32 || tmp->c == 0)));
 	while (++offset < ft_strlen(filename))
 		add_after(lst, filename[offset], pos);
 }
@@ -152,7 +152,7 @@ int		print_highlight(t_shell *sh, t_data *lst, int pos, char *str, int nb_elem, 
 	return (size + 10);
 }
 
-int		print_match(t_shell *sh, t_data *lst, int pos, int offset)
+int		print_match(t_shell *sh)
 {
 	int				size;
 	char			*str;
@@ -162,7 +162,7 @@ int		print_match(t_shell *sh, t_data *lst, int pos, int offset)
 	int				ret;
 
 	size = 0;
-	str = get_current_word(lst, pos);
+	str = get_current_word(sh->term.input, sh->term.pos_str);
 	if ((nb_elem = get_nmatch(sh, str)) == -1)
 	{
 		free(str);
@@ -174,20 +174,21 @@ int		print_match(t_shell *sh, t_data *lst, int pos, int offset)
 		if (ret == 9 || ret == 10)
 		{
 			ft_printf("\n");
-			size = print_highlight(sh, lst, pos, str, nb_elem *
-					((ret == 9) ? 1 : -1), i - (ret == 10));
+			size = print_highlight(sh, sh->term.input, sh->term.pos_str, str,
+					nb_elem * ((ret == 9) ? 1 : -1), i - (ret == 10));
 			i += (ret == 9);
 			j = -1;
 			while (++j <= (size / g_termx))
 				ft_printf("\e[A");
-			print_line(lst, pos, offset, &size);
+			print_line(sh->term.input, sh->term.pos_str,
+					sh->term.size_prt, &size);
 			if (ret == 10)
 				break ;
 		}
 		else
 			break ;
 	}
-	print_line(lst, -pos, offset, &size);
+	print_line(sh->term.input, -sh->term.pos_str, sh->term.size_prt, &size);
 	free(str);
 	return (size);
 }

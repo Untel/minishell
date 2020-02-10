@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 19:17:58 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 21:55:08 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,6 @@ int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(int offset, t_shell *sh);
 void	sigint_quit (int sig);
 int		match(char *s1, char *s2);
-int		print_match(t_shell *sh, t_data *lst, int pos, int offset);
+int		print_match(t_shell *sh);
 
 #endif

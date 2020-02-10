@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 19:46:27 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 21:56:21 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*read_input(int offset, t_shell *sh)
 		else if (buff[0] == 10)
 			return (convert_to_str(sh->term.input));
 		else if (buff[0] == 9)
-			match = print_match(sh, sh->term.input, sh->term.pos_str, offset);
+			match = print_match(sh);
 		else if (sh->term.input->size < g_termx  - (ft_strlen(sh->printed_dir)
 					+ 7))
 			add_after(sh->term.input, buff[0], sh->term.pos_str);
