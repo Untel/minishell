@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 18:20:02 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 18:05:36 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	add_str_to_lst(int pos, char *str, char *filename, t_data *lst)
 	offset = 0;
 	while (str[offset] && offset < size)
 		++offset;
-	offset -= (size < 0);
+	offset -= (size <= 0);
 	while (++offset < ft_strlen(filename))
 		add_after(lst, filename[offset], pos);
 }
