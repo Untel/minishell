@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 21:56:21 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 22:57:34 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,34 @@
 extern int	g_termx;
 extern int	g_termy;
 
-void	print_line(t_data *lst, int pos, int offset, int *match)
+void	print_line(t_shell *sh, int *match)
 {
 	int			i;
 	int			del;
+	int			offset;
 
 	del = 127;
-	if (pos < 0)
+	offset = sh->term.size_prt;
+	if (sh->term.pos_str < 0)
 	{
 		i = -1;
 		while (++i <= (*match / g_termx))
 		{
 			write(1, "\n", 1);
-			ft_printf("%*s", *match, " ");
+			ft_printf("%*s", g_termx, " ");
 		}
 		i = -1;
 		while (++i <= (*match / g_termx))
 			write(1, "\e[A", 3);
 	}
-	pos *= (pos < 0) ? -1 : 1;
+	sh->term.pos_str *= (sh->term.pos_str < 0) ? -1 : 1;
 	write(1, "\r", 1);
 	while (--offset >= 0)
 		write(1, "\e[C", 3);
-	affiche_inv(lst);
+	affiche_inv(sh->term.input);
 	write(1, &del , 1);
 	i = -1;
-	while (++i < pos)
+	while (++i < sh->term.pos_str)
 		write(1, "\e[D", 3);
 }
 
@@ -73,10 +75,9 @@ char	*read_input(int offset, t_shell *sh)
 			return (convert_to_str(sh->term.input));
 		else if (buff[0] == 9)
 			match = print_match(sh);
-		else if (sh->term.input->size < g_termx  - (ft_strlen(sh->printed_dir)
-					+ 7))
+		else if (sh->term.input->size < g_termx  - sh->term.size_prt)
 			add_after(sh->term.input, buff[0], sh->term.pos_str);
-		print_line(sh->term.input, sh->term.pos_str * ((buff[0] != 9) ? -1 : 1),
-				offset, &match);
+		sh->term.pos_str *= (buff[0] != 9) ? -1 : 1;
+		print_line(sh, &match);
 	}
 }
