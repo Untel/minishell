@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 19:20:33 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 			dup2(cmd->left->pipe[PIPE_OUT], STDIN);
 		ret = execve(path, cmd->argv, envp);
 		if (errno != 0)
-			ft_fprintf(2, "AShellM: %s: %s\n", path, strerror(errno));
+			ft_fprintf(STDERR, "AShellM: %s: %s\n", path, strerror(errno));
 		return (ret);
 	}
 	return (-1);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 19:37:32 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int
 	int ret;
 
 	fd = open(cmd->argv[0], O_WRONLY | O_CREAT |
-		(cmd->op == REDIR_OUT_END || cmd->op == REDIR_IN_END ? O_APPEND : 0)
+		(cmd->op == REDIR_OUT_END ? O_APPEND : 0)
 		, 0644);
 
 	while ((ret = read(0, &buff, BUFFER_SIZE)))
@@ -56,7 +56,7 @@ int
 	int ret;
 
 	fd = open(cmd->argv[0], O_WRONLY | O_CREAT |
-		(cmd->op == REDIR_OUT_END || cmd->op == REDIR_IN_END ? O_APPEND : 0)
+		(cmd->op == REDIR_IN_END ? O_APPEND : 0)
 		, 0644);
 
 	while ((ret = read(0, &buff, BUFFER_SIZE)))
@@ -92,7 +92,7 @@ int
 	else if (test_dir("./", cmd->argv[0]) && cmd->argc == 1)
 		sh->last_ret = change_directory(sh, cmd);
 	else
-		ft_fprintf(2, MSG_404_CMD, cmd->argv[0]) && (sh->last_ret = 127);
+		ft_fprintf(STDERR, MSG_404_CMD, cmd->argv[0]) && (sh->last_ret = 127);
 	return (1);
 }
 
@@ -141,14 +141,14 @@ int
 	t_list	*lst;
 
 	if (mount_pipes(sh) == ERR)
-		return (ft_fprintf(2, MSG_ERROR, "cannot mount pipes"));
+		return (ft_fprintf(STDERR, MSG_ERROR, "cannot mount pipes"));
 	lst = sh->cmds;
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
 		if (cmd->op == REDIR_OUT_END || cmd->op == REDIR_OUT)
 			builtin_subprocess(sh, cmd, redirect_out);
-		else if (cmd == REDIR_IN || cmd->op == REDIR_IN_END)
+		else if (cmd->op == REDIR_IN || cmd->op == REDIR_IN_END)
 		{
 			builtin_subprocess(sh, cmd, redirect_in);
 		}

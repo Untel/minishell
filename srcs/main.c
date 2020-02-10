@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 17:10:16 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void
 void
 	err_shutdown(t_shell *sh, char *str)
 {
-	ft_fprintf(2, MSG_ERROR, str);
+	ft_fprintf(STDERR, MSG_ERROR, str);
 	clear_last_prompt(sh);
 	exit(1);
 }
