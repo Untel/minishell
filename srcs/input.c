@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 15:03:52 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/09 19:02:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,8 @@ int
 	new_command(sh, op);
 	while (sh->input[*i] == ' ')
 		*i = *i + 1;
-	if (sh->input[*i + 1] == '&' || sh->input[*i + 1] == '|')
+	if (sh->input[*i + 1] == '&' || sh->input[*i + 1] == '|'
+		|| sh->input[*i + 1] == '<' || sh->input[*i + 1] == '<')
 		return (ft_fprintf(2, MSG_ERROR, "parse error") && 0);
 	rd->buffer = NULL;
 	rd->index = *i + 1;
@@ -233,7 +234,7 @@ int
 		}
 		else if (c == ' ')
 			ret = handle_space(sh, &rd, &i);
-		else if (c == ';' || c == '&' || c == '|')
+		else if (c == ';' || c == '&' || c == '|' || c == '<' || c == '>')
 			ret = handle_separator(sh, &rd, &i);
 		if (!ret)
 			return (ret);

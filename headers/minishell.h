@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 11:52:54 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 16:53:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@
 # define MSG_404_CMD	"🤔  \033[1;33m%s\033[0m: command not found\n"
 # define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m » "
 # define MSG_EXIT		"🖐  \033[1;31mGood bye!\033[0m\n"
+# define PIPE_OUT		0
+# define PIPE_IN		1
+# define STDIN			0
+# define STDOUT			1
+# define STDERR			2
 typedef struct	s_reader
 {
 	int			simple_q;
@@ -65,6 +70,7 @@ typedef struct	s_cmd
 	char		**argv;
 	t_operator	op;
 	int			pipe[2];
+	int			fd;
 	struct s_cmd	*left;
 	struct s_cmd	*right;
 }				t_cmd;
@@ -91,7 +97,7 @@ typedef struct	s_key
 
 t_list	*create_env_list(char **envp);
 int		exec_lines(t_shell *sh);
-int		ft_env(t_list *lst_env, int argc);
+int		ft_env(t_shell *sh, t_cmd *cmd);
 char	**convert_env_list(t_list *lst_env);
 void	*set_value(t_list **lst_env, char *key, char *value);
 void	free_env_array(char **envp);
@@ -114,7 +120,8 @@ int		sanitize_input(t_shell *sh);
 int		sanitize_input2(t_shell *sh);
 int		format_directory(t_shell *sh);
 // int		ask_closing_quote(t_shell *sh);
-
+int		builtin_subprocess(t_shell *sh, t_cmd *cmd,
+	int (*fn)(t_shell *sh, t_cmd *cmd));
 /* Command handling */
 t_cmd	*new_command(t_shell *sh, t_operator op);
 char	*add_argument(t_cmd *cmd, char *str);
