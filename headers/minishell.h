@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 19:07:36 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 19:17:58 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct	s_term
 	t_termios	old_term;
 	t_data		*input;
 	int			pos_str;
+	int			size_prt;
 }				t_term;
 
 typedef struct	s_shell
@@ -142,7 +143,7 @@ void	free_command(t_list *lst);
 void	handle_arrows(char buff[3], t_term *term);
 void	handle_backspace(char buff[3], t_term *term);
 int		handle_ctrl_d(char buff[3], t_term *term);
-void	handle_ctrl_u(t_term term);
+void	handle_ctrl_u(t_term term, int sup);
 
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(int offset, t_shell *sh);

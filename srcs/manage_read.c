@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 19:07:53 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 19:17:37 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,32 +50,33 @@ char	*read_input(int offset, t_shell *sh)
 	char	buff[3];
 	int		ret;
 	int		match;
-	t_term	term;
 
-	term.input = malloc(sizeof(t_data));
-	init_lst(term.input);
-	add_empty(term.input,'\0');
+	sh->term.input = malloc(sizeof(t_data));
+	init_lst(sh->term.input);
+	add_empty(sh->term.input,'\0');
 	match = 0;
-	term.pos_str = 1;
+	sh->term.pos_str = 1;
 	while ((ret = read(0, buff, 1)))
 	{
 		if (buff[0] == 27)
-			handle_arrows(buff, &term);
+			handle_arrows(buff, &sh->term);
 		else if (buff[0] == 21)
-			handle_ctrl_u(term);
+			handle_ctrl_u(sh->term, 1);
 		else if (buff[0] == 127)
-			handle_backspace(buff, &term);
+			handle_backspace(buff, &sh->term);
 		else if (buff[0] == 4)
 		{
-			if (handle_ctrl_d(buff, &term) == -1)
+			if (handle_ctrl_d(buff, &sh->term) == -1)
 				return ((char *)-1);
 		}
 		else if (buff[0] == 10)
-			return (convert_to_str(term.input));
+			return (convert_to_str(sh->term.input));
 		else if (buff[0] == 9)
-			match = print_match(sh, term.input, term.pos_str, offset);
-		else if (term.input->size < g_termx  - (ft_strlen(sh->printed_dir) + 7))
-			add_after(term.input, buff[0], term.pos_str);
-		print_line(term.input, term.pos_str * ((buff[0] != 9) ? -1 : 1), offset, &match);
+			match = print_match(sh, sh->term.input, sh->term.pos_str, offset);
+		else if (sh->term.input->size < g_termx  - (ft_strlen(sh->printed_dir)
+					+ 7))
+			add_after(sh->term.input, buff[0], sh->term.pos_str);
+		print_line(sh->term.input, sh->term.pos_str * ((buff[0] != 9) ? -1 : 1),
+				offset, &match);
 	}
 }
