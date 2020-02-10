@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 18:17:37 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 19:07:53 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,34 +49,33 @@ char	*read_input(int offset, t_shell *sh)
 {
 	char	buff[3];
 	int		ret;
-	t_data *lst;
-	int		pos;
 	int		match;
+	t_term	term;
 
-	lst = malloc(sizeof(t_data));
-	init_lst(lst);
-	add_empty(lst, '\0');
-	pos = 1;
+	term.input = malloc(sizeof(t_data));
+	init_lst(term.input);
+	add_empty(term.input,'\0');
 	match = 0;
+	term.pos_str = 1;
 	while ((ret = read(0, buff, 1)))
 	{
 		if (buff[0] == 27)
-			handle_arrows(buff, &pos, lst);
+			handle_arrows(buff, &term);
 		else if (buff[0] == 21)
-			handle_ctrl_u(lst, pos);
+			handle_ctrl_u(term);
 		else if (buff[0] == 127)
-			handle_backspace(buff, &pos, lst);
+			handle_backspace(buff, &term);
 		else if (buff[0] == 4)
 		{
-			if (handle_ctrl_d(buff, &pos, lst) == -1)
+			if (handle_ctrl_d(buff, &term) == -1)
 				return ((char *)-1);
 		}
 		else if (buff[0] == 10)
-			return (convert_to_str(lst));
+			return (convert_to_str(term.input));
 		else if (buff[0] == 9)
-			match = print_match(sh, lst, pos, offset);
-		else if (lst->size < g_termx  - (ft_strlen(sh->printed_dir) + 7))
-			add_after(lst, buff[0], pos);
-		print_line(lst, pos * ((buff[0] != 9) ? -1 : 1), offset, &match);
+			match = print_match(sh, term.input, term.pos_str, offset);
+		else if (term.input->size < g_termx  - (ft_strlen(sh->printed_dir) + 7))
+			add_after(term.input, buff[0], term.pos_str);
+		print_line(term.input, term.pos_str * ((buff[0] != 9) ? -1 : 1), offset, &match);
 	}
 }
