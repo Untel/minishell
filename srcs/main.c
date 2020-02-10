@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 17:10:16 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 18:08:56 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ int
 	};
 	tmp = ft_itoa(ft_atoi((char *)get_value(g_sh.env, "SHLVL", "0")) + 1);
 	set_value(&g_sh.env, "SHLVL", tmp);
+	set_value(&g_sh.env, "GREP_OPTIONS", "--color=auto");
+	set_value(&g_sh.env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);
 	if (init_term(&s_termios, &s_termios_backup) == 0)
 	{
