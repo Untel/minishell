@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 19:02:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 19:29:59 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int
 	while (sh->input[*i] == ' ')
 		*i = *i + 1;
 	if (sh->input[*i + 1] == '&' || sh->input[*i + 1] == '|'
-		|| sh->input[*i + 1] == '<' || sh->input[*i + 1] == '<')
+		|| sh->input[*i + 1] == '<' || sh->input[*i + 1] == '>')
 		return (ft_fprintf(2, MSG_ERROR, "parse error") && 0);
 	rd->buffer = NULL;
 	rd->index = *i + 1;

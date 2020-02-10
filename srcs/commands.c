@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 16:41:36 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 19:30:50 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_cmd
 	}
 	if ((prev = ft_lstlast(sh->cmds)))
 	{
-		if (op == PIPE)
+		if (op == PIPE || op == REDIR_OUT || op == REDIR_OUT_END)
 		{
 			cmd->left = prev->content;
 			((t_cmd *)prev->content)->right = cmd;
