@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:38:03 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 21:38:10 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,46 +45,4 @@ int
 	while (++i < cmd->argc)
 		unset_key(&sh->env, cmd->argv[i]);
 	return (0);
-}
-
-int
-	builtin_subprocess(t_shell *sh, t_cmd *cmd, int (*fn)(t_shell *sh, t_cmd *cmd))
-{
-	pid_t 	child;
-	pid_t 	pid;
-	int 	status;
-	int 	ret;
-
-	child = fork();
-	if (child == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGTSTP, SIG_IGN);
-		signal(SIGQUIT, SIG_DFL);
-	}
-	if (child == -1)
-		return (-1);
-	if (child > 0)
-	{
-		pid = waitpid(child, &status, 0);
-		if (cmd->right)
-			close(cmd->pipe[PIPE_IN]);
-		if (cmd->left)
-			close(cmd->left->pipe[PIPE_OUT]);
-		return (status);
-	}
-	else
-	{
-		if (cmd->right)
-			dup2(cmd->pipe[PIPE_IN], STDOUT);
-		if (cmd->left)
-			dup2(cmd->left->pipe[PIPE_OUT], STDIN);
-		ret = fn(sh, cmd);
-		exit(ret != 0);
-		return (ret);
-	}
-	tcsetattr(1, 0, &sh->old_term);
-	signal(SIGINT, sigint_quit);
-	tcsetattr(1, 0, &sh->term);
-	return (1);
 }

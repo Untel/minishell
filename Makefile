@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/09 15:54:01 by riblanc          ###   ########.fr        #
+#    Updated: 2020/02/10 21:39:22 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,10 @@ SRCS_FILES	= \
 	list_utils3.c\
 	match.c\
 	handle_input.c\
-	manage_read.c
+	manage_read.c\
+	process.c\
+	echo.c
+
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
 ###	Libft
