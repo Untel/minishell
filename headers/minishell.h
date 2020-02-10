@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 16:53:12 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 18:40:17 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define STDIN			0
 # define STDOUT			1
 # define STDERR			2
+
 typedef struct	s_reader
 {
 	int			simple_q;
@@ -75,18 +76,25 @@ typedef struct	s_cmd
 	struct s_cmd	*right;
 }				t_cmd;
 
+typedef struct termios	t_termios;
+
+typedef struct	s_term
+{
+	t_termios	term;
+	t_termios	old_term;
+}				t_term;
+
 typedef struct	s_shell
 {
-	char			*input;				//malloced
-	int				stop;
-	t_list			*cmds;
-	char			dir[BUFFER_SIZE];
-	char			printed_dir[BUFFER_SIZE];
-	int				last_ret;
-	int				fd_pipe[2];
-	t_list			*env;
-	struct termios	old_term;
-	struct termios	term;
+	char	*input;				//malloced
+	int		stop;
+	t_list	*cmds;
+	char	dir[BUFFER_SIZE];
+	char	printed_dir[BUFFER_SIZE];
+	int		last_ret;
+	int		fd_pipe[2];
+	t_list	*env;
+	t_term	term;
 }				t_shell;
 
 typedef struct	s_key

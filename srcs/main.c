@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 18:08:56 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 18:42:57 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void
 int
 	main(int ac, char **av, char **envp)
 {
-	struct termios	s_termios;
-	struct termios	s_termios_backup;
 	char			*tmp;
 
 	(void)ac;
@@ -84,16 +82,14 @@ int
 	set_value(&g_sh.env, "GREP_OPTIONS", "--color=auto");
 	set_value(&g_sh.env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);
-	if (init_term(&s_termios, &s_termios_backup) == 0)
+	if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)
 	{
 		handle_winch(0);
-		g_sh.old_term = s_termios_backup;
-		g_sh.term = s_termios;
 		format_directory(&g_sh);
 		prompt_line(&g_sh);
 		free_env_list(&g_sh.env);
 		ft_lstclear(&g_sh.cmds, free_command);
-		if (tcsetattr(0, 0, &s_termios_backup) == -1)
+		if (tcsetattr(0, 0, &g_sh.term.old_term) == -1)
 			return (-1);
 	}
 	else
