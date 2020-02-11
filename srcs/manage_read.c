@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 05:49:46 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 19:45:58 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ void	print_line(t_shell *sh, int *match)
 	if (sh->term.pos_str < 0)
 	{
 		i = -1;
-		while (++i <= ((*match - sh->term.size_prt) / g_termx))
+		while (++i <= (*match / g_termx))
 		{
 			write(1, "\n", 1);
 			ft_printf("%*s", g_termx, "");
 		}
 		i = -1;
-		while (++i <= ((*match - sh->term.size_prt) / g_termx))
+		while (++i <= (*match / g_termx))
 			write(1, "\e[A", 3);
 	}
 	sh->term.pos_str *= (sh->term.pos_str < 0) ? -1 : 1;
@@ -42,10 +42,10 @@ void	print_line(t_shell *sh, int *match)
 		write(1, "\e[C", 3);
 	affiche_inv(sh->term.input);
 	i = -1;
-	while (++i <= g_termx - sh->term.size_prt - sh->term.input->size - 1)
+	while (++i <= sh->term.old_s_in + sh->term.input->size - 1)
 		write(1, &del, 1);
 	i = -1;
-	while (++i <= g_termx - sh->term.size_prt - sh->term.input->size - 1)
+	while (++i < sh->term.old_s_in + sh->term.input->size + sh->term.pos_str - 1)
 		write(1, "\e[D", 3);
 }
 
