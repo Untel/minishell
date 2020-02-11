@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/11 15:59:54 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int
 	signal(SIGQUIT, SIG_IGN);
 	g_sh = (t_shell) {
 		.input = NULL, .dir = "",
-		.stop = 0, .cmds = NULL,
+		.stop = 0, .cmds = NULL, .generic_flag = 0,
 		.printed_dir = "", .last_ret = 0,
 		.env = create_env_list(envp)
 	};

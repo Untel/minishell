@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/11 15:36:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,13 @@ int
 	char buff[BUFFER_SIZE + 1];
 	int ret;
 
-	fd = open(cmd->argv[0], O_WRONLY | O_CREAT |
-		(cmd->op == REDIR_IN_END ? O_APPEND : 0)
-		, 0644);
-
-	while ((ret = read(0, &buff, BUFFER_SIZE)))
-	{
-		if (!cmd->right || cmd->right->op == PIPE)
-			write(fd, buff, ret);
-		if (cmd->right)
+	fd = open(cmd->argv[0], O_RDONLY | O_CREAT, 0644);
+	if (cmd->left && cmd->left->op == REDIR_IN)
+		while ((ret = read(STDIN, &buff, BUFFER_SIZE)))
 			write(STDOUT, buff, ret);
-	}
+	if (fd > 0)
+		while ((ret = read(fd, &buff, BUFFER_SIZE)))
+			write(STDOUT, buff, ret);
 	close(fd);
 }
 

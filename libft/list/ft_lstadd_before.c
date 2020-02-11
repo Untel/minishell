@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_lstadd_before.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 16:13:02 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 15:25:14 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/02/11 15:09:54 by adda-sil          #+#    #+#             */
+/*   Updated: 2020/02/11 15:24:20 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+void
+	ft_lstadd_before(t_list **lst, t_list *before_el, t_list *new_el)
 {
-	if (lst)
-		while (lst->next)
-			lst = lst->next;
-	return (lst);
-}
-
-t_list	*ft_lstlast_if(t_list *lst, int (*fn)(t_list *prev, t_list *el))
-{
-	t_list *last;
+	t_list *iter;
 	t_list *prev;
 
+	iter = *lst;
 	prev = NULL;
-	last = NULL;
-	while (lst)
+	if (!before_el || !*lst)
+		return (ft_lstadd_front(lst, new_el));
+	while (iter)
 	{
-		if (fn(prev, lst))
-			last = lst;
-		prev = lst;
-		lst = lst->next;
+		if (iter == before_el)
+		{
+			if (prev == NULL)
+				return (ft_lstadd_front(lst, new_el));
+			else
+			{
+				prev->next = new_el;
+				new_el->next = iter;
+			}
+			return ;
+		}
+		prev = iter;
+		iter = iter->next;
 	}
-	return (last);
 }

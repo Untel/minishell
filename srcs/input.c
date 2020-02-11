@@ -6,11 +6,22 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 22:14:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/11 15:45:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int
+	is_cmd_separator(char c)
+{
+	if (c == ';')
+		return (1);
+	else if (c == '|' || c == '&' || c == '>')
+		return (2);
+	else
+		return (0);
+}
 
 int
 	ask_closing_char(t_shell *sh, t_read *rd, char *ask)
@@ -168,10 +179,10 @@ t_operator
 		return (sh->input[*i + 1] == '&' ? AND : JOB);
 	else if (sh->input[*i] == '|')
 		return (sh->input[*i + 1] == '|' ? OR : PIPE);
-	else if (sh->input[*i] == '<')
-	{
-		return (sh->input[*i + 1] == '<' ? REDIR_IN_END : REDIR_IN);
-	}
+	// else if (sh->input[*i] == '<')
+	// {
+	// 	return (sh->input[*i + 1] == '<' ? REDIR_IN_END : REDIR_IN);
+	// }
 	else if (sh->input[*i] == '>')
 	{
 		return (sh->input[*i + 1] == '>' ? REDIR_OUT_END : REDIR_OUT);
@@ -196,13 +207,13 @@ int
 	new_command(sh, op);
 	while (sh->input[*i] == ' ')
 		*i = *i + 1;
-	if (sh->input[*i + 1] == '&' || sh->input[*i + 1] == '|'
-		|| sh->input[*i + 1] == '<' || sh->input[*i + 1] == '>')
+	if (is_cmd_separator(sh->input[*i + 1]) == 2)
 		return (ft_fprintf(STDERR, MSG_ERROR, "parse error") && 0);
 	rd->buffer = NULL;
 	rd->index = *i + 1;
 	return (1);
 }
+
 
 int
 	sanitize_input2(t_shell *sh)
@@ -240,8 +251,10 @@ int
 		}
 		else if (c == ' ')
 			ret = handle_space(sh, &rd, &i);
-		else if (c == ';' || c == '&' || c == '|' || c == '<' || c == '>')
+		else if (is_cmd_separator(c))
 			ret = handle_separator(sh, &rd, &i);
+		else if (c == '<')
+			ret = add_redir_in(sh, &rd, &i);
 		if (!ret)
 			return (ret);
 	}

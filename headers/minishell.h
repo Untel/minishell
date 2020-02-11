@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 19:29:33 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/11 16:06:27 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ typedef struct	s_cmd
 	char		**argv;
 	t_operator	op;
 	int			pipe[2];
+	t_list		*redir_in;
+	t_list		*redir_out;
 	struct s_cmd	*left;
 	struct s_cmd	*right;
 }				t_cmd;
@@ -83,6 +85,7 @@ typedef struct	s_shell
 	char			printed_dir[BUFFER_SIZE];
 	int				last_ret;
 	t_list			*env;
+	int				generic_flag;
 	struct termios	old_term;
 	struct termios	term;
 }				t_shell;
@@ -92,6 +95,13 @@ typedef struct	s_key
 	char	*key;
 	char	*value;
 }				t_key;
+
+typedef struct	s_redirect
+{
+	char	*filename;
+	char	*value;
+	int		type;
+}				t_redirect;
 
 t_list	*create_env_list(char **envp);
 int		exec_lines(t_shell *sh);
