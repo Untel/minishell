@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 22:58:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 04:09:18 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,14 @@ void	add_str_to_lst(t_shell *sh, char *str, char *filename)
 	int			i;
 
 	tmp = sh->term.input->end;
+	i = -1;
+	while (++i < sh->term.old_s_in)
+		delone(sh->term.input, sh->term.pos_str + 1);
 	size = get_size_current_word(sh, &tmp);
 	offset = 0;
 	while (str[offset] && offset < size)
 		++offset;
+	sh->term.old_s_in = ft_strlen(filename) - offset;
 	offset -= (size < 0 || (size == 0 && (tmp->c == 32 || tmp->c == 0)));
 	while (++offset < ft_strlen(filename))
 		add_after(sh->term.input, filename[offset], sh->term.pos_str);
@@ -137,10 +141,8 @@ int		print_highlight(t_shell *sh, char *str, int nb_elem, int i)
 		{
 			if (j % nb_elem == i % nb_elem)
 			{
-				if (add)
-					add_str_to_lst(sh, str, file->d_name);
-				else
-					size += ft_printf("\e[104m%s\e[0m    ", file->d_name);
+				add_str_to_lst(sh, str, file->d_name);
+				size += ft_printf("\e[104m%s\e[0m    ", file->d_name);
 			}
 			else
 				size += ft_printf("%s    ", file->d_name);
@@ -169,6 +171,7 @@ int		print_match(t_shell *sh)
 		return (0);
 	}
 	i = 0;
+	sh->term.old_s_in = 0;
 	while ((ret = read_char()))
 	{
 		if (ret == 9 || ret == 10)
