@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 02:24:03 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 21:23:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct	s_cmd
 	char		**argv;
 	t_operator	op;
 	int			pipe[2];
-	int			fd;
 	struct s_cmd	*left;
 	struct s_cmd	*right;
 }				t_cmd;
@@ -96,7 +95,6 @@ typedef struct	s_shell
 	char	dir[BUFFER_SIZE];
 	char	printed_dir[BUFFER_SIZE];
 	int		last_ret;
-	int		fd_pipe[2];
 	t_list	*env;
 	t_term	term;
 }				t_shell;

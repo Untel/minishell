@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/04 09:35:51 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/10 22:53:56 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ size_t			ft_strlcpy(char *dest, const char *src, size_t dstsize);
 size_t			ft_strcpy(char *dest, const char *src);
 size_t			ft_strcpy_free(char *dest, const char *src, void *to_free);
 size_t			ft_strcat(char *dest, char *src);
+size_t			ft_escape(char *str, int escape);
+size_t			ft_escape_malloc(char **str, int escape);
 size_t			ft_intlen(int64_t n);
 size_t			ft_uintlen(uint64_t nt);
 void			ft_bzero(void *s, size_t n);

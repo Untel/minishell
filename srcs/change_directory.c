@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 09:02:34 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int
 		if (ft_strncmp(cmd->argv[0], "cd", 3))
 			dir = cmd->argv[0];
 		else if (!(dir = get_value(sh->env, "HOME", NULL)))
-			return (ft_fprintf(2, MSG_ERROR, "no env HOME defined") && 0);
+			return (ft_fprintf(STDERR, MSG_ERROR, "no env HOME defined") && 0);
 	}
 	else
 		dir = !ft_strncmp(cmd->argv[1], "-", 2)
 			? get_value(sh->env, "OLDPWD", sh->dir) : cmd->argv[1];
 	ret = chdir(dir);
 	if (ret == ERR)
-		ft_fprintf(2, MSG_ERROR, strerror(errno));
+		ft_fprintf(STDERR, MSG_ERROR, strerror(errno));
 	else
 	{
 		set_value(&sh->env, "OLDPWD", sh->dir);

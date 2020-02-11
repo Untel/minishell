@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 19:51:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 21:25:10 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,12 @@ int
 	char	*vars;
 	int		len;
 
-	if (!(tmp = ft_strchr(sh->input + *i + 1, '"')))
+	if (!(tmp = ft_strchr_escape(sh->input + *i + 1, '"')))
 		return (0);
 	copy_from_idx(sh, rd, *i);
 	len = tmp - (sh->input + *i + 1);
 	sub = ft_substr(sh->input + *i + 1, 0, len);
+	ft_escape(sub, '\\');
 	sub = replace_vars(sh, sub);
 	if (rd->buffer)
 	{
@@ -195,8 +196,8 @@ int
 	while (sh->input[*i] == ' ')
 		*i = *i + 1;
 	if (sh->input[*i + 1] == '&' || sh->input[*i + 1] == '|'
-		|| sh->input[*i + 1] == '<' || sh->input[*i + 1] == '<')
-		return (ft_fprintf(2, MSG_ERROR, "parse error") && 0);
+		|| sh->input[*i + 1] == '<' || sh->input[*i + 1] == '>')
+		return (ft_fprintf(STDERR, MSG_ERROR, "parse error") && 0);
 	rd->buffer = NULL;
 	rd->index = *i + 1;
 	return (1);
@@ -216,7 +217,12 @@ int
 	new_command(sh, NONE);
 	while ((c = sh->input[++i]))
 	{
-		if (c == '\'')
+		if (c == '\\')
+		{
+			++i;
+			continue;
+		}
+		else if (c == '\'')
 		{
 			if (!handle_simple_quote(sh, &rd, &i))
 				return (ask_closing_char(sh, &rd, "quote"));
