@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 20:19:22 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 05:04:29 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void
 	format_directory(&g_sh);
 	handle_ctrl_u(g_sh.term, 0);
 	write(1, " \n", 2);
+	ft_printf("%*s", g_termx, "");
 	ft_printf(MSG_PROMPT, g_sh.printed_dir);
 	return ;
 }
