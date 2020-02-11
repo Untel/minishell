@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 05:03:02 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 05:45:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int		print_highlight(t_shell *sh, char *str, int nb_elem, int i)
 	}
 	if (closedir(rep) == -1)
 		return (-1);
-	return (size + 10);
+	return (size);
 }
 
 int		print_match(t_shell *sh)
@@ -181,7 +181,7 @@ int		print_match(t_shell *sh)
 					i - (ret == 10));
 			i += (ret == 9);
 			j = -1;
-			while (++j <= (size / g_termx))
+			while (++j <= ((size - sh->term.size_prt) / g_termx))
 				ft_printf("\e[A");
 			print_line(sh, &size);
 			if (ret == 10)
