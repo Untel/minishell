@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 04:09:18 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 04:59:09 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	add_str_to_lst(t_shell *sh, char *str, char *filename)
 
 	tmp = sh->term.input->end;
 	i = -1;
-	while (++i < sh->term.old_s_in)
+	while (++i < sh->term.old_s_in && sh->term.input->size > 2)
 		delone(sh->term.input, sh->term.pos_str + 1);
 	size = get_size_current_word(sh, &tmp);
 	offset = 0;
@@ -181,7 +181,7 @@ int		print_match(t_shell *sh)
 					i - (ret == 10));
 			i += (ret == 9);
 			j = -1;
-			while (++j <= (size / g_termx))
+			while (++j <= (size / g_termx) - (size > g_termx && (size /g_termx) == 1))
 				ft_printf("\e[A");
 			print_line(sh, &size);
 			if (ret == 10)
