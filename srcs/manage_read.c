@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 19:45:58 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 21:36:51 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*read_input(int offset, t_shell *sh)
 	add_empty(sh->term.input,'\0');
 	match = 0;
 	sh->term.pos_str = 1;
-	while ((ret = read(0, buff, 1)))
+	while (match || (ret = read(0, buff, 1)))
 	{
 		if (buff[0] == 27)
 			handle_arrows(buff, &sh->term);
@@ -76,10 +76,14 @@ char	*read_input(int offset, t_shell *sh)
 		else if (buff[0] == 10)
 			return (convert_to_str(sh->term.input));
 		else if (buff[0] == 9)
-			match = print_match(sh);
+		{
+			match = print_match(sh, buff);
+			continue ;
+		}
 		else if (sh->term.input->size < g_termx  - sh->term.size_prt)
 			add_after(sh->term.input, buff[0], sh->term.pos_str);
 		sh->term.pos_str *= (buff[0] != 9) ? -1 : 1;
 		print_line(sh, &match);
+		match = 0;
 	}
 }

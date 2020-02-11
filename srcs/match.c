@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 05:03:02 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 21:34:31 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,9 @@ char	*get_current_word(t_shell *sh)
 	return (str);
 }
 
-int		read_char(void)
+int		read_char(char buff[3])
 {
-	char	c;
-
-	c = 0;
-	read(0, &c, 1);
-	return (c);
+	read(0, buff, 1);
 }
 
 int		get_nmatch(t_shell *sh, char *str)
@@ -154,14 +150,13 @@ int		print_highlight(t_shell *sh, char *str, int nb_elem, int i)
 	return (size + 10);
 }
 
-int		print_match(t_shell *sh)
+int		print_match(t_shell *sh, char buff[3])
 {
 	int				size;
 	char			*str;
 	int				i;
 	int				j;
 	int				nb_elem;
-	int				ret;
 
 	size = 0;
 	str = get_current_word(sh);
@@ -172,23 +167,19 @@ int		print_match(t_shell *sh)
 	}
 	i = 0;
 	sh->term.old_s_in = 0;
-	while ((ret = read_char()))
+	while (buff[0] == 9 || buff[0] == 10)
 	{
-		if (ret == 9 || ret == 10)
-		{
-			ft_printf("\n");
-			size = print_highlight(sh, str, nb_elem * ((ret == 9) ? 1 : -1),
-					i - (ret == 10));
-			i += (ret == 9);
-			j = -1;
-			while (++j <= (size / g_termx))
-				ft_printf("\e[A");
-			print_line(sh, &size);
-			if (ret == 10)
-				break ;
-		}
-		else
+		ft_printf("\n");
+		size = print_highlight(sh, str, nb_elem * ((buff[0] == 9) ? 1 : -1),
+				i - (buff[0] == 10));
+		i += (buff[0] == 9);
+		j = -1;
+		while (++j <= (size / g_termx))
+			ft_printf("\e[A");
+		print_line(sh, &size);
+		if (buff[0] == 10)
 			break ;
+		read_char(buff);
 	}
 	sh->term.pos_str *= -1;
 	print_line(sh, &size);
