@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 15:45:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:17:51 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,9 @@ char
 	if ((ptr = ft_strchr(str, '$')))
 	{
 		tmp = ft_strndup(str, ptr - str);
-		ptr++;
+		key_len = 1;
 		if (*ptr == '?')
 		{
-			key_len = 1;
 			value = ft_itoa(sh->last_ret);
 			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
 			free(value);
@@ -69,13 +68,13 @@ char
 		}
 		else
 		{
-			while (ptr[key_len + 1] && !ft_strchr(" /$", ptr[key_len]))
-				key_len++;
-			key = ft_strndup(ptr, key_len);
+			while (ptr[key_len] && !ft_strchr(" /$", ptr[key_len]))
+				++key_len;
+			key = ft_strndup(ptr + 1, key_len);
 			value = get_value(sh->env, key, NULL);
 			free(key);
 			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
-			value = ft_strjoin(key, ptr + key_len);
+			value = ft_strjoin(key, ptr + 1 + key_len);
 		}
 		free(tmp);
 		free(key);
@@ -253,8 +252,8 @@ int
 			ret = handle_space(sh, &rd, &i);
 		else if (is_cmd_separator(c))
 			ret = handle_separator(sh, &rd, &i);
-		else if (c == '<')
-			ret = add_redir_in(sh, &rd, &i);
+		// else if (c == '<')
+		// 	ret = add_redir_in(sh, &rd, &i);
 		if (!ret)
 			return (ret);
 	}

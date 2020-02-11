@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 16:06:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:16:26 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@
 # define MSG_ERROR		"💩  \033[1;31mError\033[0m %s\n"
 # define MSG_404_CMD	"🤔  \033[1;33m%s\033[0m: command not found\n"
 # define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m » "
+# define MSG_PROMPT_ERR	"🧨  \033[1;31m%s\033[0m » "
 # define MSG_EXIT		"🖐  \033[1;31mGood bye!\033[0m\n"
 # define PIPE_OUT		0
 # define PIPE_IN		1
 # define STDIN			0
 # define STDOUT			1
 # define STDERR			2
+
 typedef struct	s_reader
 {
 	int			simple_q;
@@ -76,18 +78,29 @@ typedef struct	s_cmd
 	struct s_cmd	*right;
 }				t_cmd;
 
+typedef struct termios	t_termios;
+
+typedef struct	s_term
+{
+	t_termios	term;
+	t_termios	old_term;
+	t_data		*input;
+	int			pos_str;
+	int			size_prt;
+	int			old_s_in;
+}				t_term;
+
 typedef struct	s_shell
 {
-	char			*input;				//malloced
-	int				stop;
-	t_list			*cmds;
-	char			dir[BUFFER_SIZE];
-	char			printed_dir[BUFFER_SIZE];
-	int				last_ret;
-	t_list			*env;
-	int				generic_flag;
-	struct termios	old_term;
-	struct termios	term;
+	char	*input;				//malloced
+	int		stop;
+	t_list	*cmds;
+	char	dir[BUFFER_SIZE];
+	char	printed_dir[BUFFER_SIZE];
+	int		last_ret;
+	int		generic_flag;
+	t_list	*env;
+	t_term	term;
 }				t_shell;
 
 typedef struct	s_key
@@ -137,15 +150,15 @@ char	*add_arg_to_last_cmd(t_shell *sh, char *str);
 void	free_command(t_list *lst);
 
 /* input handling */
-void	handle_arrows(char buff[3], int *pos, t_data *lst);
-void	handle_backspace(char buff[3], int *pos, t_data *lst);
-int		handle_ctrl_d(char buff[3], int *pos, t_data *lst);
-void	handle_ctrl_u(t_data *lst, int pos);
+void	handle_arrows(char buff[3], t_term *term);
+void	handle_backspace(char buff[3], t_term *term);
+int		handle_ctrl_d(char buff[3], t_term *term);
+void	handle_ctrl_u(t_term term, int sup);
 
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(int offset, t_shell *sh);
 void	sigint_quit (int sig);
 int		match(char *s1, char *s2);
-int		print_match(t_shell *sh, t_data *lst, int pos, int offset);
+int		print_match(t_shell *sh);
 
 #endif

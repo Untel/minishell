@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/11 20:54:02 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 	}
 	else
 	{
-		errno = 0;
 		if (cmd->right)
 			dup2(cmd->pipe[PIPE_IN], STDOUT);
 		if (cmd->left)
 			dup2(cmd->left->pipe[PIPE_OUT], STDIN);
+		errno = 0;
 		ret = execve(path, cmd->argv, envp);
 		if (errno != 0)
 			ft_fprintf(STDERR, "AShellM: %s: %s\n", path, strerror(errno));
@@ -57,16 +57,18 @@ int		test_dir(char *path, char *cmd)
 	if ((rep = opendir(path)) == NULL)
 		return (-1);
 	while ((file = readdir(rep)) != NULL)
+	{
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
-			if (file->d_type != 8)
+			if (file->d_type != 8 && file->d_type != 10)
 				ret = 0;
 			else
 				ret = 1;
 			if (closedir(rep) == -1)
 				return (-1);
-			return (ret);
+			return (1);
 		}
+	}
 	if (closedir(rep) == -1)
 		return (-1);
 	return (0);
@@ -113,10 +115,10 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 		signal(SIGTSTP, SIG_IGN);
 		signal(SIGQUIT, SIG_DFL);
 	}
-	tcsetattr(1, 0, &sh->old_term);
+	tcsetattr(1, 0, &sh->term.old_term);
 	ret = try_exec(sh, bin_path, cmd, envp, child);
 	signal(SIGINT, sigint_quit);
-	tcsetattr(1, 0, &sh->term);
+	tcsetattr(1, 0, &sh->term.term);
 	if (child == 0 && ret != 0)
 		exit(ret);
 	free(bin_path);

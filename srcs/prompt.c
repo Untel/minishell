@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/09 17:05:43 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/11 22:19:37 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int
 int
 	ft_read(t_shell *sh)
 {
-	sh->input = read_input(ft_strlen(sh->printed_dir) + 7, sh);
+	sh->term.size_prt = ft_strlen(sh->printed_dir) + 7;
+	sh->input = read_input(sh->term.size_prt, sh);
 	write(1, "\n", 1);
 	return ((sh->input == (char *)-1) ? 0 : 1);
 }
@@ -80,12 +81,13 @@ int
 int
 	prompt_line(t_shell *sh)
 {
-	ft_printf(MSG_PROMPT, sh->printed_dir);
+	ft_printf(sh->last_ret == EXIT_SUCCESS ?
+		MSG_PROMPT : MSG_PROMPT_ERR, sh->printed_dir);
 	if (ft_read(sh) == 0)
 		sh->stop = 1;
 	if (!sh->stop && sanitize_input2(sh))
 	{
-		// print_commands(sh);
+		print_commands(sh);
 		exec_lines(sh);
 		clear_last_prompt(sh);
 	}

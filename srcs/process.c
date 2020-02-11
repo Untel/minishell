@@ -6,15 +6,14 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 21:38:48 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:12:09 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int
-	builtin_subprocess(t_shell *sh, t_cmd *cmd,
-		int (*fn)(t_shell *sh, t_cmd *cmd))
+	builtin_subprocess(t_shell *sh, t_cmd *cmd, int (*fn)(t_shell *sh, t_cmd *cmd))
 {
 	pid_t 	child;
 	pid_t 	pid;
@@ -40,7 +39,7 @@ int
 		if (cmd->left)
 			dup2(cmd->left->pipe[PIPE_OUT], STDIN);
 		ret = fn(sh, cmd);
-		exit(ret != 0);
+		exit(0);
 		return (ret);
 	}
 	return (1);
