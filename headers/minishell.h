@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/12 01:12:45 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 00:18:53 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,16 @@ int		handle_ctrl_d(char buff[3], t_term *term);
 void	handle_ctrl_u(t_term term);
 void	handle_ctrl_c(t_term *term);
 
+/* autocomplete utils */
+void	print_line(t_shell *sh);
+void	print_list(t_shell *sh);
+int		get_nmatch(t_shell *sh, char *str);
+char	*get_current_word(t_shell *sh);
+int		get_size_current_word(t_shell *sh, t_lst_in **tmp);
+
+
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
-char	*read_input(int offset, t_shell *sh);
+char	*read_input(t_shell *sh);
 void	sigint_quit (int sig);
 int		match(char *s1, char *s2);
 int		print_match(t_shell *sh, char buff[3]);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 21:25:10 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 23:45:00 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int
 
 	ft_lstclear(&sh->cmds, free_command);
 	offset = ft_printf("%s> ", ask);
-	buffer = read_input(offset, sh);
+	buffer = read_input(sh);
 	write(1, "\n", 1);
 	tmps[0] = sh->input;
 	tmps[1] = buffer;
