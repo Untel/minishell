@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/12 07:19:32 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 23:20:01 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,6 @@ void	print_line(t_shell *sh, int *match)
 
 	del = 127;
 	offset = sh->term.size_prt;
-	if (sh->term.pos_str < 0)
-	{
-		i = -1;
-		while (++i <= *match)
-		{
-			write(1, "\n", 1);
-			ft_printf("%*s", g_termx, "");
-		}
-		i = -1;
-		while (++i <= *match)
-			write(1, "\e[A", 3);
-	}
-	sh->term.pos_str *= (sh->term.pos_str < 0) ? -1 : 1;
 	write(1, "\r", 1);
 	while (--offset >= 0)
 		write(1, "\e[C", 3);
@@ -82,7 +69,6 @@ char	*read_input(int offset, t_shell *sh)
 		}
 		else if (sh->term.input->size < g_termx  - sh->term.size_prt)
 			add_after(sh->term.input, buff[0], sh->term.pos_str);
-		sh->term.pos_str *= (buff[0] != 9) ? -1 : 1;
 		print_line(sh, &match);
 		match = 0;
 	}

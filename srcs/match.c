@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/12 07:44:28 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 23:25:32 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,106 +115,63 @@ void	add_str_to_lst(t_shell *sh, char *str, char *filename)
 		add_after(sh->term.input, filename[offset], sh->term.pos_str);
 }
 
-#define P1_READ		0
-#define P2_WRITE	1
-#define P2_READ		2
-#define P1_WRITE	3
-
-int		ft_count_char(char *str, char c)
-{
-	int		i;
-	int		count;
-
-	count = 0;
-	i = -1;
-	while (str[++i])
-		if (str[i] == c)
-			++count;
-	return (count);
-}
-
 int		print_highlight(t_shell *sh, char *str, int nb_elem, int i)
 {
 	DIR				*rep;
 	struct dirent	*file;
 	int				j;
 	int				size;
-
-	int				pid;
-	int				p[4];
-	char			buff[4097];
-	char			*tmp;
-	int				ret;
-	char			*in;
-	int				pute[2];
+	int				add;
 
 	file = NULL;
 	rep = NULL;
 	j = 0;
 	size = 0;
-	pipe(p);
-	pipe(p + 2);
-	if ((pid = fork()) == -1)
-		return (0);
-	else if (pid == 0)
+	add = nb_elem < 0 ? 1 : 0;
+	nb_elem *= nb_elem < 0 ? -1 : 1;
+	if ((rep = opendir(sh->dir)) == NULL)
+		return (-1);
+	while ((file = readdir(rep)) != NULL)
 	{
-		dup2(p[P2_WRITE], 1);
-		close(p[P1_READ]);
-		close(p[P1_WRITE]);
-		in = NULL;
-		if ((ret = read(p[P2_READ], buff, 4096)) > 0)
+		if (match(file->d_name, str))
 		{
-			buff[ret] = 0;
-			tmp = ft_strjoin(in, (const char *)buff);
-			free(in);
-			in = tmp;
+			if (j % nb_elem == i % nb_elem)
+				add_str_to_lst(sh, str, file->d_name);
+			size += ft_strlen(file->d_name);
+			++j;
 		}
-		pipe(pute);
-		dup2(pute[0], 0);
-		ft_putstr_fd(tmp, pute[1]);
-		close(pute[1]);
-		char	*av[] = {"/usr/bin/column", "-x", ft_strjoin("-c ", ft_itoa(g_termx)), NULL};
-		execve("/usr/bin/column", av, convert_env_list(sh->env));
-		exit(0);
+	}
+	if (closedir(rep) == -1)
+		return (-1);
+	return (size);
+}
+
+void	print_list(t_shell *sh)
+{
+	int		pid;
+	char	*av[2];
+	char	**env;
+	int		ret;
+
+	if ((pid = fork()) == -1)
+		return ;
+	else if (pid > 0)
+	{
+		wait(NULL);
+		ft_printf(MSG_PROMPT, sh->printed_dir);
+		return ;
 	}
 	else
 	{
-		close(p[P2_READ]);
-		close(p[P2_WRITE]);
-		if ((rep = opendir(sh->dir)) == NULL)
-			return (-1);
-		while ((file = readdir(rep)) != NULL)
-		{
-			if (match(file->d_name, str))
-			{
-				if (j % nb_elem == i % nb_elem)
-				{
-					add_str_to_lst(sh, str, file->d_name);
-					ft_putstr_fd("\e[104m", p[P1_WRITE]);
-					ft_putstr_fd(file->d_name, p[P1_WRITE]);
-					ft_putstr_fd("\e[0m\n", p[P1_WRITE]);
-				}
-				else
-				{
-					ft_putstr_fd("\e[0;0m", p[P1_WRITE]);
-					ft_putstr_fd(file->d_name, p[P1_WRITE]);
-					ft_putstr_fd("\e[0m\n", p[P1_WRITE]);
-				}
-				++j;
-			}
-		}
-		ft_putstr_fd("\n", p[P1_WRITE]);
-		if (closedir(rep) == -1)
-			return (-1);
-		ret = read(p[P1_READ], buff, 4096);
-		buff[ret] = 0;
-		close(p[P1_READ]);
-		close(p[P1_WRITE]);
-		ft_printf("%s", buff);
-		wait(NULL);
+		av[0] = "/bin/ls";
+		av[1] = 0;
+		if (!(env = convert_env_list(sh->env)))
+			return ;
+		write(1, "\n", 1);
+		ret = execve("/bin/ls", av, env);
+		free(env);
+		exit(ret);
 	}
-	size = ft_count_char(buff, '\n');
-	return (size);
 }
 
 int		print_match(t_shell *sh, char buff[3])
@@ -233,22 +190,19 @@ int		print_match(t_shell *sh, char buff[3])
 		return (0);
 	}
 	i = 0;
+	print_list(sh);
 	sh->term.old_s_in = 0;
-	while ((buff[0] == 9 || buff[0] == 10) && !sh->ctrl_c)
+	while (buff[0] == 9 || buff[0] == 10 && !sh->ctrl_c)
 	{
-		ft_printf("\n");
-		size = print_highlight(sh, str, nb_elem, i - (buff[0] == 10));
+		size = print_highlight(sh, str, nb_elem * ((buff[0] == 9) ? 1 : -1),
+				i - (buff[0] == 10));
 		i += (buff[0] == 9);
-		j = -1;
-		while (++j <= size)
-			ft_printf("\e[A");
 		print_line(sh, &size);
 		if (buff[0] == 10)
 			break ;
 		read_char(buff);
 	}
 	sh->ctrl_c = 0;
-	sh->term.pos_str *= -1;
 	print_line(sh, &size);
 	free(str);
 	return (size);
