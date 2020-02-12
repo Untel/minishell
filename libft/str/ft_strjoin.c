@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 22:12:16 by adda-sil          #+#    #+#             */
-/*   Updated: 2019/10/21 18:39:12 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/12 05:03:56 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		l1;
 	int		l2;
 
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (NULL);
+	if (!s1 || !s2)
+		return (!s1 ? ft_strdup(s2) : ft_strdup(s1));
 	l1 = ft_strlen(s1);
 	l2 = ft_strlen(s2);
 	if (!(str = malloc(sizeof(char) * (l1 + l2 + 1))))
