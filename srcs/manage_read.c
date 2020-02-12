@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 21:36:51 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 00:46:58 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*read_input(int offset, t_shell *sh)
 		if (buff[0] == 27)
 			handle_arrows(buff, &sh->term);
 		else if (buff[0] == 21)
-			handle_ctrl_u(sh->term, 1);
+			handle_ctrl_u(sh->term);
 		else if (buff[0] == 127)
 			handle_backspace(buff, &sh->term);
 		else if (buff[0] == 4)

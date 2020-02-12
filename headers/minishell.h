@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 21:35:13 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 01:03:33 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ void	free_command(t_list *lst);
 void	handle_arrows(char buff[3], t_term *term);
 void	handle_backspace(char buff[3], t_term *term);
 int		handle_ctrl_d(char buff[3], t_term *term);
-void	handle_ctrl_u(t_term term, int sup);
+void	handle_ctrl_u(t_term term);
+void	handle_ctrl_c(t_term *term);
 
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(int offset, t_shell *sh);

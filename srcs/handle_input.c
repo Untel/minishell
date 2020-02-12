@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 19:20:03 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 01:03:30 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		handle_ctrl_d(char buff[3], t_term * term)
 	return (1);
 }
 
-void	handle_ctrl_u(t_term term, int sup)
+void	handle_ctrl_u(t_term term)
 {
 	int		i;
 	char	del;
@@ -72,8 +72,24 @@ void	handle_ctrl_u(t_term term, int sup)
 		write(1, "\e[D", 3);
 	i = -1;
 	while (++i < term.input->size)
-		write(1, &del, sup ? 1 : 0);
-	if (term.input->size)
-		free_all(term.input);
-	add_empty(term.input, '\0');
+		write(1, &del, 1);
+	while (term.input->size > 1 && term.pos_str < term.input->size)
+		delone(term.input, term.pos_str + 1);
+}
+
+void	handle_ctrl_c(t_term *term)
+{
+	int		i;
+	char	del;
+
+	del = 127;
+	i = -1;
+	while (++i <= term->input->size - term->pos_str)
+		write(1, "\e[D", 3);
+	i = -1;
+	while (++i < term->input->size)
+		write(1, &del, 1);
+	free_all(term->input);
+	term->pos_str = 1;
+	add_empty(term->input, 0);
 }

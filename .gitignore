@@ -4,8 +4,8 @@
 **/*.a
 **/*.out
 **/*.test
-.*.swp
-**/.*.swp
+.*.sw*
+**/.*.sw*
 .vscode
 minishell
 .DS_Store
