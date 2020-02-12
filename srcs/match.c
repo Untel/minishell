@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/12 06:42:08 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 07:44:28 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,17 @@ void	add_str_to_lst(t_shell *sh, char *str, char *filename)
 #define P2_READ		2
 #define P1_WRITE	3
 
-void	ft_putstr_fd(char *str, int fd)
+int		ft_count_char(char *str, char c)
 {
 	int		i;
+	int		count;
 
-	i = 0;
-	while (*(str + i))
-		++i;
-	write(fd, str, i);
+	count = 0;
+	i = -1;
+	while (str[++i])
+		if (str[i] == c)
+			++count;
+	return (count);
 }
 
 int		print_highlight(t_shell *sh, char *str, int nb_elem, int i)
@@ -170,7 +173,7 @@ int		print_highlight(t_shell *sh, char *str, int nb_elem, int i)
 		dup2(pute[0], 0);
 		ft_putstr_fd(tmp, pute[1]);
 		close(pute[1]);
-		char	*av[] = {"/usr/bin/column", NULL};
+		char	*av[] = {"/usr/bin/column", "-x", ft_strjoin("-c ", ft_itoa(g_termx)), NULL};
 		execve("/usr/bin/column", av, convert_env_list(sh->env));
 		exit(0);
 	}
@@ -193,21 +196,25 @@ int		print_highlight(t_shell *sh, char *str, int nb_elem, int i)
 				}
 				else
 				{
+					ft_putstr_fd("\e[0;0m", p[P1_WRITE]);
 					ft_putstr_fd(file->d_name, p[P1_WRITE]);
-					ft_putstr_fd("          \n", p[P1_WRITE]);
+					ft_putstr_fd("\e[0m\n", p[P1_WRITE]);
 				}
 				++j;
 			}
 		}
+		ft_putstr_fd("\n", p[P1_WRITE]);
 		if (closedir(rep) == -1)
 			return (-1);
-		read(p[P1_READ], buff, 4096);
+		ret = read(p[P1_READ], buff, 4096);
+		buff[ret] = 0;
 		close(p[P1_READ]);
 		close(p[P1_WRITE]);
 		ft_printf("%s", buff);
 		wait(NULL);
 	}
-	return (size + 10);
+	size = ft_count_char(buff, '\n');
+	return (size);
 }
 
 int		print_match(t_shell *sh, char buff[3])
@@ -233,7 +240,7 @@ int		print_match(t_shell *sh, char buff[3])
 		size = print_highlight(sh, str, nb_elem, i - (buff[0] == 10));
 		i += (buff[0] == 9);
 		j = -1;
-		while (++j <= (size / g_termx))
+		while (++j <= size)
 			ft_printf("\e[A");
 		print_line(sh, &size);
 		if (buff[0] == 10)
