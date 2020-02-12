@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/13 00:18:53 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 00:28:12 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	free_env_var(t_list *lst_env);
 void	free_env_list(t_list **env);
 void	*get_value(t_list *env, char *key, char *def);
 void	clear_last_prompt(t_shell *sh);
-void	*unset_key(t_list **lst_env, char *key);
+void	unset_key(t_list **lst_env, char *key);
 void	free_env_unset(void *content);
 int		is_key_env_valid(char *key);
 /* PATH management */
@@ -152,7 +152,7 @@ void	print_list(t_shell *sh);
 int		get_nmatch(t_shell *sh, char *str);
 char	*get_current_word(t_shell *sh);
 int		get_size_current_word(t_shell *sh, t_lst_in **tmp);
-
+void	add_str_to_lst(t_shell *sh, char *str, char *filename);
 
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(t_shell *sh);

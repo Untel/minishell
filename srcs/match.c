@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 00:18:02 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 00:25:28 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		handle_match(t_shell *sh, char buff[3], int nb_elem, char *str)
 
 	size = 0;
 	i = 0;
-	while (buff[0] == 9 || buff[0] == 10 && !sh->ctrl_c)
+	while ((buff[0] == 9 || buff[0] == 10) && !sh->ctrl_c)
 	{
 		size = print_highlight(sh, str, nb_elem * ((buff[0] == 9) ? 1 : -1),
 				i - (buff[0] == 10));

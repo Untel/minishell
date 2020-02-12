@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 00:08:11 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 00:24:53 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,11 @@ char	*read_input(t_shell *sh)
 		if (ret == (char *)1)
 			continue ;
 		if (ret == (char *)-1)
-			return (-1);
+			return ((char *)-1);
 		if (ret != (char *)2)
 			return (ret);
 		print_line(sh);
 		match = 0;
 	}
+	return ((char *)-1);
 }
