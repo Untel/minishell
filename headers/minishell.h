@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/12 01:03:33 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 01:12:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct	s_shell
 	int		last_ret;
 	t_list	*env;
 	t_term	term;
+	int		ctrl_c;
 }				t_shell;
 
 typedef struct	s_key

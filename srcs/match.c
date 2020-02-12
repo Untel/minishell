@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 21:34:31 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 01:11:14 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ int		print_match(t_shell *sh, char buff[3])
 	}
 	i = 0;
 	sh->term.old_s_in = 0;
-	while (buff[0] == 9 || buff[0] == 10)
+	while (buff[0] == 9 || buff[0] == 10 && !sh->ctrl_c)
 	{
 		ft_printf("\n");
 		size = print_highlight(sh, str, nb_elem * ((buff[0] == 9) ? 1 : -1),
@@ -181,6 +181,7 @@ int		print_match(t_shell *sh, char buff[3])
 			break ;
 		read_char(buff);
 	}
+	sh->ctrl_c = 0;
 	sh->term.pos_str *= -1;
 	print_line(sh, &size);
 	free(str);

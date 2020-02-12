@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/12 01:05:47 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/12 01:12:59 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void
 	write(1, "\n", 1);
 	ft_printf("%*s\r", g_termx, "");
 	ft_printf(MSG_PROMPT, g_sh.printed_dir);
+	g_sh.ctrl_c = 1;
 	return ;
 }
 
@@ -78,7 +79,8 @@ int
 		.input = NULL, .dir = "",
 		.stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0,
-		.env = create_env_list(envp)
+		.env = create_env_list(envp),
+		.ctrl_c = 0
 	};
 	tmp = ft_itoa(ft_atoi((char *)get_value(g_sh.env, "SHLVL", "0")) + 1);
 	set_value(&g_sh.env, "SHLVL", tmp);
