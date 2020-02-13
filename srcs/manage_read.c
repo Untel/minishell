@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 00:24:53 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 05:07:18 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@ void	print_line(t_shell *sh)
 	while (--offset >= 0)
 		write(1, "\e[C", 3);
 	affiche_inv(sh->term.input);
-	i = -1;
-	while (++i <= sh->term.old_s_in)
-		write(1, &del, 1);
-	i = -1;
-	while (++i < sh->term.old_s_in + sh->term.pos_str)
-		write(1, "\e[D", 3);
 }
 
 char	*handle_input(t_shell *sh, int *match, char buff[3])

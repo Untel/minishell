@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 00:13:35 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 05:57:19 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,6 @@ int		get_size_current_word(t_shell *sh, t_lst_in **tmp)
 	return (i - old_i);
 }
 
-char	*get_current_word(t_shell *sh)
-{
-	t_lst_in	*tmp;
-	char		*str;
-	int			i_str;
-	int			size;
-
-	tmp = sh->term.input->end;
-	size = get_size_current_word(sh, &tmp);
-	if (!(str = malloc(sizeof(char) * (size + 3))))
-		return (NULL);
-	i_str = -1;
-	while (++i_str <= size && tmp->prev)
-	{
-		str[i_str] = tmp->c;
-		tmp = tmp->prev;
-	}
-	str[i_str] = '*';
-	str[i_str + 1] = 0;
-	return (str);
-}
 
 int		get_nmatch(t_shell *sh, char *str)
 {
@@ -100,6 +79,16 @@ void	print_list(t_shell *sh)
 	}
 }
 
+void	handle_empty_line(t_shell *sh, t_lst_in **tmp)
+{
+	free_all(sh->term.input);
+	sh->term.input = malloc(sizeof(t_data));
+	init_lst(sh->term.input);
+	add_empty(sh->term.input, '\0');
+	sh->term.pos_str = 1;
+	*tmp = sh->term.input->end;
+}
+
 void	add_str_to_lst(t_shell *sh, char *str, char *filename)
 {
 	t_lst_in	*tmp;
@@ -107,10 +96,16 @@ void	add_str_to_lst(t_shell *sh, char *str, char *filename)
 	int			size;
 	int			i;
 
+	i = -1;
+	while (++i < sh->term.old_s_in + sh->term.pos_str)
+		write(1, "\e[D", 3);
 	tmp = sh->term.input->end;
 	i = -1;
-	while (++i < sh->term.old_s_in && sh->term.input->size > 2)
-		delone(sh->term.input, sh->term.pos_str + 1);
+	while (++i < sh->term.old_s_in && sh->term.input->size > 1)
+		delone(sh->term.input, sh->term.pos_str + (sh->term.input->size > 2));
+	ft_printf("%*c", i + 2, 127);
+	if (sh->term.input->size == 1)
+		handle_empty_line(sh, &tmp);
 	size = get_size_current_word(sh, &tmp);
 	offset = 0;
 	while (str[offset] && offset < size)

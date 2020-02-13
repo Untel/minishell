@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 00:25:28 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 05:57:22 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int		handle_match(t_shell *sh, char buff[3], int nb_elem, char *str)
 		size = print_highlight(sh, str, nb_elem * ((buff[0] == 9) ? 1 : -1),
 				i - (buff[0] == 10));
 		i += (buff[0] == 9);
+		if (!size)
+			print_list(sh);
 		print_line(sh);
 		if (buff[0] == 10)
 			break ;
@@ -76,6 +78,28 @@ int		handle_match(t_shell *sh, char buff[3], int nb_elem, char *str)
 	print_line(sh);
 	free(str);
 	return (size);
+}
+
+char	*get_current_word(t_shell *sh)
+{
+	t_lst_in	*tmp;
+	char		*str;
+	int			i_str;
+	int			size;
+
+	tmp = sh->term.input->end;
+	size = get_size_current_word(sh, &tmp);
+	if (!(str = malloc(sizeof(char) * (size + 3))))
+		return (NULL);
+	i_str = -1;
+	while (++i_str <= size && tmp->prev)
+	{
+		str[i_str] = tmp->c;
+		tmp = tmp->prev;
+	}
+	str[i_str] = '*';
+	str[i_str + 1] = 0;
+	return (str);
 }
 
 int		print_match(t_shell *sh, char buff[3])
@@ -89,7 +113,6 @@ int		print_match(t_shell *sh, char buff[3])
 		free(str);
 		return (0);
 	}
-	print_list(sh);
 	sh->term.old_s_in = 0;
 	return (handle_match(sh, buff, nb_elem, str));
 }
