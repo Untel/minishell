@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 06:00:38 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 07:15:37 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,20 +96,21 @@ void	add_str_to_lst(t_shell *sh, char *str, char *filename)
 	int			size;
 	int			i;
 
-	i = -1;
-	while (++i < sh->term.old_s_in + sh->term.pos_str)
-		write(1, "\e[D", 3);
 	tmp = sh->term.input->end;
 	i = -1;
 	while (++i < sh->term.old_s_in && sh->term.input->size > 1)
 		delone(sh->term.input, sh->term.pos_str + (sh->term.input->size > 2));
-	ft_printf("%*c", i + 2, 127);
 	if (sh->term.input->size == 1)
 		handle_empty_line(sh, &tmp);
 	size = get_size_current_word(sh, &tmp);
+	i = -1;
+	while (++i < size - 1)
+		write(1, "\e[D", 3);
+	ft_printf("%*c", sh->term.old_s_in, 127);
 	offset = 0;
 	while (str[offset] && offset < size)
 		++offset;
+	sh->term.tmp = sh->term.old_s_in;
 	sh->term.old_s_in = ft_strlen(filename) - offset;
 	offset -= (size < 0 || (size == 0 && (tmp->c == 32 || tmp->c == 0)));
 	while (++offset < ft_strlen(filename))

@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 06:10:42 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 07:15:43 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,18 @@ void	print_line(t_shell *sh)
 	while (--offset >= 0)
 		write(1, "\e[C", 3);
 	affiche_inv(sh->term.input);
-	offset = sh->term.size_prt;
-	write(1, "\r", 1);
-	while (--offset + sh->term.input->size > 0)
-		write(1, "\e[C", 3);
-	write(1, &del, 1);
-	write(1, &del, 1);
+	ft_printf("%*c", sh->term.tmp + 1, 127);
 	i = -1;
-	while (++i < sh->term.pos_str + 1)
+	while (++i < sh->term.pos_str + sh->term.tmp)
 		write(1, "\e[D", 3);
+//	write(1, "\r", 1);
+//	while (--offset + sh->term.input->size > 0)
+//		write(1, "\e[C", 3);
+//	write(1, &del, 1);
+//	write(1, &del, 1);
+//	i = -1;
+//	while (++i < sh->term.pos_str + 1)
+//		write(1, "\e[D", 3);
 }
 
 char	*handle_input(t_shell *sh, int *match, char buff[3])
@@ -75,6 +78,7 @@ char	*read_input(t_shell *sh)
 	add_empty(sh->term.input, '\0');
 	match = 0;
 	sh->term.pos_str = 1;
+	sh->term.tmp = 0;
 	while (match || read(0, buff, 1) > 0)
 	{
 		ret = handle_input(sh, &match, buff);

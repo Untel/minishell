@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:34:51 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 03:57:38 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 07:15:42 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,19 @@ int			delone(t_data *lst, int pos)
 		scd_case(&del_elem, lst);
 	else
 		thd_case(&del_elem, lst, pos);
-	//ft_printf("\n\ndel [%c]\n\n", del_elem->c);
 	free(del_elem);
 	--lst->size;
 	return (0);
+}
+
+t_lst_in	*get_elem_by_pos(t_data *lst, int pos)
+{
+	t_lst_in	*tmp;
+	int			i;
+
+	i = -1;
+	tmp = lst->head;
+	while (++i < pos && tmp)
+		tmp = tmp->next;
+	return (tmp);
 }
