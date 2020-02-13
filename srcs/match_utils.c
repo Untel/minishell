@@ -6,11 +6,13 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 07:15:37 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 10:01:28 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_termx;
 
 int		get_size_current_word(t_shell *sh, t_lst_in **tmp)
 {
@@ -30,7 +32,6 @@ int		get_size_current_word(t_shell *sh, t_lst_in **tmp)
 		*tmp = (*tmp)->prev;
 	return (i - old_i);
 }
-
 
 int		get_nmatch(t_shell *sh, char *str)
 {
@@ -63,6 +64,7 @@ void	print_list(t_shell *sh)
 	else if (pid > 0)
 	{
 		wait(NULL);
+		ft_printf("%*s\r", g_termx - 1);
 		ft_printf(MSG_PROMPT, sh->printed_dir);
 		return ;
 	}
