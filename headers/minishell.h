@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/13 09:54:57 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/14 00:07:26 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,9 @@ int		get_nmatch(t_shell *sh, char *str);
 char	*get_current_word(t_shell *sh);
 int		get_size_current_word(t_shell *sh, t_lst_in **tmp);
 void	add_str_to_lst(t_shell *sh, char *str, char *filename);
+int		is_first_word(t_shell *sh);
+t_list	*get_nmatch_bin(t_shell *sh, char **paths, char *str);
+void	free_occur(t_list *occur);
 
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(t_shell *sh);
