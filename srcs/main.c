@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/13 10:00:11 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/14 06:53:47 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,50 @@ void
 	return ;
 }
 
+int
+	get_termx(t_shell *sh, char **av, char **env)
+{
+	int		pid;
+	int		p[2];
+	char	str[11];
+	int		ret;
+	int		res;
+
+	pipe(p);
+	res = 0;
+	if ((pid = fork()) == -1)
+		return (-1);
+	else if (pid == 0)
+	{
+		dup2(p[1], 1);
+		close(p[0]);
+		ret = execve("/usr/bin/tput", av, env);
+		exit(ret);
+	}
+	else
+	{
+		close(p[1]);
+		wait(0);
+		ret = read(p[0], str, 10);
+		str[ret] = 0;
+		res = ft_atoi(str);
+	}
+	return (res);
+}
+
 void
 	handle_winch(int sig)
 {
-	(void)sig;
-	format_directory(&g_sh);
-	signal(SIGWINCH, SIG_IGN);
-	initscr();
-	refresh();
-	g_termx = COLS;
-	g_termy = LINES;
-	endwin();
+	char	**env;
+	char	*av[3];
+
+	env = convert_env_list(g_sh.env);
+	av[0] = "tput";
+	av[1] = "cols";
+	av[2] = 0;
+	g_termx = get_termx(&g_sh, av, env);
 	signal(SIGWINCH, handle_winch);
+	free_env_array(env);
 }
 
 int
