@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 19:30:50 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/14 03:24:25 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,12 @@ char
 	*add_arg_to_last_cmd(t_shell *sh, char *str)
 {
 	t_list *el;
+	t_cmd	*cmd;
 
 	el = ft_lstlast(sh->cmds);
 	if (!el)
 		err_shutdown(sh, "Error commands.c add_arg_to_last_cmd");
+	cmd = (t_cmd *)el->content;
 	return (add_argument((t_cmd *)el->content, str));
 }
 

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 21:22:41 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/14 02:46:01 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 	child = -1;
 	envp = convert_env_list(sh->env);
 	ret = 0;
-	child = fork();
 	if (nb == 2)
 		bin_path = ft_strmjoin(2, tmp, "/");
 	else if (nb == 1)
 		bin_path = ft_strdup(tmp[0]);
+	child = fork();
 	signal(SIGINT, sigint_void);
 	if (child == 0)
 	{
