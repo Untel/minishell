@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 07:15:43 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/14 17:35:22 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ char	*handle_input(t_shell *sh, int *match, char buff[3])
 		handle_arrows(buff, &sh->term);
 	else if (buff[0] == 21)
 		handle_ctrl_u(sh->term);
-	else if (buff[0] == 127)
+	else if (buff[0] == 127 &&
+			sh->term.input->size < g_termx - sh->term.size_prt + 1)
 		handle_backspace(buff, &sh->term);
 	else if (buff[0] == 4)
 	{
@@ -88,7 +89,8 @@ char	*read_input(t_shell *sh)
 			return ((char *)-1);
 		if (ret != (char *)2)
 			return (ret);
-		print_line(sh);
+		if (sh->term.input->size < g_termx - sh->term.size_prt + 1)
+			print_line(sh);
 		match = 0;
 	}
 	return ((char *)-1);
