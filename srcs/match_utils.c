@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/14 02:20:12 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/14 03:30:09 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		get_nmatch(t_shell *sh, char *str)
 void	print_list(t_shell *sh)
 {
 	int		pid;
-	char	*av[2];
+	char	*av[3];
 	char	**env;
 	int		ret;
 
@@ -71,7 +71,8 @@ void	print_list(t_shell *sh)
 	else
 	{
 		av[0] = "/bin/ls";
-		av[1] = 0;
+		av[1] = "-G";
+		av[2] = 0;
 		if (!(env = convert_env_list(sh->env)))
 			return ;
 		write(1, "\n", 1);
