@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/14 03:30:09 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/15 03:13:11 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	print_list(t_shell *sh)
 	else if (pid > 0)
 	{
 		wait(NULL);
-		ft_printf("%*s\r", g_termx - 1, "");
+		ft_printf("\e[7m%%\e[0m%*s\r", g_termx - 1, "");
 		ft_printf(MSG_PROMPT, sh->printed_dir);
 		return ;
 	}

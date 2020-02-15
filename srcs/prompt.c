@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/13 09:58:36 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/15 03:13:10 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int
 int
 	prompt_line(t_shell *sh)
 {
-	ft_printf("%*s\r", g_termx - 1, "");
+	ft_printf("\e[7m%%\e[0m%*s\r", g_termx - 1, "");
 	ft_printf(MSG_PROMPT, sh->printed_dir);
 	if (ft_read(sh) == 0)
 		sh->stop = 1;
