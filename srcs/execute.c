@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 17:43:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 18:34:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,23 @@ int
 }
 
 int
+	say_404(t_shell *sh, t_cmd *cmd)
+{
+	ft_fprintf(STDERR, MSG_404_CMD, cmd->argv[0]);
+	sh->last_ret = 127;
+	return (127);
+}
+
+int
+	exec_cmd(t_shell *sh, t_cmd *cmd, int (*fn)(t_shell *sh, t_cmd *cmd))
+{
+	if (cmd->right || cmd->left)
+		return (builtin_subprocess(sh, cmd, fn));
+	else
+		return (fn(sh, cmd));
+}
+
+int
 	exec_line(t_shell *sh, t_cmd *cmd)
 {
 	int	tmp;
@@ -58,17 +75,17 @@ int
 	else if (exec_is(cmd, BUILTIN_EXIT))
 		(sh->stop = 1);
 	else if (exec_is(cmd, BUILTIN_EXPORT))
-		sh->last_ret = export_env(sh, cmd);
+		sh->last_ret = exec_cmd(sh, cmd, export_env);
 	else if (exec_is(cmd, BUILTIN_UNSET))
-		sh->last_ret = unset_env(sh, cmd);
+		sh->last_ret = exec_cmd(sh, cmd, unset_env);
 	else if (exec_is(cmd, BUILTIN_ENV))
-		sh->last_ret = builtin_subprocess(sh, cmd, ft_env);
+		sh->last_ret = exec_cmd(sh, cmd, ft_env);
 	else if (exec_is(cmd, BUILTIN_CD))
-		sh->last_ret = change_directory(sh, cmd);
+		sh->last_ret = exec_cmd(sh, cmd, change_directory);
 	else if (exec_bin(sh, cmd))
 		;
 	else
-		ft_fprintf(STDERR, MSG_404_CMD, cmd->argv[0]) && (sh->last_ret = 127);
+		sh->last_ret = exec_cmd(sh, cmd, say_404);
 	return (1);
 }
 
@@ -136,8 +153,6 @@ int
 		else if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
 			exec_line(sh, cmd);
-		else
-			ft_printf("Ignoring %s\n", cmd->argv[0]);
 		lst = lst->next;
 	}
 	return (SUC);
