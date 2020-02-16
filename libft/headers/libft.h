@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 15:25:10 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 20:00:08 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char			*ft_upcase(const char *s);
 char			*ft_lowcase(const char *s);
 char			*ft_capitalize(const char *s);
 char			*ft_strchr(const char *s, int c);
+char			*ft_strchr_escape(const char *s, int c, int escape);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strstr(const char *str, const char *to_find);
 char			*ft_strnstr(const char *str, const char *to_find, size_t len);

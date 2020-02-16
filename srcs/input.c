@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 17:42:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 20:21:16 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int
 	char	*vars;
 	int		len;
 
-	if (!(tmp = ft_strchr_escape(sh->input + *i + 1, '"')))
+	if (!(tmp = ft_strchr_escape(sh->input + *i + 1, '"', '\\')))
 		return (0);
 	copy_from_idx(sh, rd, *i);
 	len = tmp - (sh->input + *i + 1);
