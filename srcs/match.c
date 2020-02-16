@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 05:03:02 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/14 02:21:36 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,64 @@ int		match(char *s1, char *s2)
 	return (0);
 }
 
-int		get_size_current_word(t_shell *sh, t_lst_in **tmp)
+int		print_highlight(t_shell *sh, char *str, int nb_elem, int i, t_list *occur)
 {
-	int			old_i;
-	int			i;
+	DIR				*rep;
+	struct dirent	*file;
+	int				j;
+	int				size;
 
-	i = sh->term.input->size;
-	while (*tmp != NULL && --i > sh->term.pos_str)
-		*tmp = (*tmp)->prev;
-	old_i = i;
-	while (*tmp && (*tmp)->next && (*tmp)->c != ' ')
+	file = NULL;
+	rep = NULL;
+	j = -1;
+	size = 0;
+	if (is_first_word(sh))
+		size = match_bin(sh, i, occur, nb_elem);
+	else
 	{
-		*tmp = (*tmp)->next;
-		++i;
+		if ((rep = opendir(sh->dir)) == NULL)
+			return (-1);
+		while ((file = readdir(rep)) != NULL)
+			if (match(file->d_name, str))
+			{
+				if (++j % nb_elem == i % nb_elem)
+					add_str_to_lst(sh, str, file->d_name);
+				size += ft_strlen(file->d_name);
+			}
+		if (closedir(rep) == -1)
+			return (-1);
 	}
-	if ((*tmp)->c == ' ' && --i)
-		*tmp = (*tmp)->prev;
-	return (i - old_i);
+	return (size);
+}
+
+int		handle_match(t_shell *sh, char buff[3], int nb_elem,
+		char *str, t_list *occur)
+{
+	int		size;
+	int		i;
+	char	c;
+
+	size = 0;
+	i = 0;
+	while ((buff[0] == 9 || buff[0] == 10) && !sh->ctrl_c)
+	{
+		c = get_elem_by_pos(sh->term.input, sh->term.pos_str - 1)->c;
+		if ((c != 0 && c != 32) || sh->term.pos_str == sh->term.input->size)
+			break ;
+		size = print_highlight(sh, str, nb_elem * ((buff[0] == 9) ? 1 : -1),
+				i - (buff[0] == 10), occur);
+		i += (buff[0] == 9);
+		if (!size)
+			print_list(sh);
+		print_line(sh);
+		if (buff[0] == 10)
+			break ;
+		read(0, buff, 1);
+	}
+	sh->ctrl_c = 0;
+	print_line(sh);
+	free(str);
+	return (size);
 }
 
 char	*get_current_word(t_shell *sh)
@@ -70,128 +111,33 @@ char	*get_current_word(t_shell *sh)
 	return (str);
 }
 
-int		read_char(void)
+int		print_match(t_shell *sh, char buff[3])
 {
-	char	c;
+	char		*str;
+	int			nb_elem;
+	t_list		*occur;
+	char		**paths;
+	int			ret;
 
-	c = 0;
-	read(0, &c, 1);
-	return (c);
-}
-
-int		get_nmatch(t_shell *sh, char *str)
-{
-	DIR				*rep;
-	struct dirent	*file;
-	int				nb_elem;
-
-	file = NULL;
-	rep = NULL;
-	nb_elem = 0;
-	if ((rep = opendir(sh->dir)) == NULL)
-		return (-1);
-	while ((file = readdir(rep)) != NULL)
-		if (match(file->d_name, str))
-			++nb_elem;
-	if (closedir(rep) == -1)
-		return (-1);
-	return (nb_elem);
-}
-
-void	add_str_to_lst(t_shell *sh, char *str, char *filename)
-{
-	t_lst_in	*tmp;
-	int			offset;
-	int			size;
-	int			i;
-
-	tmp = sh->term.input->end;
-	i = -1;
-	while (++i < sh->term.old_s_in && sh->term.input->size > 2)
-		delone(sh->term.input, sh->term.pos_str + 1);
-	size = get_size_current_word(sh, &tmp);
-	offset = 0;
-	while (str[offset] && offset < size)
-		++offset;
-	sh->term.old_s_in = ft_strlen(filename) - offset;
-	offset -= (size < 0 || (size == 0 && (tmp->c == 32 || tmp->c == 0)));
-	while (++offset < ft_strlen(filename))
-		add_after(sh->term.input, filename[offset], sh->term.pos_str);
-}
-
-int		print_highlight(t_shell *sh, char *str, int nb_elem, int i)
-{
-	DIR				*rep;
-	struct dirent	*file;
-	int				j;
-	int				size;
-	int				add;
-
-	file = NULL;
-	rep = NULL;
-	j = 0;
-	size = 0;
-	add = nb_elem < 0 ? 1 : 0;
-	nb_elem *= nb_elem < 0 ? -1 : 1;
-	if ((rep = opendir(sh->dir)) == NULL)
-		return (-1);
-	while ((file = readdir(rep)) != NULL)
-	{
-		if (match(file->d_name, str))
-		{
-			if (j % nb_elem == i % nb_elem)
-			{
-				add_str_to_lst(sh, str, file->d_name);
-				size += ft_printf("\e[104m%s\e[0m    ", file->d_name);
-			}
-			else
-				size += ft_printf("%s    ", file->d_name);
-			++j;
-		}
-	}
-	if (closedir(rep) == -1)
-		return (-1);
-	return (size + 10);
-}
-
-int		print_match(t_shell *sh)
-{
-	int				size;
-	char			*str;
-	int				i;
-	int				j;
-	int				nb_elem;
-	int				ret;
-
-	size = 0;
 	str = get_current_word(sh);
-	if ((nb_elem = get_nmatch(sh, str)) == -1)
+	if (is_first_word(sh))
+	{
+		paths = ft_split(get_value(sh->env, "PATH", NULL), ':');
+		occur = get_nmatch_bin(sh, paths, str);
+		nb_elem = ft_lstsize(occur);
+	}
+	else if ((nb_elem = get_nmatch(sh, str)) == -1)
 	{
 		free(str);
 		return (0);
 	}
-	i = 0;
 	sh->term.old_s_in = 0;
-	while ((ret = read_char()))
+	ret = handle_match(sh, buff, nb_elem, str, occur);
+	if (is_first_word(sh))
 	{
-		if (ret == 9 || ret == 10)
-		{
-			ft_printf("\n");
-			size = print_highlight(sh, str, nb_elem * ((ret == 9) ? 1 : -1),
-					i - (ret == 10));
-			i += (ret == 9);
-			j = -1;
-			while (++j <= (size / g_termx))
-				ft_printf("\e[A");
-			print_line(sh, &size);
-			if (ret == 10)
-				break ;
-		}
-		else
-			break ;
+		ft_lstclear(&occur, free_occur);
+		free(occur);
+		free_env_array(paths);
 	}
-	sh->term.pos_str *= -1;
-	print_line(sh, &size);
-	free(str);
-	return (size);
+	return (ret);
 }

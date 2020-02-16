@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 17:40:25 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 20:29:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct	s_term
 	int			pos_str;
 	int			size_prt;
 	int			old_s_in;
+	int			tmp;
 }				t_term;
 
 typedef struct	s_shell
@@ -102,6 +103,7 @@ typedef struct	s_shell
 	int		last_ret;
 	t_list	*env;
 	t_term	term;
+	int		ctrl_c;
 }				t_shell;
 
 typedef struct	s_key
@@ -128,7 +130,7 @@ void	free_env_var(t_list *lst_env);
 void	free_env_list(t_list **env);
 void	*get_value(t_list *env, char *key, char *def);
 void	clear_last_prompt(t_shell *sh);
-void	*unset_key(t_list **lst_env, char *key);
+void	unset_key(t_list **lst_env, char *key);
 void	free_env_unset(void *content);
 int		is_key_env_valid(char *key);
 /* PATH management */
@@ -155,13 +157,25 @@ void	free_command(t_list *lst);
 void	handle_arrows(char buff[3], t_term *term);
 void	handle_backspace(char buff[3], t_term *term);
 int		handle_ctrl_d(char buff[3], t_term *term);
-void	handle_ctrl_u(t_term term, int sup);
+void	handle_ctrl_u(t_term term);
+void	handle_ctrl_c(t_term *term);
 int		redirect_in_subprocess(t_shell *sh, t_cmd *cmd);
 int		run_redirect_in(t_shell *sh, t_cmd *cmd);
+/* autocomplete utils */
+void	print_line(t_shell *sh);
+void	print_list(t_shell *sh);
+int		get_nmatch(t_shell *sh, char *str);
+char	*get_current_word(t_shell *sh);
+int		get_size_current_word(t_shell *sh, t_lst_in **tmp);
+void	add_str_to_lst(t_shell *sh, char *str, char *filename);
+int		is_first_word(t_shell *sh);
+t_list	*get_nmatch_bin(t_shell *sh, char **paths, char *str);
+void	free_occur(t_list *occur);
+
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
-char	*read_input(int offset, t_shell *sh);
+char	*read_input(t_shell *sh);
 void	sigint_quit (int sig);
 int		match(char *s1, char *s2);
-int		print_match(t_shell *sh);
+int		print_match(t_shell *sh, char buff[3]);
 
 #endif

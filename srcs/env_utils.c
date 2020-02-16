@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 09:04:24 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/13 00:27:52 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int
 }
 
 void
-	*unset_key(t_list **lst_env, char *key)
+	unset_key(t_list **lst_env, char *key)
 {
 	ft_lstremove_if(lst_env, key, ft_cmp_key, free_env_unset);
 }

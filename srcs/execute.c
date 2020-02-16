@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 19:27:40 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 20:34:47 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,15 +148,23 @@ int
 
 	if (mount_pipes(sh) == ERR)
 		return (ft_fprintf(STDERR, MSG_ERROR, "cannot mount pipes"));
+	cmd = NULL;
 	lst = sh->cmds;
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
+//		if (cmd && !ft_strncmp(cmd->argv[0], "ls", 3))
+//			add_argument(cmd, ft_strdup("-G"));
 		if (cmd->op == REDIR_OUT_END || cmd->op == REDIR_OUT)
 			builtin_subprocess(sh, cmd, redirect_out);
 		else if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
+		{
+			//print_command(sh, cmd);
+			if (cmd->argc > 0 && !ft_strncmp(cmd->argv[0], "ls", 3))
+				add_argument(cmd, ft_strdup("-G"));
 			exec_line(sh, cmd);
+		}
 		lst = lst->next;
 	}
 	return (SUC);

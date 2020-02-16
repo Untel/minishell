@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 17:40:41 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 20:33:20 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		g_termy = 0;
 
 // __attribute__((destructor)) void lul(void)
 // {
-// 	system("leaks minishell");
+//	system("leaks minishell");
 // }
 
 void
@@ -43,25 +43,58 @@ void
 {
 	(void)sig;
 	format_directory(&g_sh);
-	handle_ctrl_u(g_sh.term, 0);
-	write(1, " \n", 2);
-	ft_printf("%*s", g_termx, "");
+	handle_ctrl_c(&g_sh.term);
+	write(1, "\n", 1);
+	ft_printf("\e[7m%%\e[0m%*s\r", g_termx - 1, "");
 	ft_printf(MSG_PROMPT, g_sh.printed_dir);
+	g_sh.ctrl_c = 1;
 	return ;
+}
+
+int
+	get_termx(t_shell *sh, char **av, char **env)
+{
+	int		pid;
+	int		p[2];
+	char	str[11];
+	int		ret;
+	int		res;
+
+	pipe(p);
+	res = 0;
+	if ((pid = fork()) == -1)
+		return (-1);
+	else if (pid == 0)
+	{
+		dup2(p[1], 1);
+		close(p[0]);
+		ret = execve("/usr/bin/tput", av, env);
+		exit(ret);
+	}
+	else
+	{
+		close(p[1]);
+		wait(0);
+		ret = read(p[0], str, 10);
+		str[ret] = 0;
+		res = ft_atoi(str);
+	}
+	return (res);
 }
 
 void
 	handle_winch(int sig)
 {
-	(void)sig;
-	format_directory(&g_sh);
-	signal(SIGWINCH, SIG_IGN);
-	initscr();
-	refresh();
-	g_termx = COLS;
-	g_termy = LINES;
-	endwin();
+	char	**env;
+	char	*av[3];
+
+	env = convert_env_list(g_sh.env);
+	av[0] = "tput";
+	av[1] = "cols";
+	av[2] = 0;
+	g_termx = get_termx(&g_sh, av, env);
 	signal(SIGWINCH, handle_winch);
+	free_env_array(env);
 }
 
 int
@@ -78,7 +111,8 @@ int
 		.input = NULL, .dir = "",
 		.stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0,
-		.env = create_env_list(envp)
+		.env = create_env_list(envp),
+		.ctrl_c = 0
 	};
 	tmp = ft_itoa(ft_atoi((char *)get_value(g_sh.env, "SHLVL", "0")) + 1);
 	set_value(&g_sh.env, "SHLVL", tmp);
