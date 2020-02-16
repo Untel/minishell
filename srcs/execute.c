@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 18:34:07 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 19:27:40 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,18 @@ int
 }
 
 int
+	exit_prog(t_shell *sh, t_cmd *cmd)
+{
+	sh->stop = 1;
+}
+
+int
 	exec_line(t_shell *sh, t_cmd *cmd)
 {
-	int	tmp;
-
 	if (cmd->argc == 0)
 		return (1);
 	else if (exec_is(cmd, BUILTIN_EXIT))
-		(sh->stop = 1);
+		exec_cmd(sh, cmd, exit_prog);
 	else if (exec_is(cmd, BUILTIN_EXPORT))
 		sh->last_ret = exec_cmd(sh, cmd, export_env);
 	else if (exec_is(cmd, BUILTIN_UNSET))

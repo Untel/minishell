@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 17:37:21 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 19:47:11 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,26 @@ int
 	int			fd;
 	int			ret;
 	char		buff[BUFFER_SIZE + 1];
+	char		*pos;
 
 	if (!cmd->redir_in && !cmd->left)
 		return (1);
-	
 	pipe(cmd->pipe_redir_in);
 	if (cmd->left)
 		while ((ret = read(cmd->left->pipe[PIPE_OUT], &buff, BUFFER_SIZE)))
 			write(cmd->pipe_redir_in[PIPE_IN], buff, ret);
 	if ((lst = cmd->redir_in))
-		while (lst)
+		while (lst && (red = (t_redirect *)lst->content))
 		{
-			red = (t_redirect *)lst->content;
-			fd = open(red->filename, O_RDONLY);
-			if (fd > 2)
+			if (red->type == IN_REDIR &&
+				(fd = open(red->filename, O_RDONLY)) > 2)
 			{
 				while ((ret = read(fd, &buff, BUFFER_SIZE)))
 					write(cmd->pipe_redir_in[PIPE_IN], buff, ret);
 				close(fd);
 			}
+			else if (red->type == HEREDOC)
+				;
 			lst = lst->next;
 		}
 	close(cmd->pipe_redir_in[PIPE_IN]);
