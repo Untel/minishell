@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 21:09:21 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:43:53 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,6 @@ int
 }
 
 int
-	redirect_in(t_shell *sh, t_cmd *cmd)
-{
-	int	fd;
-	char buff[BUFFER_SIZE + 1];
-	int ret;
-
-	fd = open(cmd->argv[0], O_RDONLY | O_CREAT, 0644);
-	if (cmd->left && cmd->left->op == REDIR_IN)
-		while ((ret = read(STDIN, &buff, BUFFER_SIZE)))
-			write(STDOUT, buff, ret);
-	if (fd > 0)
-		while ((ret = read(fd, &buff, BUFFER_SIZE)))
-			write(STDOUT, buff, ret);
-	close(fd);
-}
-
-
-int
 	exec_line(t_shell *sh, t_cmd *cmd)
 {
 	int	tmp;
@@ -96,6 +78,7 @@ int
 	int		i;
 	char	*str;
 	int		size;
+	t_list	*lst;
 
 	i = -1;
 	str = NULL;
@@ -108,6 +91,14 @@ int
 			str = ft_strmjoin(cmd->argc - 1, &cmd->argv[1], ", ");
 		ft_printf("Executing '%s' with %d args: '%s' | LR %d | OP %d\n", cmd->argv[0],
 			size, str ? str : "", sh->last_ret, cmd->op);
+		if ((lst = cmd->redir_in))
+			while (lst)
+			{
+				ft_printf("Redir input arg = %s label = %s\n", ((t_redirect *)lst->content)->filename, ((t_redirect *)lst->content)->value);
+				lst = lst->next;
+			}
+		else
+			ft_printf("No redir in\n");
 	}
 }
 
@@ -142,20 +133,11 @@ int
 		cmd = (t_cmd *)lst->content;
 		if (cmd->op == REDIR_OUT_END || cmd->op == REDIR_OUT)
 			builtin_subprocess(sh, cmd, redirect_out);
-		else if (cmd->op == REDIR_IN || cmd->op == REDIR_IN_END)
-		{
-			builtin_subprocess(sh, cmd, redirect_in);
-		}
 		else if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
-		{
-			//print_command(sh, cmd);
 			exec_line(sh, cmd);
-		}
 		else
-		{
 			ft_printf("Ignoring %s\n", cmd->argv[0]);
-		}
 		lst = lst->next;
 	}
 	return (SUC);

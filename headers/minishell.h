@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 22:16:26 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:40:25 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
 # include <sys/errno.h>
 # include <signal.h>
 # include <dirent.h>
@@ -39,17 +40,20 @@
 # define STDOUT			1
 # define STDERR			2
 
-typedef struct	s_reader
+typedef enum	e_mode
 {
-	int			simple_q;
-	int			double_q;
-	int			idx;
-}				t_reader;
+	ARGS,
+	HEREDOC,
+	IN_REDIR,
+	OUT_REDIR,
+	OUT_END_REDIR,
+}				t_mode;
 
 typedef struct	s_read
 {
 	char		*buffer;
 	int			index;
+	t_mode		add_to;
 }				t_read;
 
 typedef enum	e_operator
@@ -59,9 +63,7 @@ typedef enum	e_operator
 	AND,
 	PIPE,
 	JOB,
-	REDIR_IN,
 	REDIR_OUT,
-	REDIR_IN_END,
 	REDIR_OUT_END,
 }				t_operator;
 
@@ -72,8 +74,8 @@ typedef struct	s_cmd
 	char		**argv;
 	t_operator	op;
 	int			pipe[2];
+	int			pipe_redir_in[2];
 	t_list		*redir_in;
-	t_list		*redir_out;
 	struct s_cmd	*left;
 	struct s_cmd	*right;
 }				t_cmd;
@@ -98,7 +100,6 @@ typedef struct	s_shell
 	char	dir[BUFFER_SIZE];
 	char	printed_dir[BUFFER_SIZE];
 	int		last_ret;
-	int		generic_flag;
 	t_list	*env;
 	t_term	term;
 }				t_shell;
@@ -113,7 +114,8 @@ typedef struct	s_redirect
 {
 	char	*filename;
 	char	*value;
-	int		type;
+	int		pipe[2];
+	t_mode	type;
 }				t_redirect;
 
 t_list	*create_env_list(char **envp);
@@ -146,7 +148,7 @@ int		builtin_subprocess(t_shell *sh, t_cmd *cmd,
 /* Command handling */
 t_cmd	*new_command(t_shell *sh, t_operator op);
 char	*add_argument(t_cmd *cmd, char *str);
-char	*add_arg_to_last_cmd(t_shell *sh, char *str);
+void	add_arg_to_last_cmd(t_shell *sh, char *str, t_read *rd);
 void	free_command(t_list *lst);
 
 /* input handling */
@@ -154,7 +156,8 @@ void	handle_arrows(char buff[3], t_term *term);
 void	handle_backspace(char buff[3], t_term *term);
 int		handle_ctrl_d(char buff[3], t_term *term);
 void	handle_ctrl_u(t_term term, int sup);
-
+int		redirect_in_subprocess(t_shell *sh, t_cmd *cmd);
+int		run_redirect_in(t_shell *sh, t_cmd *cmd);
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(int offset, t_shell *sh);
 void	sigint_quit (int sig);

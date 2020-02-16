@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 22:19:37 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:44:34 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,39 +35,6 @@ int
 	return (SUC);
 }
 
-/*int
-	ft_read(t_shell *sh)
-{
-	char	*tmp;
-	char	*old;
-	int		ret;
-
-	tmp = NULL;
-	old = NULL;
-	while ((ret = get_next_line(0, &(sh->input))) == 0)
-	{
-		old = tmp ? ft_strjoin(tmp, sh->input) : ft_strdup(sh->input);
-		free(tmp);
-		free(sh->input);
-		if (old[0] == 0)
-		{
-			free(old);
-			sh->stop = 1;
-			write(1, "  \n", 3);
-			break ;
-		}
-		tmp = old;
-	}
-	if (ret > 0)
-	{
-		old = tmp ? ft_strjoin(tmp, sh->input) : ft_strdup(sh->input);
-		free(tmp);
-		free(sh->input);
-		sh->input = old;
-	}
-	return (ret);
-}
-*/
 
 int
 	ft_read(t_shell *sh)
@@ -87,7 +54,6 @@ int
 		sh->stop = 1;
 	if (!sh->stop && sanitize_input2(sh))
 	{
-		print_commands(sh);
 		exec_lines(sh);
 		clear_last_prompt(sh);
 	}

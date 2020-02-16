@@ -6,11 +6,12 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 22:12:09 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:37:21 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <fcntl.h>
 
 int
 	builtin_subprocess(t_shell *sh, t_cmd *cmd, int (*fn)(t_shell *sh, t_cmd *cmd))
@@ -36,11 +37,44 @@ int
 	{
 		if (cmd->right)
 			dup2(cmd->pipe[PIPE_IN], STDOUT);
-		if (cmd->left)
-			dup2(cmd->left->pipe[PIPE_OUT], STDIN);
+		run_redirect_in(sh, cmd);
 		ret = fn(sh, cmd);
 		exit(0);
 		return (ret);
 	}
 	return (1);
+}
+
+int
+	run_redirect_in(t_shell *sh, t_cmd *cmd)
+{
+	t_redirect	*red;
+	t_list		*lst;
+	int			fd;
+	int			ret;
+	char		buff[BUFFER_SIZE + 1];
+
+	if (!cmd->redir_in && !cmd->left)
+		return (1);
+	
+	pipe(cmd->pipe_redir_in);
+	if (cmd->left)
+		while ((ret = read(cmd->left->pipe[PIPE_OUT], &buff, BUFFER_SIZE)))
+			write(cmd->pipe_redir_in[PIPE_IN], buff, ret);
+	if ((lst = cmd->redir_in))
+		while (lst)
+		{
+			red = (t_redirect *)lst->content;
+			fd = open(red->filename, O_RDONLY);
+			if (fd > 2)
+			{
+				while ((ret = read(fd, &buff, BUFFER_SIZE)))
+					write(cmd->pipe_redir_in[PIPE_IN], buff, ret);
+				close(fd);
+			}
+			lst = lst->next;
+		}
+	close(cmd->pipe_redir_in[PIPE_IN]);
+	dup2(cmd->pipe_redir_in[PIPE_OUT], STDIN);
+	close(cmd->pipe_redir_in[PIPE_OUT]);
 }

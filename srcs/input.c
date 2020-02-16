@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/11 22:17:51 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:42:53 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int
 	if (*i != rd->index)
 		copy_from_idx(sh, rd, *i);
 	if (rd->buffer)
-		add_arg_to_last_cmd(sh, rd->buffer);
+		add_arg_to_last_cmd(sh, rd->buffer, rd);
 	while (sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	rd->index = *i + 1;
@@ -178,10 +178,6 @@ t_operator
 		return (sh->input[*i + 1] == '&' ? AND : JOB);
 	else if (sh->input[*i] == '|')
 		return (sh->input[*i + 1] == '|' ? OR : PIPE);
-	// else if (sh->input[*i] == '<')
-	// {
-	// 	return (sh->input[*i + 1] == '<' ? REDIR_IN_END : REDIR_IN);
-	// }
 	else if (sh->input[*i] == '>')
 	{
 		return (sh->input[*i + 1] == '>' ? REDIR_OUT_END : REDIR_OUT);
@@ -199,9 +195,8 @@ int
 	if (*i != rd->index)
 		copy_from_idx(sh, rd, *i);
 	if (rd->buffer)
-		add_arg_to_last_cmd(sh, rd->buffer);
-	if (op == AND || op == OR
-		|| op == REDIR_IN_END || op == REDIR_OUT_END)
+		add_arg_to_last_cmd(sh, rd->buffer, rd);
+	if (op == AND || op == OR || op == REDIR_OUT_END)
 		*i = *i + 1;
 	new_command(sh, op);
 	while (sh->input[*i] == ' ')
@@ -214,6 +209,44 @@ int
 }
 
 
+
+int
+	handle_redirections(t_shell *sh, t_read *rd, int *i)
+{
+	int		j;
+	char	*str;
+	j = 0;
+	if (*i != rd->index)
+		copy_from_idx(sh, rd, *i);
+	if (rd->buffer)
+		add_arg_to_last_cmd(sh, rd->buffer, rd);
+	if (sh->input[*i] == '<')
+	{
+		if (sh->input[*i + 1] == '<')
+		{
+			*i += 1;
+			rd->add_to = HEREDOC;
+			// while (sh->input[*i + 1] && sh->input[*i + 1] == ' ')
+			// 	*i++;
+			// while (sh->input[*i + 1 + j] && sh->input[*i + 1 + j] != ' ')
+			// 	j++;
+			// if (j > 0)
+			// {
+			// 	rd->label = ft_substr(&sh->input[*i + 1], 0, j);
+			// 	add_arg_to_last_cmd(sh, rd->label, rd);
+			// 	*i += j;
+			// }
+		}
+		else
+		{
+			rd->add_to = IN_REDIR;
+		}
+	}
+	rd->buffer = NULL;
+	rd->index = *i + 1;
+	return (SUC);
+}
+
 int
 	sanitize_input2(t_shell *sh)
 {
@@ -224,7 +257,7 @@ int
 
 	i = -1;
 	ret = 1;
-	rd = (t_read) { .buffer = NULL, .index = 0 };
+	rd = (t_read) { .buffer = NULL, .index = 0, .add_to = ARGS };
 	new_command(sh, NONE);
 	while ((c = sh->input[++i]))
 	{
@@ -243,23 +276,23 @@ int
 			if (!handle_double_quote(sh, &rd, &i))
 				return (ask_closing_char(sh, &rd, "dquote"));
 		}
-		else if (c == '(' || c == ')')
-		{
-			if (!handle_double_quote(sh, &rd, &i))
-				return (ask_closing_char(sh, &rd, "subsh"));
-		}
+		// else if (c == '(' || c == ')')
+		// {
+		// 	if (!handle_double_quote(sh, &rd, &i))
+		// 		return (ask_closing_char(sh, &rd, "subsh"));
+		// }
 		else if (c == ' ')
 			ret = handle_space(sh, &rd, &i);
 		else if (is_cmd_separator(c))
 			ret = handle_separator(sh, &rd, &i);
-		// else if (c == '<')
-		// 	ret = add_redir_in(sh, &rd, &i);
+		else if (c == '<')
+			ret = handle_redirections(sh, &rd, &i);
 		if (!ret)
 			return (ret);
 	}
 	if (rd.index != i)
 		copy_from_idx(sh, &rd, i);
 	if (rd.buffer)
-		add_arg_to_last_cmd(sh, rd.buffer);
+		add_arg_to_last_cmd(sh, rd.buffer, &rd);
 	return (ret);
 }

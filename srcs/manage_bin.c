@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/11 20:54:02 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:33:10 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 	{
 		if (cmd->right)
 			dup2(cmd->pipe[PIPE_IN], STDOUT);
-		if (cmd->left)
-			dup2(cmd->left->pipe[PIPE_OUT], STDIN);
+		run_redirect_in(sh, cmd);
 		errno = 0;
 		ret = execve(path, cmd->argv, envp);
 		if (errno != 0)
