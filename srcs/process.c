@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 19:47:11 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/16 20:57:39 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int
 				close(fd);
 			}
 			else if (red->type == HEREDOC)
+				read
 				;
 			lst = lst->next;
 		}

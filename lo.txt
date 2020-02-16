@@ -1,0 +1,14 @@
+Makefile
+README.md
+headers
+libft
+minishell
+objs
+srcs
+Makefile
+README.md
+headers
+libft
+minishell
+objs
+srcs
