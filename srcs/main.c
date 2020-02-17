@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 20:33:20 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/17 18:39:35 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		g_termy = 0;
 
 // __attribute__((destructor)) void lul(void)
 // {
-//	system("leaks minishell");
+// 	system("leaks minishell");
 // }
 
 void

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 20:54:40 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/17 18:38:26 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,11 @@ int
 		add_arg_to_last_cmd(sh, rd->buffer, rd);
 	if (op == AND || op == OR || op == REDIR_OUT_END)
 		*i = *i + 1;
+	if (op >= NONE)
+	{
+		exec_lines(sh);
+		ft_lstclear(&sh->cmds, free_command);
+	}
 	new_command(sh, op);
 	while (sh->input[*i] == ' ')
 		*i = *i + 1;
@@ -209,14 +214,28 @@ int
 	return (1);
 }
 
-
+int
+	get_heredoc(t_shell *sh, t_read *rd, int *i)
+{
+	int		j = 0;
+	char	*label;
+	while (sh->input[*i + 1] && sh->input[*i + 1] == ' ')
+		*i++;
+	while (sh->input[*i + 1 + j] && sh->input[*i + 1 + j] != ' ')
+		j++;
+	if (j > 0)
+	{
+		label = ft_substr(&sh->input[*i + 1], 0, j);
+		*i += j;
+	}
+}
 
 int
 	handle_redirections(t_shell *sh, t_read *rd, int *i)
 {
 	int		j;
 	char	*str;
-	j = 0;
+
 	if (*i != rd->index)
 		copy_from_idx(sh, rd, *i);
 	if (rd->buffer)
@@ -227,16 +246,6 @@ int
 		{
 			*i += 1;
 			rd->add_to = HEREDOC;
-			// while (sh->input[*i + 1] && sh->input[*i + 1] == ' ')
-			// 	*i++;
-			// while (sh->input[*i + 1 + j] && sh->input[*i + 1 + j] != ' ')
-			// 	j++;
-			// if (j > 0)
-			// {
-			// 	rd->label = ft_substr(&sh->input[*i + 1], 0, j);
-			// 	add_arg_to_last_cmd(sh, rd->label, rd);
-			// 	*i += j;
-			// }
 		}
 		else
 		{
@@ -258,7 +267,9 @@ int
 
 	i = -1;
 	ret = 1;
-	rd = (t_read) { .buffer = NULL, .index = 0, .add_to = ARGS };
+	rd = (t_read) { .buffer = NULL, .index = 0,
+		.add_to = ARGS, .input = NULL,
+	};
 	new_command(sh, NONE);
 	while ((c = sh->input[++i]))
 	{
@@ -291,9 +302,6 @@ int
 		if (!ret)
 			return (ret);
 	}
-	if (rd.index != i)
-		copy_from_idx(sh, &rd, i);
-	if (rd.buffer)
-		add_arg_to_last_cmd(sh, rd.buffer, &rd);
+	ret = handle_separator(sh, &rd, &i);
 	return (ret);
 }

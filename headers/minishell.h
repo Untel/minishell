@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 20:29:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/17 18:35:16 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,20 @@ typedef enum	e_mode
 typedef struct	s_read
 {
 	char		*buffer;
+	char		*input;
 	int			index;
 	t_mode		add_to;
 }				t_read;
 
 typedef enum	e_operator
 {
-	NONE,
-	OR,
-	AND,
 	PIPE,
 	JOB,
 	REDIR_OUT,
 	REDIR_OUT_END,
+	NONE,
+	OR,
+	AND,
 }				t_operator;
 
 typedef struct	s_cmd

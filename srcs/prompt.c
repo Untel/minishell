@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 20:53:51 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/17 17:54:18 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int
 		sh->stop = 1;
 	if (!sh->stop && sanitize_input2(sh))
 	{
-		exec_lines(sh);
+		// exec_lines(sh);
 		clear_last_prompt(sh);
 	}
 	if (sh->stop)
