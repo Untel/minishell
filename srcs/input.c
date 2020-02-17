@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/17 18:38:26 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/17 18:54:55 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ char
 	{
 		tmp = ft_strndup(str, ptr - str);
 		key_len = 1;
-		if (*ptr == '?')
+		ft_printf("Itoa val %s %d\n\n", ptr + 1, sh->last_ret);
+		if (*(ptr + 1) == '?')
 		{
 			value = ft_itoa(sh->last_ret);
 			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
 			free(value);
-			value = ft_strjoin(key, ptr + key_len);
+			value = ft_strjoin(key, ptr + 1 + key_len);
 		}
 		else
 		{
