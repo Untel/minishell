@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/17 18:35:16 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/18 17:32:08 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,13 @@ typedef struct	s_read
 	t_mode		add_to;
 }				t_read;
 
+typedef struct	s_quoter
+{
+	int			s;
+	int			d;
+	int			bslash;
+}				t_quoter;
+
 typedef enum	e_operator
 {
 	PIPE,
@@ -67,6 +74,12 @@ typedef enum	e_operator
 	OR,
 	AND,
 }				t_operator;
+
+typedef	struct	s_heredoc
+{
+	char		*label;
+	char		*buffer;
+}				t_heredoc;
 
 typedef struct	s_cmd
 {
@@ -98,11 +111,12 @@ typedef struct	s_shell
 {
 	char	*input;				//malloced
 	int		stop;
-	t_list	*cmds;
 	char	dir[BUFFER_SIZE];
 	char	printed_dir[BUFFER_SIZE];
 	int		last_ret;
+	t_list	*cmds;
 	t_list	*env;
+	t_list	*heredocs;
 	t_term	term;
 	int		ctrl_c;
 }				t_shell;
@@ -153,7 +167,7 @@ t_cmd	*new_command(t_shell *sh, t_operator op);
 char	*add_argument(t_cmd *cmd, char *str);
 void	add_arg_to_last_cmd(t_shell *sh, char *str, t_read *rd);
 void	free_command(t_list *lst);
-
+int		free_heredocs(t_list *lst);
 /* input handling */
 void	handle_arrows(char buff[3], t_term *term);
 void	handle_backspace(char buff[3], t_term *term);
@@ -178,5 +192,6 @@ char	*read_input(t_shell *sh);
 void	sigint_quit (int sig);
 int		match(char *s1, char *s2);
 int		print_match(t_shell *sh, char buff[3]);
+int		sanitize(t_shell *sh);
 
 #endif

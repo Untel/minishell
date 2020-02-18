@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/16 20:28:37 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/02/18 17:28:57 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ SRCS_FILES	= \
 	handle_input.c\
 	manage_read.c\
 	process.c\
-	echo.c
+	echo.c\
+	sanitize.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 

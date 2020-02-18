@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/17 18:54:55 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/18 17:32:33 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,11 @@ char
 	{
 		tmp = ft_strndup(str, ptr - str);
 		key_len = 1;
-		ft_printf("Itoa val %s %d\n\n", ptr + 1, sh->last_ret);
 		if (*(ptr + 1) == '?')
 		{
 			value = ft_itoa(sh->last_ret);
 			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
 			free(value);
-			value = ft_strjoin(key, ptr + 1 + key_len);
 		}
 		else
 		{
@@ -76,8 +74,8 @@ char
 			value = get_value(sh->env, key, NULL);
 			free(key);
 			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
-			value = ft_strjoin(key, ptr + 1 + key_len);
 		}
+		value = ft_strjoin(key, ptr + 1 + key_len);
 		free(tmp);
 		free(key);
 		free(str);
@@ -281,13 +279,11 @@ int
 		}
 		else if (c == '\'')
 		{
-			if (!handle_simple_quote(sh, &rd, &i))
-				return (ask_closing_char(sh, &rd, "quote"));
+			handle_simple_quote(sh, &rd, &i);
 		}
 		else if (c == '"')
 		{
-			if (!handle_double_quote(sh, &rd, &i))
-				return (ask_closing_char(sh, &rd, "dquote"));
+			handle_double_quote(sh, &rd, &i);
 		}
 		// else if (c == '(' || c == ')')
 		// {

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/17 18:39:35 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/18 17:20:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		g_termy = 0;
 void
 	clear_last_prompt(t_shell *sh)
 {
+	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
 	ft_memdel((void **)&sh->input);
 }
