@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/18 17:20:12 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:47:02 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void
 {
 	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
+	sh->hd_index = 0;
 	ft_memdel((void **)&sh->input);
 }
 
@@ -47,7 +48,8 @@ void
 	handle_ctrl_c(&g_sh.term);
 	write(1, "\n", 1);
 	ft_printf("\e[7m%%\e[0m%*s\r", g_termx - 1, "");
-	ft_printf(MSG_PROMPT, g_sh.printed_dir);
+	ft_printf(g_sh.last_ret == EXIT_SUCCESS ?
+		MSG_PROMPT : MSG_PROMPT_ERR, g_sh.printed_dir);
 	g_sh.ctrl_c = 1;
 	return ;
 }
@@ -113,7 +115,7 @@ int
 		.stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0,
 		.env = create_env_list(envp),
-		.ctrl_c = 0
+		.ctrl_c = 0, .hd_index = 0
 	};
 	tmp = ft_itoa(ft_atoi((char *)get_value(g_sh.env, "SHLVL", "0")) + 1);
 	set_value(&g_sh.env, "SHLVL", tmp);
@@ -133,8 +135,8 @@ int
 	else
 	{
 		get_next_line(0, &g_sh.input);
-		sanitize_input2(&g_sh);
-		exec_lines(&g_sh);
+		if (sanitize(&g_sh) && parse_input(&g_sh))
+			exec_lines(&g_sh);
 		clear_last_prompt(&g_sh);
 		free_env_list(&g_sh.env);
 	}

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/17 17:56:24 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 14:32:10 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-		print_command(sh, cmd);
+		// print_command(sh, cmd);
 //		if (cmd && !ft_strncmp(cmd->argv[0], "ls", 3))
 //			add_argument(cmd, ft_strdup("-G"));
 		if (cmd->op == REDIR_OUT_END || cmd->op == REDIR_OUT)
@@ -167,5 +167,6 @@ int
 		}
 		lst = lst->next;
 	}
+	ft_lstclear(&sh->cmds, free_command);	
 	return (SUC);
 }

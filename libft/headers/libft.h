@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/18 18:37:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 13:24:29 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,6 @@ void			ft_lstremove_if(t_list **begin_list, void *data_ref,
 void			ft_lstclear(t_list **lst, void (*del)(t_list *));
 void			ft_lstprint(t_list *lst, char *cmt);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *));
+t_list			*ft_lstindex(t_list *lst, size_t index);
+t_list			*ft_lstshift(t_list **alst);
 #endif

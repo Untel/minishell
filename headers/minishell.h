@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/18 17:32:08 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 14:33:55 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ typedef struct	s_shell
 	t_list	*cmds;
 	t_list	*env;
 	t_list	*heredocs;
+	int		hd_index;
 	t_term	term;
 	int		ctrl_c;
 }				t_shell;
@@ -156,8 +157,7 @@ int		change_directory(t_shell *sh, t_cmd *cmd);
 int		export_env(t_shell *sh, t_cmd *cmd);
 /* Promt */
 int		prompt_line(t_shell *sh);
-int		sanitize_input(t_shell *sh);
-int		sanitize_input2(t_shell *sh);
+int		parse_input(t_shell *sh);
 int		format_directory(t_shell *sh);
 // int		ask_closing_quote(t_shell *sh);
 int		builtin_subprocess(t_shell *sh, t_cmd *cmd,
@@ -193,5 +193,4 @@ void	sigint_quit (int sig);
 int		match(char *s1, char *s2);
 int		print_match(t_shell *sh, char buff[3]);
 int		sanitize(t_shell *sh);
-
 #endif

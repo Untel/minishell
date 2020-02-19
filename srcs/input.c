@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/18 17:32:33 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 14:33:39 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,6 @@ int
 		return (2);
 	else
 		return (0);
-}
-
-int
-	ask_closing_char(t_shell *sh, t_read *rd, char *ask)
-{
-	char	*tmp;
-	char	*tmps[2];
-	char	*buffer;
-	int		offset;
-
-	ft_lstclear(&sh->cmds, free_command);
-	offset = ft_printf("%s> ", ask);
-	sh->term.size_prt = ft_strlen(ask) + 2;
-	buffer = read_input(sh);
-	write(1, "\n", 1);
-	tmps[0] = sh->input;
-	tmps[1] = buffer;
-	tmp = ft_strmjoin(2, tmps, "\n");
-	free(buffer);
-	clear_last_prompt(sh);
-	sh->input = tmp;
-	free(rd->buffer);
-	rd->buffer = NULL;
-	return (sanitize_input2(sh));
 }
 
 char
@@ -257,7 +233,7 @@ int
 }
 
 int
-	sanitize_input2(t_shell *sh)
+	parse_input(t_shell *sh)
 {
 	int			i;
 	char		c;

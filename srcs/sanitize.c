@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/18 19:13:12 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:32:46 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ int
 }
 
 int
-	ask_concat(t_shell *sh, char *ask, char **place)
+	ask_concat(t_shell *sh, char *ask, char **place, char *stopif)
 {
 	char	*tmp;
 	char	*tmps[2];
 	char	*buffer;
 	int		offset;
-	int		len;
 
 	offset = ft_printf("%s> ", ask);
 	sh->term.size_prt = ft_strlen(ask) + 2;
@@ -39,14 +38,18 @@ int
 	write(1, "\n", 1);
 	if (buffer == (char *)ERR)
 		return (ERR);
-	tmps[0] = *place;
+	if (stopif && ft_strcmp(stopif, buffer) == 0)
+	{
+		free(buffer);
+		return (0);
+	}
+	tmps[0] = *place ? *place : "";
 	tmps[1] = buffer;
-	len = ft_strlen(*place);
-	tmp = ft_strmjoin(2, tmps, "\n");
+	tmp = ft_strmjoin(2, tmps, *place ? "\n" : "");
 	free(buffer);
 	free(*place);
 	*place = tmp;
-	return (len + 1);
+	return (1);
 }
 
 int
@@ -54,7 +57,7 @@ int
 {
 	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
-	ask_concat(sh, ask, &sh->input);
+	ask_concat(sh, ask, &sh->input, NULL);
 	return (sanitize(sh));
 }
 
@@ -69,7 +72,7 @@ int
 		return (ERR);
 	while (sh->input[*i + 1] == ' ')
 		*i++;
-	*hd = (t_heredoc) { .label = NULL, .buffer = ft_strdup(""), };
+	*hd = (t_heredoc) { .label = NULL, .buffer = NULL, };
 	while (ft_isalnum(sh->input[*i + 1 + j]))
 		j++;
 	hd->label = ft_strndup(&sh->input[*i + 1], j);
@@ -91,8 +94,8 @@ int
 		hd = (t_heredoc *)lst->content;
 		ft_sprintf(asker, "heredoc(%s)", hd->label);
 		len = 0;
-		while (ft_strcmp(hd->buffer + len, hd->label) != 0)
-			len = ask_concat(sh, asker, &hd->buffer);
+		while (ask_concat(sh, asker, &hd->buffer, hd->label) == SUC)
+			;
 		lst = lst->next;
 	}
 }
@@ -103,13 +106,16 @@ int
 	t_quoter	q;
 	int			i;
 	char		c;
+	char		cc;
 
 	i = -1;
-	q = (t_quoter) { .s = 0, .d = 0, .bslash = 0 };
+	c = 0;
+	q = (t_quoter) { .s = 0, .d = 0, .bslash = -1 };
 	while (sh->input[++i])
 	{
-		if (sh->input[i] == ' ')
+		if (sh->input[i] == ' ' || sh->input[i] == ';')
 			continue;
+		cc = c;
 		c = sh->input[i];
 		if (c == '\\')
 			q.bslash = i + 1;
@@ -126,7 +132,9 @@ int
 	else if (q.d)
 		return (ask_to_close(sh, "dquote"));
 	else if (c == '|')
-		return (ask_to_close(sh, "pipe"));
+		return (ask_to_close(sh, cc == '|' ? "cmdor" : "pipe"));
+	else if (c == '&' && cc == '&')
+		return (ask_to_close(sh, "cmdand"));
 	else if (q.bslash == i)
 		return (ask_to_close(sh, ""));
 	ask_heredocs(sh);

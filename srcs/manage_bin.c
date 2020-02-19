@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/18 18:27:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 16:18:26 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 	if (child > 0)
 	{
 		pid = waitpid(child, &status, 0);
+		sh->last_ret = WEXITSTATUS(status);
 		if (cmd->right)
 			close(cmd->pipe[PIPE_IN]);
 		if (cmd->left)
 			close(cmd->left->pipe[PIPE_OUT]);
-		return (status);
+		return (sh->last_ret);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 20:30:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 14:27:24 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,17 @@ char
 }
 
 void
-	add_redir(t_cmd *cmd, char *str, t_read *rd)
+	add_redir(t_shell *sh, t_cmd *cmd, char *str, t_read *rd)
 {
 	t_redirect	*redir;
-	t_list		**lst;
+	t_list		*lst;
 
-	lst = &cmd->redir_in;
 	if (!(redir = malloc(sizeof(t_redirect))))
 		return ;
 	*redir = (t_redirect) { .filename = str, .value = NULL, .type = rd->add_to };
-	ft_lstadd_back(lst, ft_lstnew(redir, sizeof(t_redirect)));
+	if (rd->add_to == HEREDOC && (lst = ft_lstindex(sh->heredocs, sh->hd_index++)))
+		redir->value = ((t_heredoc *)lst->content)->buffer;
+	ft_lstadd_back(&cmd->redir_in, ft_lstnew(redir, sizeof(t_redirect)));
 }
 
 void
@@ -83,7 +84,7 @@ void
 	if (!el)
 		err_shutdown(sh, "Error commands.c add_arg_to_last_cmd");
 	if (rd->add_to != ARGS)
-		add_redir((t_cmd *)el->content, str, rd);
+		add_redir(sh, (t_cmd *)el->content, str, rd);
 	else
 		add_argument((t_cmd *)el->content, str);
 	rd->add_to = ARGS;
