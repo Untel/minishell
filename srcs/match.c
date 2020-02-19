@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   match.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/14 02:21:36 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int		handle_match(t_shell *sh, char buff[3], int nb_elem,
 	}
 	sh->ctrl_c = 0;
 	print_line(sh);
-	free(str);
+	ft_memdel((void **)&str);
 	return (size);
 }
 
@@ -128,7 +128,7 @@ int		print_match(t_shell *sh, char buff[3])
 	}
 	else if ((nb_elem = get_nmatch(sh, str)) == -1)
 	{
-		free(str);
+		ft_memdel((void **)&str);
 		return (0);
 	}
 	sh->term.old_s_in = 0;
@@ -136,7 +136,7 @@ int		print_match(t_shell *sh, char buff[3])
 	if (is_first_word(sh))
 	{
 		ft_lstclear(&occur, free_occur);
-		free(occur);
+		ft_memdel((void **)&occur);
 		free_env_array(paths);
 	}
 	return (ret);

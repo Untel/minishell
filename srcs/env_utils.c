@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 00:27:52 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void
 		ft_lstadd_front(lst_env, ft_lstnew(var, sizeof(var)));
 		return (*lst_env);
 	}
-	free(var->value);
+	ft_memdel((void **)&var->value);
 	var->value = ft_strdup(value);
 	return (*lst_env);
 }

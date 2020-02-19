@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/19 17:48:57 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 	tcsetattr(1, 0, &sh->term.term);
 	if (child == 0 && ret != 0)
 		exit(ret);
-	free(bin_path);
+	ft_memdel((void **)&bin_path);
 	free_env_array(envp);
 	return (ret);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   match_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/15 03:13:11 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	print_list(t_shell *sh)
 			return ;
 		write(1, "\n", 1);
 		ret = execve("/bin/ls", av, env);
-		free(env);
+		ft_memdel((void **)&env);
 		exit(ret);
 	}
 }
@@ -85,7 +85,7 @@ void	print_list(t_shell *sh)
 void	handle_empty_line(t_shell *sh, t_lst_in **tmp)
 {
 	free_all(sh->term.input);
-	free(sh->term.input);
+	ft_memdel((void **)&sh->term.input);
 	sh->term.input = malloc(sizeof(t_data));
 	init_lst(sh->term.input);
 	add_empty(sh->term.input, '\0');

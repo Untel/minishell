@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 14:27:24 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char
 		new_argv[i] = cmd->argv[i];
 	new_argv[cmd->argc++] = str;
 	new_argv[cmd->argc] = NULL;
-	free(cmd->argv);
+	ft_memdel((void **)&cmd->argv);
 	cmd->argv = new_argv;
 	return (str);
 }

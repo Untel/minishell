@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   match_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:27:42 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/14 01:17:05 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_list	*get_nmatch_bin(t_shell *sh, char **paths, char *str)
 
 void	free_occur(t_list *occur)
 {
-	free(occur->content);
+	ft_memdel((void **)&occur->content);
 }
 
 int		match_bin(t_shell *sh, int i, t_list *occur, int nb_elem)
@@ -86,6 +86,6 @@ int		match_bin(t_shell *sh, int i, t_list *occur, int nb_elem)
 		tmp = tmp->next;
 		++j;
 	}
-	free(str);
+	ft_memdel((void **)&str);
 	return (size);
 }

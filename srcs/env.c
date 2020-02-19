@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:11:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**convert_env_list(t_list *lst_env)
 		var = (t_key *)(lst_env->content);
 		envp[size] = ft_strjoin(var->key, "=");
 		tmp = ft_strjoin(envp[size], var->value);
-		free(envp[size]);
+		ft_memdel((void **)&envp[size]);
 		envp[size] = tmp;
 		lst_env = lst_env->next;
 	}

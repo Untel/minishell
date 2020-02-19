@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:11:01 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 09:35:09 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ char	*convert_to_str(t_data *lst)
 		tmp = tmp->prev;
 	}
 	free_all(lst);
-	free(lst);
+	ft_memdel((void **)&lst);
 	return (new);
 }

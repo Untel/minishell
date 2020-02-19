@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 18:01:14 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:18:49 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ int
 		return (ERR);
 	if (stopif && ft_strcmp(stopif, buffer) == 0)
 	{
-		free(buffer);
+		ft_memdel((void **)&buffer);
 		return (0);
 	}
 	tmps[0] = *place ? *place : "";
 	tmps[1] = buffer;
 	tmp = ft_strmjoin(2, tmps, *place ? "\n" : "");
-	free(buffer);
-	free(*place);
+	ft_memdel((void **)&buffer);
+	ft_memdel((void **)&*place);
 	*place = tmp;
 	return (1);
 }
@@ -57,7 +57,8 @@ int
 {
 	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
-	ask_concat(sh, ask, &sh->input, NULL);
+	if (ask_concat(sh, ask, &sh->input, NULL) == ERR)
+		return (ERR);
 	return (sanitize(sh));
 }
 
@@ -87,15 +88,19 @@ int
 	t_list		*lst;
 	int			len;
 	char		asker[BUFFER_SIZE];
+	char		*tmp;
 
 	lst = sh->heredocs;
+	tmp = NULL;
 	while (lst)
 	{
 		hd = (t_heredoc *)lst->content;
 		ft_sprintf(asker, "heredoc(%s)", hd->label);
 		len = 0;
-		while (ask_concat(sh, asker, &hd->buffer, hd->label) == SUC)
+		while (ask_concat(sh, asker, &tmp, hd->label) == SUC)
 			;
+		hd->buffer = ft_strjoin(tmp, "\n");
+		ft_memdel((void **)&tmp);
 		lst = lst->next;
 	}
 }

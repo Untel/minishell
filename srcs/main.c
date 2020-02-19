@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 17:47:02 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:54:51 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ t_shell	g_sh;
 int		g_termx = 0;
 int		g_termy = 0;
 
-// __attribute__((destructor)) void lul(void)
-// {
-// 	system("leaks minishell");
-// }
+__attribute__((destructor)) void lul(void)
+{
+	system("leaks minishell");
+}
 
 void
 	clear_last_prompt(t_shell *sh)
@@ -48,6 +48,7 @@ void
 	handle_ctrl_c(&g_sh.term);
 	write(1, "\n", 1);
 	ft_printf("\e[7m%%\e[0m%*s\r", g_termx - 1, "");
+	g_sh.term.size_prt = ft_strlen(g_sh.printed_dir) + 7;
 	ft_printf(g_sh.last_ret == EXIT_SUCCESS ?
 		MSG_PROMPT : MSG_PROMPT_ERR, g_sh.printed_dir);
 	g_sh.ctrl_c = 1;

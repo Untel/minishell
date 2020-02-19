@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:34:51 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/13 07:15:42 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int			delone(t_data *lst, int pos)
 		scd_case(&del_elem, lst);
 	else
 		thd_case(&del_elem, lst, pos);
-	free(del_elem);
+	ft_memdel((void **)&del_elem);
 	--lst->size;
 	return (0);
 }

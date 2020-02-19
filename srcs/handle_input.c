@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/12 01:03:30 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		handle_ctrl_d(char buff[3], t_term * term)
 	if (term->input->size == 1)
 	{
 		free_all(term->input);
-		free(term->input);
+		ft_memdel((void **)&term->input);
 		return (-1);
 	}
 	if (term->pos_str > 1)

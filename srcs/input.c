@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 14:33:39 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char
 		{
 			value = ft_itoa(sh->last_ret);
 			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
-			free(value);
+			ft_memdel((void **)&value);
 		}
 		else
 		{
@@ -48,13 +48,13 @@ char
 				++key_len;
 			key = ft_strndup(ptr + 1, key_len);
 			value = get_value(sh->env, key, NULL);
-			free(key);
+			ft_memdel((void **)&key);
 			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
 		}
 		value = ft_strjoin(key, ptr + 1 + key_len);
-		free(tmp);
-		free(key);
-		free(str);
+		ft_memdel((void **)&tmp);
+		ft_memdel((void **)&key);
+		ft_memdel((void **)&str);
 		return (replace_vars(sh, value));
 	}
 	return (str);
@@ -71,10 +71,10 @@ int
 	if (rd->buffer)
 	{
 		tmp = ft_strjoin(rd->buffer, sub);
-		free(sub);
+		ft_memdel((void **)&sub);
 		sub = tmp;
 	}
-	free(rd->buffer);
+	ft_memdel((void **)&rd->buffer);
 	rd->buffer = sub;
 	rd->index = idx + 1;
 	return (1);
@@ -98,10 +98,10 @@ int
 	if (rd->buffer)
 	{
 		tmp = ft_strjoin(rd->buffer, sub);
-		free(sub);
+		ft_memdel((void **)&sub);
 		sub = tmp;
 	}
-	free(rd->buffer);
+	ft_memdel((void **)&rd->buffer);
 	rd->buffer = sub;
 	*i = *i + len + 1;
 	rd->index = *i + 1;
@@ -123,10 +123,10 @@ int
 	if (rd->buffer)
 	{
 		tmp = ft_strjoin(rd->buffer, sub);
-		free(sub);
+		ft_memdel((void **)&sub);
 		sub = tmp;
 	}
-	free(rd->buffer);
+	ft_memdel((void **)&rd->buffer);
 	rd->buffer = sub;
 	*i = *i + len + 1;
 	rd->index = *i + 1;
