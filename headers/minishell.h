@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 14:33:55 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:54:14 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@
 # define MSG_EXIT		"🖐  \033[1;31mGood bye!\033[0m\n"
 # define PIPE_OUT		0
 # define PIPE_IN		1
-# define STDIN			0
-# define STDOUT			1
 # define STDERR			2
 
 typedef enum	e_mode
@@ -62,6 +60,8 @@ typedef struct	s_quoter
 	int			s;
 	int			d;
 	int			bslash;
+	char		c;
+	char		cc;
 }				t_quoter;
 
 typedef enum	e_operator

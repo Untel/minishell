@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 17:32:46 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:01:14 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,25 +105,22 @@ int
 {
 	t_quoter	q;
 	int			i;
-	char		c;
-	char		cc;
 
 	i = -1;
-	c = 0;
-	q = (t_quoter) { .s = 0, .d = 0, .bslash = -1 };
+	q = (t_quoter) { .s = 0, .d = 0, .bslash = -1, .c = 0, .cc = 0 };
 	while (sh->input[++i])
 	{
 		if (sh->input[i] == ' ' || sh->input[i] == ';')
 			continue;
-		cc = c;
-		c = sh->input[i];
-		if (c == '\\')
+		q.cc = q.c;
+		q.c = sh->input[i];
+		if (q.c == '\\')
 			q.bslash = i + 1;
-		else if (c == '\'' && !q.d && q.bslash != i)
+		else if (q.c == '\'' && !q.d && q.bslash != i)
 			q.s = !q.s;
-		else if (c == '"' && !q.s && q.bslash != i)
+		else if (q.c == '"' && !q.s && q.bslash != i)
 			q.d = !q.d;
-		else if (c == '<' && sh->input[i + 1] == '<'
+		else if (q.c == '<' && sh->input[i + 1] == '<'
 			&& !q.s && q.bslash != i++)
 			add_heredoc(sh, &i);
 	}
@@ -131,9 +128,9 @@ int
 		return (ask_to_close(sh, "quote"));
 	else if (q.d)
 		return (ask_to_close(sh, "dquote"));
-	else if (c == '|')
-		return (ask_to_close(sh, cc == '|' ? "cmdor" : "pipe"));
-	else if (c == '&' && cc == '&')
+	else if (q.c == '|')
+		return (ask_to_close(sh, q.cc == '|' ? "cmdor" : "pipe"));
+	else if (q.c == '&' && q.cc == '&')
 		return (ask_to_close(sh, "cmdand"));
 	else if (q.bslash == i)
 		return (ask_to_close(sh, ""));

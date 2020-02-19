@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 14:32:10 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:48:57 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int
 		if (!cmd->right || cmd->right->op == PIPE)
 			write(fd, buff, ret);
 		if (cmd->right)
-			write(STDOUT, buff, ret);
+			write(STDOUT_FILENO, buff, ret);
 	}
 	close(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/10 21:35:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:51:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ int
 		set_value(&sh->env, "OLDPWD", sh->dir);
 		format_directory(sh);
 	}
-	return (ret != ERR);
+	return (ret != ERR ? 0 : ERR);
 }
