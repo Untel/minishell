@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 17:48:57 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:24:36 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,18 @@
 #define BUILTIN_UNSET "unset"
 #define BUILTIN_ENV "env"
 #define BUILTIN_CD "cd"
+#define BUILTIN_ECHO "echo"
+#define BUILTIN_PWD "pwd"
 
 int
 	exec_is(t_cmd *cmd, char *str)
 {
-	return (ft_strncmp(
-		str,
-		cmd->argv[0],
-		ft_strlen(cmd->argv[0])) == 0);
+	int i;
+
+	i = -1;
+	while (++i < ft_strlen(cmd->argv[0]))
+		cmd->argv[0][i] = ft_tolower(cmd->argv[0][i]);
+	return (ft_strcmp(str, cmd->argv[0]) == 0);
 }
 
 int
@@ -37,7 +41,6 @@ int
 	fd = open(cmd->argv[0], O_WRONLY | O_CREAT |
 		(cmd->op == REDIR_OUT_END ? O_APPEND : 0)
 		, 0644);
-
 	while ((ret = read(0, &buff, BUFFER_SIZE)))
 	{
 		if (!cmd->right || cmd->right->op == PIPE)
@@ -77,7 +80,11 @@ int
 	if (cmd->argc == 0)
 		return (1);
 	else if (exec_is(cmd, BUILTIN_EXIT))
-		exec_cmd(sh, cmd, exit_prog);
+		sh->last_ret = exec_cmd(sh, cmd, exit_prog);
+	else if (exec_is(cmd, BUILTIN_ECHO))
+		sh->last_ret = exec_cmd(sh, cmd, ft_echo);
+	else if (exec_is(cmd, BUILTIN_PWD))
+		sh->last_ret = exec_cmd(sh, cmd, ft_pwd);
 	else if (exec_is(cmd, BUILTIN_EXPORT))
 		sh->last_ret = exec_cmd(sh, cmd, export_env);
 	else if (exec_is(cmd, BUILTIN_UNSET))

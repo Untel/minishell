@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 17:49:00 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/21 15:54:13 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ int
 			dup2(cmd->pipe[PIPE_IN], STDOUT_FILENO);
 		run_redirect_in(sh, cmd);
 		ret = fn(sh, cmd);
-		exit(0);
+		exit(ret);
 		return (ret);
 	}
-	return (1);
+	return (SUC);
 }
 
 int
@@ -53,10 +53,9 @@ int
 	int			fd;
 	int			ret;
 	char		buff[BUFFER_SIZE + 1];
-	char		*pos;
 
 	if (!cmd->redir_in && !cmd->left)
-		return (1);
+		return (SUC);
 	pipe(cmd->pipe_redir_in);
 	if (cmd->left)
 		while ((ret = read(cmd->left->pipe[PIPE_OUT], &buff, BUFFER_SIZE)))
@@ -78,4 +77,5 @@ int
 	close(cmd->pipe_redir_in[PIPE_IN]);
 	dup2(cmd->pipe_redir_in[PIPE_OUT], STDIN_FILENO);
 	close(cmd->pipe_redir_in[PIPE_OUT]);
+	return (SUC);
 }

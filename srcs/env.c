@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:11:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/21 15:56:04 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		ft_env(t_shell *sh, t_cmd *cmd)
 	if (cmd->argc > 1)
 	{
 		ft_fprintf(STDERR, MSG_ERROR, "env: to many arguments\n");
-		return (0);
+		return (EXIT_FAILURE);
 	}
 	while (lst_env)
 	{
@@ -79,5 +79,5 @@ int		ft_env(t_shell *sh, t_cmd *cmd)
 		ft_printf("%s=%s\n", key->key, key->value);
 		lst_env = lst_env->next;
 	}
-	return (SUC);
+	return (EXIT_SUCCESS);
 }

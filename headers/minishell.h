@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 18:58:46 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:00:46 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define FALSE 0
 # define SUC 1
 # define MSG_ERROR		"💩  \033[1;31mError\033[0m %s\n"
+# define MSG_ERRORN		"💩  \033[1;31mError\033[0m %s"
 # define MSG_404_CMD	"🤔  \033[1;33m%s\033[0m: command not found\n"
 # define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m » "
 # define MSG_PROMPT_ERR	"🧨  \033[1;31m%s\033[0m » "
@@ -148,6 +149,8 @@ void	*get_value(t_list *env, char *key, char *def);
 void	clear_last_prompt(t_shell *sh);
 void	unset_key(t_list **lst_env, char *key);
 void	free_env_unset(void *content);
+int		ft_echo(t_shell *sh, t_cmd *cmd);
+int		ft_pwd(t_shell *sh, t_cmd *cmd);
 int		is_key_env_valid(char *key);
 /* PATH management */
 int		exec_bin(t_shell *sh, t_cmd *cmd);
