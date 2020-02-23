@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:38:32 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int
 {
 	if (c == ';')
 		return (1);
-	else if (c == '|' || c == '&' || c == '>')
+	else if (c == '|' || c == '&')
 		return (2);
 	else
 		return (0);
@@ -154,10 +154,6 @@ t_operator
 		return (sh->input[*i + 1] == '&' ? AND : JOB);
 	else if (sh->input[*i] == '|')
 		return (sh->input[*i + 1] == '|' ? OR : PIPE);
-	else if (sh->input[*i] == '>')
-	{
-		return (sh->input[*i + 1] == '>' ? REDIR_OUT_END : REDIR_OUT);
-	}
 	else
 		return (NONE);
 }
@@ -217,15 +213,17 @@ int
 		add_arg_to_last_cmd(sh, rd->buffer, rd);
 	if (sh->input[*i] == '<')
 	{
-		if (sh->input[*i + 1] == '<')
-		{
-			*i += 1;
+		if (sh->input[*i + 1] == '<' && (*i++ || 1))
 			rd->add_to = HEREDOC;
-		}
 		else
-		{
 			rd->add_to = IN_REDIR;
-		}
+	}
+	else if (sh->input[*i] == '>')
+	{
+		if (sh->input[*i + 1] == '>' && (*i++ || 1))
+			rd->add_to = OUT_REDIR;
+		else
+			rd->add_to = OUT_END_REDIR;
 	}
 	rd->buffer = NULL;
 	rd->index = *i + 1;
@@ -270,7 +268,7 @@ int
 			ret = handle_space(sh, &rd, &i);
 		else if (is_cmd_separator(c))
 			ret = handle_separator(sh, &rd, &i);
-		else if (c == '<')
+		else if (c == '<' || c == '>')
 			ret = handle_redirections(sh, &rd, &i);
 		if (!ret)
 			return (ret);

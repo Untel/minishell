@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:33:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,19 @@ void
 {
 	t_redirect	*redir;
 	t_list		*lst;
+	t_list		**ptr;
 
 	if (!(redir = malloc(sizeof(t_redirect))))
 		return ;
 	*redir = (t_redirect) { .filename = str, .value = NULL, .type = rd->add_to };
 	if (rd->add_to == HEREDOC && (lst = ft_lstindex(sh->heredocs, sh->hd_index++)))
 		redir->value = ((t_heredoc *)lst->content)->buffer;
-	ft_lstadd_back(&cmd->redir_in, ft_lstnew(redir, sizeof(t_redirect)));
+	ft_lstadd_back(
+		((rd->add_to == HEREDOC || rd->add_to == IN_REDIR)
+			? &cmd->redir_in
+			: &cmd->redir_out)
+		, ft_lstnew(redir, sizeof(t_redirect))
+	);
 }
 
 void

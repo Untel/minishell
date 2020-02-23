@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/21 16:24:36 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 16:36:56 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int
 	say_404(t_shell *sh, t_cmd *cmd)
 {
 	ft_fprintf(STDERR, MSG_404_CMD, cmd->argv[0]);
-	sh->last_ret = 127;
 	return (127);
 }
 
@@ -72,6 +71,7 @@ int
 	exit_prog(t_shell *sh, t_cmd *cmd)
 {
 	sh->stop = 1;
+	return (0);
 }
 
 int
@@ -140,7 +140,7 @@ int
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-		if (cmd->right && pipe(cmd->pipe) == ERR)
+		if (pipe(cmd->pipe) == ERR)
 			return (-1);
 		lst = lst->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/21 16:00:46 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 16:36:27 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ typedef struct	s_cmd
 	t_operator	op;
 	int			pipe[2];
 	int			pipe_redir_in[2];
+	int			fd;
 	t_list		*redir_in;
+	t_list		*redir_out;
 	struct s_cmd	*left;
 	struct s_cmd	*right;
 }				t_cmd;
@@ -179,6 +181,7 @@ void	handle_ctrl_u(t_term term);
 void	handle_ctrl_c(t_term *term);
 int		redirect_in_subprocess(t_shell *sh, t_cmd *cmd);
 int		run_redirect_in(t_shell *sh, t_cmd *cmd);
+int		run_redirect_out(t_shell *sh, t_cmd *cmd);
 /* autocomplete utils */
 void	print_line(t_shell *sh);
 void	print_list(t_shell *sh);
@@ -196,4 +199,5 @@ void	sigint_quit (int sig);
 int		match(char *s1, char *s2);
 int		print_match(t_shell *sh, char buff[3]);
 int		sanitize(t_shell *sh);
+int		after_redirect_out(t_shell *sh, t_cmd *cmd);
 #endif
