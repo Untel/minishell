@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 18:59:09 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 18:58:15 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ int
 	return (SUC);
 }
 
-extern int	g_termx;
-
 int
 	ft_read(t_shell *sh)
 {
@@ -49,14 +47,14 @@ int
 int
 	prompt_line(t_shell *sh)
 {
-	ft_printf("\e[7m%%\e[0m%*s\r", g_termx - 1, "");
+	ft_printf("\e[7m%%\e[0m%*s\r", g_sh.term.pos.x - 1, "");
 	ft_printf(sh->last_ret == EXIT_SUCCESS ?
 		MSG_PROMPT : MSG_PROMPT_ERR, sh->printed_dir);
 	if (ft_read(sh) == 0)
 		sh->stop = 1;
-	if (!sh->stop && sanitize(sh) && parse_input(sh))
+	if (!sh->stop && sanitize(sh))
 	{
-		// exec_lines(sh);
+		parse_input(sh);
 		clear_last_prompt(sh);
 	}
 	if (sh->stop)

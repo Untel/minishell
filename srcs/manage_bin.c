@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 17:15:12 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 18:47:38 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 	{
 
 		run_redirect_out(sh, cmd);
-		run_redirect_in(sh, cmd);
+		if (cmd->redir_in || cmd->left)
+			run_redirect_in(sh, cmd);
 		errno = 0;
 		ret = execve(path, cmd->argv, envp);
 		if (errno != 0)
@@ -85,13 +86,6 @@ int		ft_inset(char *str, char c)
 		if (*(str + i++) == c)
 			return (--i);
 	return (-1);
-}
-
-void
-	sigint_void(int sig)
-{
-	write(1, "\r", 1);
-	return;
 }
 
 int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)

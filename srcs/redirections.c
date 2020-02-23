@@ -6,35 +6,40 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:41:59 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 18:29:47 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int
+void
+	redirect_buffer(int from, int to)
+{
+	int		ret;
+	char	buff[BUFFER_SIZE + 1];
+
+	while ((ret = read(from, &buff, BUFFER_SIZE)))
+		write(to, buff, ret);
+}
+
+void
 	run_redirect_in(t_shell *sh, t_cmd *cmd)
 {
 	t_redirect	*red;
 	t_list		*lst;
 	int			fd;
-	int			ret;
-	char		buff[BUFFER_SIZE + 1];
 
-	if (!cmd->redir_in && !cmd->left)
-		return (SUC);
+
 	pipe(cmd->pipe_redir_in);
 	if (cmd->left)
-		while ((ret = read(cmd->left->pipe[PIPE_OUT], &buff, BUFFER_SIZE)))
-			write(cmd->pipe_redir_in[PIPE_IN], buff, ret);
+		redirect_buffer(cmd->left->pipe[PIPE_OUT], cmd->pipe_redir_in[PIPE_IN]);
 	if ((lst = cmd->redir_in))
 		while (lst && (red = (t_redirect *)lst->content))
 		{
 			if (red->type == IN_REDIR &&
 				(fd = open(red->filename, O_RDONLY)) > 2)
 			{
-				while ((ret = read(fd, &buff, BUFFER_SIZE)))
-					write(cmd->pipe_redir_in[PIPE_IN], buff, ret);
+				redirect_buffer(fd, cmd->pipe_redir_in[PIPE_IN]);
 				close(fd);
 			}
 			else if (red->type == HEREDOC)
@@ -44,7 +49,6 @@ int
 	close(cmd->pipe_redir_in[PIPE_IN]);
 	dup2(cmd->pipe_redir_in[PIPE_OUT], STDIN_FILENO);
 	close(cmd->pipe_redir_in[PIPE_OUT]);
-	return (SUC);
 }
 
 int
@@ -54,7 +58,7 @@ int
 	t_list		*lst;
 	int			fd;
 
-	fd = 0;
+	fd = -1;
 	if ((lst = cmd->redir_out))
 	{
 		while (lst && (red = (t_redirect *)lst->content))
@@ -66,11 +70,8 @@ int
 			if (lst)
 				close(fd);
 		}
-		if (fd > 2)
-		{
-			dup2(fd, STDOUT_FILENO);
+		if (fd != ERR && dup2(fd, STDOUT_FILENO) != ERR)
 			close(fd);
-		}
 	}
 	else if (cmd->right)
 		dup2(cmd->pipe[PIPE_IN], STDOUT_FILENO);
@@ -81,12 +82,16 @@ int
 	after_redirect_out(t_shell *sh, t_cmd *cmd)
 {
 	int			fd;
-	int			ret;
-	char		buff[BUFFER_SIZE + 1];
+	t_list		*lst;
+	t_redirect	*red;
 
-	fd = open(((t_redirect *)(ft_lstlast(cmd->redir_out)->content))->filename, O_RDONLY);
-	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0)
-		write(cmd->pipe[PIPE_IN], buff, ret);
+	if (!(lst = ft_lstlast(cmd->redir_out)))
+		return (FALSE);
+	if (!(red = (t_redirect *)(lst->content)))
+		return (FALSE);
+	if ((fd = open(red->filename, O_RDONLY)) == -1)
+		return (FALSE);
+	redirect_buffer(fd, cmd->pipe[PIPE_IN]);
 	close(fd);
 	return (SUC);
 }

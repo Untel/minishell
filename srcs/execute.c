@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:38:01 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 22:45:54 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ int
 		}
 		lst = lst->next;
 	}
-	ft_lstclear(&sh->cmds, free_command);	
+	ft_lstclear(&sh->cmds, free_command);
 	return (SUC);
 }

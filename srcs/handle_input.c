@@ -6,14 +6,15 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 18:30:57 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 #include "minishell.h"
 
-void	handle_arrows(char buff[3], t_term *term)
+void
+	handle_arrows(char buff[3], t_term *term)
 {
 	read(0, buff + 1, 1);
 	read(0, buff + 2, 1);
@@ -35,7 +36,8 @@ void	handle_arrows(char buff[3], t_term *term)
 	}
 }
 
-void	handle_backspace(char buff[3], t_term *term)
+void
+	handle_backspace(char buff[3], t_term *term)
 {
 	if (term->input->size > 1 && term->pos_str < term->input->size)
 		delone(term->input, term->pos_str + 1);
@@ -44,7 +46,8 @@ void	handle_backspace(char buff[3], t_term *term)
 	write(1, "\e[D", 3);
 }
 
-int		handle_ctrl_d(char buff[3], t_term * term)
+int
+	handle_ctrl_d(char buff[3], t_term *term)
 {
 	if (term->input->size == 1)
 	{
@@ -61,7 +64,8 @@ int		handle_ctrl_d(char buff[3], t_term * term)
 	return (1);
 }
 
-void	handle_ctrl_u(t_term term)
+void
+	handle_ctrl_u(t_term term)
 {
 	int		i;
 	char	del;
@@ -77,7 +81,8 @@ void	handle_ctrl_u(t_term term)
 		delone(term.input, term.pos_str + 1);
 }
 
-void	handle_ctrl_c(t_term *term)
+void
+	handle_ctrl_c(t_term *term)
 {
 	int		i;
 	char	del;

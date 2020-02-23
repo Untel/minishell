@@ -6,12 +6,10 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:11:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/21 15:56:04 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 18:53:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf.h"
 #include "minishell.h"
 
 char	**convert_env_list(t_list *lst_env)

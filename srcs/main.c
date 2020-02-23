@@ -6,38 +6,18 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:38:42 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 19:07:13 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <term.h>
-#include <ncurses.h>
-
-t_shell	g_sh;
-int		g_termx = 0;
-int		g_termy = 0;
 
 // __attribute__((destructor)) void lul(void)
 // {
 // 	system("leaks minishell");
 // }
 
-
-void
-	sigint_quit(int sig)
-{
-	(void)sig;
-	format_directory(&g_sh);
-	handle_ctrl_c(&g_sh.term);
-	write(1, "\n", 1);
-	ft_printf("\e[7m%%\e[0m%*s\r", g_termx - 1, "");
-	g_sh.term.size_prt = ft_strlen(g_sh.printed_dir) + 7;
-	ft_printf(g_sh.last_ret == EXIT_SUCCESS ?
-		MSG_PROMPT : MSG_PROMPT_ERR, g_sh.printed_dir);
-	g_sh.ctrl_c = 1;
-	return ;
-}
+t_shell	g_sh;
 
 int
 	get_termx(t_shell *sh, char **av, char **env)
@@ -71,51 +51,39 @@ int
 }
 
 void
-	handle_winch(int sig)
+	initialize_shell(t_shell *sh)
 {
-	char	**env;
-	char	*av[3];
+	char	*tmp;
 
-	env = convert_env_list(g_sh.env);
-	av[0] = "tput";
-	av[1] = "cols";
-	av[2] = 0;
-	g_termx = get_termx(&g_sh, av, env);
-	signal(SIGWINCH, handle_winch);
-	free_env_array(env);
+	signal(SIGINT, sigint_quit);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	if (!(tmp = ft_itoa(ft_atoi((char *)get_value(sh->env, "SHLVL", "0")) + 1)))
+		err_shutdown(sh, "Cannot upgrade sh_level");
+	set_value(&sh->env, "SHLVL", tmp);
+	set_value(&sh->env, "GREP_OPTIONS", "--color=auto");
+	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
+	ft_memdel((void **)&tmp);
 }
 
 int
 	main(int ac, char **av, char **envp)
 {
-	char			*tmp;
-
 	(void)ac;
 	(void)av;
-	signal(SIGINT, sigint_quit);
-	signal(SIGTSTP, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 	g_sh = (t_shell) {
-		.input = NULL, .dir = "",
-		.stop = 0, .cmds = NULL,
-		.printed_dir = "", .last_ret = 0,
-		.env = create_env_list(envp),
-		.ctrl_c = 0, .hd_index = 0
+		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
+		.printed_dir = "", .last_ret = 0, .hd_index = 0,
+		.env = create_env_list(envp), .ctrl_c = 0, 
 	};
-	tmp = ft_itoa(ft_atoi((char *)get_value(g_sh.env, "SHLVL", "0")) + 1);
-	set_value(&g_sh.env, "SHLVL", tmp);
-	set_value(&g_sh.env, "GREP_OPTIONS", "--color=auto");
-	set_value(&g_sh.env, "GREP_COLOR", "00;38;5;226");
-	ft_memdel((void **)&tmp);
+	initialize_shell(&g_sh);
 	if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)
 	{
 		handle_winch(0);
 		format_directory(&g_sh);
 		prompt_line(&g_sh);
-		free_env_list(&g_sh.env);
 		ft_lstclear(&g_sh.cmds, free_command);
-		if (tcsetattr(0, 0, &g_sh.term.old_term) == -1)
-			return (-1);
+		tcsetattr(0, 0, &g_sh.term.old_term);
 	}
 	else
 	{
@@ -123,7 +91,7 @@ int
 		if (sanitize(&g_sh) && parse_input(&g_sh))
 			exec_lines(&g_sh);
 		clear_last_prompt(&g_sh);
-		free_env_list(&g_sh.env);
 	}
-	return (0);
+	free_env_list(&g_sh.env);
+	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:38:08 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 18:17:36 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int
 	else
 	{
 		run_redirect_out(sh, cmd);
-		run_redirect_in(sh, cmd);
+		if (cmd->redir_in || cmd->left)
+			run_redirect_in(sh, cmd);
 		ret = fn(sh, cmd);
 		exit(ret);
 		return (ret);

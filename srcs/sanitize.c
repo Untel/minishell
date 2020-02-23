@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:46:51 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 18:46:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,75 +50,38 @@ int
 	return (sanitize(sh));
 }
 
-int
-	add_heredoc(t_shell *sh, int *i)
+void
+	check_input(t_shell *sh, t_quoter *q)
 {
-	t_heredoc	*hd;
-	size_t		j;
+	int i;
 
-	j = 0;
-	if (!(hd = malloc(sizeof(t_heredoc))))
-		return (ERR);
-	while (sh->input[*i + 1] == ' ')
-		*i = *i + 1;
-	*hd = (t_heredoc) { .label = NULL, .buffer = NULL, };
-	while (ft_isalnum(sh->input[*i + 1 + j]))
-		j++;
-	hd->label = ft_strndup(&sh->input[*i + 1], j);
-	*i += j;
-	ft_lstadd_back(&sh->heredocs, ft_lstnew(hd, sizeof(t_heredoc *)));
-	return (SUC);
-}
-
-int
-	ask_heredocs(t_shell *sh)
-{
-	t_heredoc	*hd;
-	t_list		*lst;
-	int			len;
-	char		asker[BUFFER_SIZE];
-	char		*tmp;
-
-	lst = sh->heredocs;
-	tmp = NULL;
-	while (lst)
+	i = -1;
+	while (sh->input[++i])
 	{
-		hd = (t_heredoc *)lst->content;
-		ft_sprintf(asker, "heredoc(%s)", hd->label);
-		len = 0;
-		while (ask_concat(sh, asker, &tmp, hd->label) == SUC)
-			;
-		hd->buffer = ft_strjoin(tmp, "\n");
-		ft_memdel((void **)&tmp);
-		lst = lst->next;
+		if (sh->input[i] == ' ' || sh->input[i] == ';')
+			continue;
+		q->cc = q->c;
+		q->c = sh->input[i];
+		if (q->c == '\\')
+			q->bslash = i + 1;
+		else if (q->c == '\'' && !q->d && q->bslash != i)
+			q->s = !q->s;
+		else if (q->c == '"' && !q->s && q->bslash != i)
+			q->d = !q->d;
+		else if (q->c == '<' && sh->input[i + 1] == '<'
+			&& !q->s && q->bslash != i++)
+			add_heredoc(sh, &i);
 	}
-	return (SUC);
+	q->i = i;
 }
 
 int
 	sanitize(t_shell *sh)
 {
 	t_quoter	q;
-	int			i;
 
-	i = -1;
-	q = (t_quoter) { .s = 0, .d = 0, .bslash = -1, .c = 0, .cc = 0 };
-	while (sh->input[++i])
-	{
-		if (sh->input[i] == ' ' || sh->input[i] == ';')
-			continue;
-		q.cc = q.c;
-		q.c = sh->input[i];
-		if (q.c == '\\')
-			q.bslash = i + 1;
-		else if (q.c == '\'' && !q.d && q.bslash != i)
-			q.s = !q.s;
-		else if (q.c == '"' && !q.s && q.bslash != i)
-			q.d = !q.d;
-		else if (q.c == '<' && sh->input[i + 1] == '<'
-			&& !q.s && q.bslash != i++)
-			add_heredoc(sh, &i);
-	}
+	q = (t_quoter) { .s = 0, .d = 0, .bslash = -1, .c = 0, .cc = 0, .i = 0 };
+	check_input(sh, &q);
 	if (q.s)
 		return (ask_to_close(sh, "quote"));
 	else if (q.d)
@@ -127,7 +90,7 @@ int
 		return (ask_to_close(sh, q.cc == '|' ? "cmdor" : "pipe"));
 	else if (q.c == '&' && q.cc == '&')
 		return (ask_to_close(sh, "cmdand"));
-	else if (q.bslash == i)
+	else if (q.bslash == q.i)
 		return (ask_to_close(sh, ""));
 	ask_heredocs(sh);
 	return (SUC);

@@ -6,15 +6,14 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 18:58:15 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	g_termx;
-
-int		get_size_current_word(t_shell *sh, t_lst_in **tmp)
+int
+	get_size_current_word(t_shell *sh, t_lst_in **tmp)
 {
 	int			old_i;
 	int			i;
@@ -33,7 +32,8 @@ int		get_size_current_word(t_shell *sh, t_lst_in **tmp)
 	return (i - old_i);
 }
 
-int		get_nmatch(t_shell *sh, char *str)
+int
+	get_nmatch(t_shell *sh, char *str)
 {
 	DIR				*rep;
 	struct dirent	*file;
@@ -52,7 +52,8 @@ int		get_nmatch(t_shell *sh, char *str)
 	return (nb_elem);
 }
 
-void	print_list(t_shell *sh)
+void
+	print_list(t_shell *sh)
 {
 	int		pid;
 	char	*av[3];
@@ -64,7 +65,7 @@ void	print_list(t_shell *sh)
 	else if (pid > 0)
 	{
 		wait(NULL);
-		ft_printf("\e[7m%%\e[0m%*s\r", g_termx - 1, "");
+		ft_printf("\e[7m%%\e[0m%*s\r", g_sh.term.pos.x - 1, "");
 		ft_printf(MSG_PROMPT, sh->printed_dir);
 		return ;
 	}
@@ -73,16 +74,15 @@ void	print_list(t_shell *sh)
 		av[0] = "/bin/ls";
 		av[1] = "-G";
 		av[2] = 0;
-		if (!(env = convert_env_list(sh->env)))
-			return ;
 		write(1, "\n", 1);
-		ret = execve("/bin/ls", av, env);
+		ret = execve("/bin/ls", av, (env = convert_env_list(sh->env)));
 		ft_memdel((void **)&env);
 		exit(ret);
 	}
 }
 
-void	handle_empty_line(t_shell *sh, t_lst_in **tmp)
+void
+	handle_empty_line(t_shell *sh, t_lst_in **tmp)
 {
 	free_all(sh->term.input);
 	ft_memdel((void **)&sh->term.input);
@@ -93,7 +93,8 @@ void	handle_empty_line(t_shell *sh, t_lst_in **tmp)
 	*tmp = sh->term.input->end;
 }
 
-void	add_str_to_lst(t_shell *sh, char *str, char *filename)
+void
+	add_str_to_lst(t_shell *sh, char *str, char *filename)
 {
 	t_lst_in	*tmp;
 	int			offset;

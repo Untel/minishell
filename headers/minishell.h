@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:46:36 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 19:00:13 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <termios.h>
 # include <curses.h>
 # include <term.h>
+# include <ncurses.h>
 # include "list.h"
 # define FALSE 0
 # define SUC 1
@@ -63,6 +64,7 @@ typedef struct	s_quoter
 	int			bslash;
 	char		c;
 	char		cc;
+	int			i;
 }				t_quoter;
 
 typedef enum	e_operator
@@ -96,6 +98,12 @@ typedef struct	s_cmd
 
 typedef struct termios	t_termios;
 
+typedef struct	s_point
+{
+	int			x;
+	int			y;
+}				t_point;
+
 typedef struct	s_term
 {
 	t_termios	term;
@@ -105,6 +113,7 @@ typedef struct	s_term
 	int			size_prt;
 	int			old_s_in;
 	int			tmp;
+	t_point		pos;
 }				t_term;
 
 typedef struct	s_shell
@@ -173,14 +182,20 @@ char	*add_argument(t_cmd *cmd, char *str);
 void	add_arg_to_last_cmd(t_shell *sh, char *str, t_read *rd);
 void	free_command(t_list *lst);
 void	free_heredocs(t_list *lst);
+
+int		add_heredoc(t_shell *sh, int *i);
+int		ask_heredocs(t_shell *sh);
+int		ask_concat(t_shell *sh, char *ask,
+	char **place, char *stopif);
 /* input handling */
 void	handle_arrows(char buff[3], t_term *term);
 void	handle_backspace(char buff[3], t_term *term);
 int		handle_ctrl_d(char buff[3], t_term *term);
 void	handle_ctrl_u(t_term term);
 void	handle_ctrl_c(t_term *term);
+void	handle_winch(int sig);
 int		redirect_in_subprocess(t_shell *sh, t_cmd *cmd);
-int		run_redirect_in(t_shell *sh, t_cmd *cmd);
+void	run_redirect_in(t_shell *sh, t_cmd *cmd);
 int		run_redirect_out(t_shell *sh, t_cmd *cmd);
 /* autocomplete utils */
 void	print_line(t_shell *sh);
@@ -197,8 +212,11 @@ void	free_occur(t_list *occur);
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(t_shell *sh);
 void	sigint_quit (int sig);
+void	sigint_void(int sig);
 int		match(char *s1, char *s2);
 int		print_match(t_shell *sh, char buff[3]);
 int		sanitize(t_shell *sh);
 int		after_redirect_out(t_shell *sh, t_cmd *cmd);
+
+extern t_shell	g_sh;
 #endif
