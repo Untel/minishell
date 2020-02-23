@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:16:30 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:26:34 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int
 	if (child > 0)
 	{
 		pid = waitpid(child, &status, 0);
+		if (cmd->redir_out && cmd->right)
+			after_redirect_out(sh, cmd);
 		if (cmd->right)
 			close(cmd->pipe[PIPE_IN]);
 		if (cmd->left)
@@ -35,8 +37,7 @@ int
 	}
 	else
 	{
-		if (cmd->right)
-			dup2(cmd->pipe[PIPE_IN], STDOUT_FILENO);
+		run_redirect_out(sh, cmd);
 		run_redirect_in(sh, cmd);
 		ret = fn(sh, cmd);
 		exit(ret);
@@ -92,7 +93,6 @@ int
 	{
 		while (lst && (red = (t_redirect *)lst->content))
 		{
-			ft_fprintf(2, "Has redir %s\n", red->filename);
 			fd = open(red->filename, O_WRONLY | O_CREAT |
 				(red->type == OUT_END_REDIR ? O_APPEND : 0)
 				, 0644);
