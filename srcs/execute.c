@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 16:36:56 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:05:36 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,6 @@ int
 	while (++i < ft_strlen(cmd->argv[0]))
 		cmd->argv[0][i] = ft_tolower(cmd->argv[0][i]);
 	return (ft_strcmp(str, cmd->argv[0]) == 0);
-}
-
-int
-	redirect_out(t_shell *sh, t_cmd *cmd)
-{
-	int	fd;
-	char buff[BUFFER_SIZE + 1];
-	int ret;
-
-	fd = open(cmd->argv[0], O_WRONLY | O_CREAT |
-		(cmd->op == REDIR_OUT_END ? O_APPEND : 0)
-		, 0644);
-	while ((ret = read(0, &buff, BUFFER_SIZE)))
-	{
-		if (!cmd->right || cmd->right->op == PIPE)
-			write(fd, buff, ret);
-		if (cmd->right)
-			write(STDOUT_FILENO, buff, ret);
-	}
-	close(fd);
 }
 
 int
@@ -160,12 +140,7 @@ int
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-		// print_command(sh, cmd);
-//		if (cmd && !ft_strncmp(cmd->argv[0], "ls", 3))
-//			add_argument(cmd, ft_strdup("-G"));
-		if (cmd->op == REDIR_OUT_END || cmd->op == REDIR_OUT)
-			builtin_subprocess(sh, cmd, redirect_out);
-		else if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
+		if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
 		{
 			if (cmd->argc > 0 && !ft_strncmp(cmd->argv[0], "ls", 3))

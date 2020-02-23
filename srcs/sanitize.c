@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 18:18:49 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:00:36 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,12 @@ int
 	if (!(hd = malloc(sizeof(t_heredoc))))
 		return (ERR);
 	while (sh->input[*i + 1] == ' ')
-		*i++;
+		*i = *i + 1;
 	*hd = (t_heredoc) { .label = NULL, .buffer = NULL, };
 	while (ft_isalnum(sh->input[*i + 1 + j]))
 		j++;
 	hd->label = ft_strndup(&sh->input[*i + 1], j);
+	*i += j;
 	ft_lstadd_back(&sh->heredocs, ft_lstnew(hd, sizeof(t_heredoc *)));
 	return (SUC);
 }

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/21 16:38:32 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:04:51 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int
 		copy_from_idx(sh, rd, *i);
 	if (rd->buffer)
 		add_arg_to_last_cmd(sh, rd->buffer, rd);
-	if (op == AND || op == OR || op == REDIR_OUT_END)
+	if (op == AND || op == OR)
 		*i = *i + 1;
 	if (op >= NONE)
 	{
@@ -213,17 +213,17 @@ int
 		add_arg_to_last_cmd(sh, rd->buffer, rd);
 	if (sh->input[*i] == '<')
 	{
-		if (sh->input[*i + 1] == '<' && (*i++ || 1))
+		if (sh->input[*i + 1] == '<' && ((*i = *i + 1) || 1))
 			rd->add_to = HEREDOC;
 		else
 			rd->add_to = IN_REDIR;
 	}
 	else if (sh->input[*i] == '>')
 	{
-		if (sh->input[*i + 1] == '>' && (*i++ || 1))
-			rd->add_to = OUT_REDIR;
-		else
+		if (sh->input[*i + 1] == '>' && ((*i = *i + 1) || 1))
 			rd->add_to = OUT_END_REDIR;
+		else
+			rd->add_to = OUT_REDIR;
 	}
 	rd->buffer = NULL;
 	rd->index = *i + 1;
@@ -246,24 +246,12 @@ int
 	new_command(sh, NONE);
 	while ((c = sh->input[++i]))
 	{
-		if (c == '\\')
-		{
-			++i;
+		if (c == '\\' && (++i || 1))
 			continue;
-		}
 		else if (c == '\'')
-		{
 			handle_simple_quote(sh, &rd, &i);
-		}
 		else if (c == '"')
-		{
 			handle_double_quote(sh, &rd, &i);
-		}
-		// else if (c == '(' || c == ')')
-		// {
-		// 	if (!handle_double_quote(sh, &rd, &i))
-		// 		return (ask_closing_char(sh, &rd, "subsh"));
-		// }
 		else if (c == ' ')
 			ret = handle_space(sh, &rd, &i);
 		else if (is_cmd_separator(c))

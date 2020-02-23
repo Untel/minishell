@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 16:36:46 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:15:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 	{
 		pid = waitpid(child, &status, 0);
 		sh->last_ret = WEXITSTATUS(status);
-		builtin_subprocess(sh, cmd, after_redirect_out);
+		if (cmd->redir_out && cmd->right)
+			after_redirect_out(sh, cmd);
 		if (cmd->right)
 			close(cmd->pipe[PIPE_IN]);
 		if (cmd->left)
@@ -35,6 +36,7 @@ int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
 	}
 	else
 	{
+
 		run_redirect_out(sh, cmd);
 		run_redirect_in(sh, cmd);
 		errno = 0;

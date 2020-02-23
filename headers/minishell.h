@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 16:36:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:01:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ typedef enum	e_operator
 {
 	PIPE,
 	JOB,
-	REDIR_OUT,
-	REDIR_OUT_END,
 	NONE,
 	OR,
 	AND,
@@ -90,7 +88,6 @@ typedef struct	s_cmd
 	t_operator	op;
 	int			pipe[2];
 	int			pipe_redir_in[2];
-	int			fd;
 	t_list		*redir_in;
 	t_list		*redir_out;
 	struct s_cmd	*left;
