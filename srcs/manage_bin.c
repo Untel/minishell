@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 18:47:38 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:57:32 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,38 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-int		try_exec(t_shell *sh, char *path, t_cmd *cmd, char **envp, pid_t child)
+int
+	try_exec(t_shell *sh, char *path, t_cmd *cmd, pid_t child)
 {
 	int		status;
 	int		ret;
-	pid_t	pid;
 
 	if (child == -1)
 		return (-1);
 	if (child > 0)
 	{
-		pid = waitpid(child, &status, 0);
+		waitpid(child, &status, 0);
 		sh->last_ret = WEXITSTATUS(status);
-		if (cmd->redir_out && cmd->right)
-			after_redirect_out(sh, cmd);
-		if (cmd->right)
-			close(cmd->pipe[PIPE_IN]);
-		if (cmd->left)
-			close(cmd->left->pipe[PIPE_OUT]);
+		after_child_exec(sh, cmd);
 		return (sh->last_ret);
 	}
 	else
 	{
-
 		run_redirect_out(sh, cmd);
 		if (cmd->redir_in || cmd->left)
 			run_redirect_in(sh, cmd);
 		errno = 0;
-		ret = execve(path, cmd->argv, envp);
+		ret = execve(path, cmd->argv,
+			(cmd->env = convert_env_list(sh->env)));
 		if (errno != 0)
-			ft_fprintf(STDERR, "AShellM: %s: %s\n", path, strerror(errno));
+			ft_fprintf(STDERR, MSG_ERROR, strerror(errno));
 		return (ret);
 	}
-	return (-1);
+	return (ERR);
 }
 
-int		test_dir(char *path, char *cmd)
+int
+	test_dir(char *path, char *cmd)
 {
 	struct dirent	*file;
 	DIR				*rep;
@@ -58,23 +54,23 @@ int		test_dir(char *path, char *cmd)
 	file = NULL;
 	rep = NULL;
 	if ((rep = opendir(path)) == NULL)
-		return (-1);
+		return (ERR);
 	while ((file = readdir(rep)) != NULL)
 	{
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
 			if (file->d_type != 8 && file->d_type != 10)
-				ret = 0;
+				ret = FALSE;
 			else
-				ret = 1;
-			if (closedir(rep) == -1)
-				return (-1);
-			return (1);
+				ret = SUC;
+			if (closedir(rep) == ERR)
+				return (ERR);
+			return (SUC);
 		}
 	}
-	if (closedir(rep) == -1)
-		return (-1);
-	return (0);
+	if (closedir(rep) == ERR)
+		return (ERR);
+	return (FALSE);
 }
 
 int		ft_inset(char *str, char c)
@@ -91,13 +87,11 @@ int		ft_inset(char *str, char c)
 int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 {
 	pid_t	child;
-	char	**envp;
 	char	*bin_path;
 	char	*res;
 	int		ret;
 
 	child = -1;
-	envp = convert_env_list(sh->env);
 	ret = 0;
 	if (nb == 2)
 		bin_path = ft_strmjoin(2, tmp, "/");
@@ -112,13 +106,12 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 		signal(SIGQUIT, SIG_DFL);
 	}
 	tcsetattr(1, 0, &sh->term.old_term);
-	ret = try_exec(sh, bin_path, cmd, envp, child);
+	ret = try_exec(sh, bin_path, cmd, child);
 	signal(SIGINT, sigint_quit);
 	tcsetattr(1, 0, &sh->term.term);
 	if (child == 0 && ret != 0)
 		exit(ret);
 	ft_memdel((void **)&bin_path);
-	free_env_array(envp);
 	return (ret);
 }
 

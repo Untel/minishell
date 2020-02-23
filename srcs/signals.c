@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 18:47:45 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 19:00:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:41:26 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void
 	sigint_void(int sig)
 {
 	write(1, "\r", 1);
-	return;
 }
 
 void
@@ -31,7 +30,6 @@ void
 	ft_printf(g_sh.last_ret == EXIT_SUCCESS ?
 		MSG_PROMPT : MSG_PROMPT_ERR, g_sh.printed_dir);
 	g_sh.ctrl_c = 1;
-	return ;
 }
 
 void

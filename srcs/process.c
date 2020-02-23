@@ -6,32 +6,39 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 18:17:36 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:50:24 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int
-	builtin_subprocess(t_shell *sh, t_cmd *cmd, int (*fn)(t_shell *sh, t_cmd *cmd))
+	after_child_exec(t_shell *sh, t_cmd *cmd)
 {
-	pid_t 	child;
-	pid_t 	pid;
-	int 	status;
-	int 	ret;
+	if (cmd->redir_out && cmd->right)
+		after_redirect_out(sh, cmd);
+	if (cmd->right)
+		close(cmd->pipe[PIPE_IN]);
+	if (cmd->left)
+		close(cmd->left->pipe[PIPE_OUT]);
+	return (SUC);
+}
+
+int
+	builtin_subprocess(t_shell *sh, t_cmd *cmd,
+		int (*fn)(t_shell *sh, t_cmd *cmd))
+{
+	pid_t	child;
+	int		status;
+	int		ret;
 
 	child = fork();
 	if (child == -1)
 		return (-1);
 	if (child > 0)
 	{
-		pid = waitpid(child, &status, 0);
-		if (cmd->redir_out && cmd->right)
-			after_redirect_out(sh, cmd);
-		if (cmd->right)
-			close(cmd->pipe[PIPE_IN]);
-		if (cmd->left)
-			close(cmd->left->pipe[PIPE_OUT]);
+		waitpid(child, &status, 0);
+		after_child_exec(sh, cmd);
 		return (status);
 	}
 	else

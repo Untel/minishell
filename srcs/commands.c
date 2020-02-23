@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:35:56 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:53:14 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_cmd
 
 	if (!(cmd = malloc(sizeof(t_cmd))))
 		return (NULL);
-	*cmd = (t_cmd) { .input = NULL, .argc = 0, .argv = NULL,
+	*cmd = (t_cmd) { .input = NULL, .argc = 0, .argv = NULL, .env = NULL,
 		.op = op, .left = NULL, .right = NULL, .pipe = { 0, 0 },
 		.redir_in = NULL, .redir_out = NULL, .pipe_redir_in = { 0, 0 } };
 	if (!(el = ft_lstnew(cmd, sizeof(t_cmd *)))

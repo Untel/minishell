@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 19:00:13 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:53:01 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct	s_cmd
 	char		*input;
 	int			argc;
 	char		**argv;
+	char		**env;
 	t_operator	op;
 	int			pipe[2];
 	int			pipe_redir_in[2];
@@ -217,6 +218,6 @@ int		match(char *s1, char *s2);
 int		print_match(t_shell *sh, char buff[3]);
 int		sanitize(t_shell *sh);
 int		after_redirect_out(t_shell *sh, t_cmd *cmd);
-
+int		after_child_exec(t_shell *sh, t_cmd *cmd);
 extern t_shell	g_sh;
 #endif

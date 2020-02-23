@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 18:58:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:44:33 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void
 		av[1] = "-G";
 		av[2] = 0;
 		write(1, "\n", 1);
-		ret = execve("/bin/ls", av, (env = convert_env_list(sh->env)));
+		ret = execve("/bin/ls", av,
+			(env = convert_env_list(sh->env)));
 		ft_memdel((void **)&env);
 		exit(ret);
 	}

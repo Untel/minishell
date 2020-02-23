@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 18:29:47 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:36:36 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void
 	t_list		*lst;
 	int			fd;
 
-
-	pipe(cmd->pipe_redir_in);
+	if (pipe(cmd->pipe_redir_in) == ERR)
+		err_shutdown(sh, "Cannot mount pipe redir in pipe");
 	if (cmd->left)
 		redirect_buffer(cmd->left->pipe[PIPE_OUT], cmd->pipe_redir_in[PIPE_IN]);
 	if ((lst = cmd->redir_in))
@@ -43,7 +43,8 @@ void
 				close(fd);
 			}
 			else if (red->type == HEREDOC)
-				write(cmd->pipe_redir_in[PIPE_IN], red->value, ft_strlen(red->value));
+				write(cmd->pipe_redir_in[PIPE_IN],
+					red->value, ft_strlen(red->value));
 			lst = lst->next;
 		}
 	close(cmd->pipe_redir_in[PIPE_IN]);
