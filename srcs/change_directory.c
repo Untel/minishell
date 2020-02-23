@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 17:51:07 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:43:21 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 int
 	format_directory(t_shell *sh)
 {
-	char *home;
-
 	getcwd(sh->dir, BUFFER_SIZE);
 	ft_strcpy(sh->printed_dir, sh->dir);
+	return (SUC);
 }
 
 int

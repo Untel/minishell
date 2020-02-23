@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/21 16:06:56 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:38:42 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,6 @@ int		g_termy = 0;
 // 	system("leaks minishell");
 // }
 
-void
-	clear_last_prompt(t_shell *sh)
-{
-	ft_lstclear(&sh->heredocs, free_heredocs);
-	ft_lstclear(&sh->cmds, free_command);
-	sh->hd_index = 0;
-	ft_memdel((void **)&sh->input);
-}
-
-void
-	err_shutdown(t_shell *sh, char *str)
-{
-	ft_fprintf(STDERR, MSG_ERROR, str);
-	clear_last_prompt(sh);
-	exit(1);
-}
 
 void
 	sigint_quit(int sig)

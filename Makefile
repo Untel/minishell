@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/18 17:28:57 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/02/23 17:39:27 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,9 @@ SRCS_FILES	= \
 	manage_read.c\
 	process.c\
 	echo.c\
-	sanitize.c
+	clean.c\
+	sanitize.c\
+	redirections.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 

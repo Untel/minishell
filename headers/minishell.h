@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:01:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:46:36 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,9 @@ typedef struct	s_redirect
 
 t_list	*create_env_list(char **envp);
 int		exec_lines(t_shell *sh);
+int		exec_cmd(t_shell *sh, t_cmd *cmd,
+	int (*fn)(t_shell *sh, t_cmd *cmd));
+int		mount_pipes(t_shell *sh);
 int		ft_env(t_shell *sh, t_cmd *cmd);
 char	**convert_env_list(t_list *lst_env);
 void	*set_value(t_list **lst_env, char *key, char *value);
@@ -169,7 +172,7 @@ t_cmd	*new_command(t_shell *sh, t_operator op);
 char	*add_argument(t_cmd *cmd, char *str);
 void	add_arg_to_last_cmd(t_shell *sh, char *str, t_read *rd);
 void	free_command(t_list *lst);
-int		free_heredocs(t_list *lst);
+void	free_heredocs(t_list *lst);
 /* input handling */
 void	handle_arrows(char buff[3], t_term *term);
 void	handle_backspace(char buff[3], t_term *term);
@@ -188,6 +191,7 @@ int		get_size_current_word(t_shell *sh, t_lst_in **tmp);
 void	add_str_to_lst(t_shell *sh, char *str, char *filename);
 int		is_first_word(t_shell *sh);
 t_list	*get_nmatch_bin(t_shell *sh, char **paths, char *str);
+int		match_bin(t_shell *sh, int i, t_list *occur, int nb_elem);
 void	free_occur(t_list *occur);
 
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:38:03 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/21 16:00:57 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:44:54 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int
 		}
 	}
 	else
-		return (ft_env(sh->env, 1));
+		return (ft_env(sh, cmd));
 	return (EXIT_SUCCESS);
 }
 

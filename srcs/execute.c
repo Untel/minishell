@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:25:40 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:38:01 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,17 @@ int
 }
 
 int
+	exit_prog(t_shell *sh, t_cmd *cmd)
+{
+	sh->stop = 1;
+	return (EXIT_SUCCESS);
+}
+
+int
 	say_404(t_shell *sh, t_cmd *cmd)
 {
 	ft_fprintf(STDERR, MSG_404_CMD, cmd->argv[0]);
 	return (127);
-}
-
-int
-	exec_cmd(t_shell *sh, t_cmd *cmd, int (*fn)(t_shell *sh, t_cmd *cmd))
-{
-	if (cmd->right || cmd->left)
-		return (builtin_subprocess(sh, cmd, fn));
-	else
-		return (fn(sh, cmd));
-}
-
-int
-	exit_prog(t_shell *sh, t_cmd *cmd)
-{
-	sh->stop = 1;
-	return (0);
 }
 
 int
@@ -77,53 +68,6 @@ int
 		;
 	else
 		sh->last_ret = exec_cmd(sh, cmd, say_404);
-	return (1);
-}
-
-int
-	print_command(t_shell *sh, t_cmd *cmd)
-{
-	int		i;
-	char	*str;
-	int		size;
-	t_list	*lst;
-
-	i = -1;
-	str = NULL;
-	if (cmd->argc == 0)
-		ft_printf("/!\\ Commands without args\n");
-	else
-	{
-		size = cmd->argc - 1;
-		if (size)
-			str = ft_strmjoin(cmd->argc - 1, &cmd->argv[1], ", ");
-		ft_printf("Executing '%s' with %d args: '%s' | LR %d | OP %d\n", cmd->argv[0],
-			size, str ? str : "", sh->last_ret, cmd->op);
-		if ((lst = cmd->redir_in))
-			while (lst)
-			{
-				ft_printf("Redir input arg = %s label = %s\n", ((t_redirect *)lst->content)->filename, ((t_redirect *)lst->content)->value);
-				lst = lst->next;
-			}
-		else
-			ft_printf("No redir in\n");
-	}
-}
-
-int
-	mount_pipes(t_shell *sh)
-{
-	t_cmd	*cmd;
-	t_list	*lst;
-
-	lst = sh->cmds;
-	while (lst)
-	{
-		cmd = (t_cmd *)lst->content;
-		if (pipe(cmd->pipe) == ERR)
-			return (-1);
-		lst = lst->next;
-	}
 	return (1);
 }
 

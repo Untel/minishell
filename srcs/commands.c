@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:03:04 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:35:56 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ t_cmd
 	if (!(cmd = malloc(sizeof(t_cmd))))
 		return (NULL);
 	*cmd = (t_cmd) { .input = NULL, .argc = 0, .argv = NULL,
-		.op = op, .left = NULL, .right = NULL, .pipe = NULL,
-		.redir_in = NULL, .pipe_redir_in = NULL };
-	if (!(el = ft_lstnew(cmd, sizeof(t_cmd *))))
-	{
-		ft_memdel((void **)&cmd);
+		.op = op, .left = NULL, .right = NULL, .pipe = { 0, 0 },
+		.redir_in = NULL, .redir_out = NULL, .pipe_redir_in = { 0, 0 } };
+	if (!(el = ft_lstnew(cmd, sizeof(t_cmd *)))
+		&& ft_imemdel((void **)&cmd))
 		return (NULL);
-	}
 	if ((prev = ft_lstlast(sh->cmds)))
 	{
 		if (op == PIPE)
@@ -70,24 +68,24 @@ void
 
 	if (!(redir = malloc(sizeof(t_redirect))))
 		return ;
-	*redir = (t_redirect) { .filename = str, .value = NULL, .type = rd->add_to };
-	if (rd->add_to == HEREDOC && (lst = ft_lstindex(sh->heredocs, sh->hd_index++)))
+	*redir = (t_redirect) { .filename = str,
+		.value = NULL, .type = rd->add_to };
+	if (rd->add_to == HEREDOC &&
+		(lst = ft_lstindex(sh->heredocs, sh->hd_index++)))
 		redir->value = ((t_heredoc *)lst->content)->buffer;
 	ft_lstadd_back(
 		((rd->add_to == HEREDOC || rd->add_to == IN_REDIR)
 			? &cmd->redir_in
 			: &cmd->redir_out)
-		, ft_lstnew(redir, sizeof(t_redirect))
-	);
+		, ft_lstnew(redir, sizeof(t_redirect)));
 }
 
 void
 	add_arg_to_last_cmd(t_shell *sh, char *str, t_read *rd)
 {
 	t_list	*el;
-	el = ft_lstlast(sh->cmds);
 
-	if (!el)
+	if (!(el = ft_lstlast(sh->cmds)))
 		err_shutdown(sh, "Error commands.c add_arg_to_last_cmd");
 	if (rd->add_to != ARGS)
 		add_redir(sh, (t_cmd *)el->content, str, rd);

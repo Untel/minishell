@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 12:37:52 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 09:12:35 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/23 17:45:31 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
+#include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>
 

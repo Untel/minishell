@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:04:51 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:42:54 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,22 +183,6 @@ int
 	rd->buffer = NULL;
 	rd->index = *i + 1;
 	return (1);
-}
-
-int
-	get_heredoc(t_shell *sh, t_read *rd, int *i)
-{
-	int		j = 0;
-	char	*label;
-	while (sh->input[*i + 1] && sh->input[*i + 1] == ' ')
-		*i++;
-	while (sh->input[*i + 1 + j] && sh->input[*i + 1 + j] != ' ')
-		j++;
-	if (j > 0)
-	{
-		label = ft_substr(&sh->input[*i + 1], 0, j);
-		*i += j;
-	}
 }
 
 int

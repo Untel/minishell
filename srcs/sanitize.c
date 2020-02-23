@@ -6,23 +6,11 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:00:36 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/23 17:46:51 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int
-	free_heredocs(t_list *lst)
-{
-	t_heredoc *hd;
-
-	hd = (t_heredoc *)lst->content;
-	ft_memdel((void **)&hd->label);
-	ft_memdel((void **)&hd->buffer);
-	ft_memdel((void **)&hd);
-	return (SUC);
-}
 
 int
 	ask_concat(t_shell *sh, char *ask, char **place, char *stopif)
@@ -104,6 +92,7 @@ int
 		ft_memdel((void **)&tmp);
 		lst = lst->next;
 	}
+	return (SUC);
 }
 
 int
