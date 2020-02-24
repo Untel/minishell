@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 14:28:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 19:10:07 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 23:10:05 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,11 @@ int
 int
 	add_to_history(t_shell *sh)
 {
-	// ft_lstremove_if((t_bilist **)&(sh->history.elements), sh->input, ft_strcmp, free);
-	// if (ft_lstsize(sh->history.elements) >= 100)
-	// 	ft_lstdelone(ft_lstpop(&(sh->history.elements)), free_history);
+	ft_bilstremove_if(&(sh->history.elements), sh->input, ft_strcmp, free);
 	if (ft_strlen(sh->input) > 0)
 		ft_bilstadd_front(&(sh->history.elements),
 			ft_bilstnew(sh->input, ft_strlen(sh->input)));
-	ft_lstprint((t_list *)sh->history.elements, "New history is");
+	// ft_bilstprint(sh->history.elements, "New history is");
 	return (SUC);
 }
 
@@ -68,4 +66,34 @@ int
 		ft_memdel((void **)&el);
 	}
 	close(fd);
+}
+
+void
+	print_history(t_shell *sh, t_term *term, int next)
+{
+	t_bilist		*idx;
+	char			*str;
+
+	if (!sh->history.input)
+		sh->history.input = get_current_word(sh);
+	str = sh->history.input;
+	if (!sh->history.index)
+		idx = sh->history.elements;
+	else
+	{
+		if (next)
+			idx = (sh->history.index->next ? sh->history.index->next : NULL);
+		else
+			idx = (sh->history.index->prev ? sh->history.index->prev : NULL);
+	}
+	while (idx && sh->history.index != idx)
+	{
+		if (match(idx->content, str))
+		{
+			sh->history.index = idx;
+			add_str_to_lst(sh, str, idx->content);
+			return ;
+		}
+		idx = next ? idx->next : idx->prev;
+	}
 }

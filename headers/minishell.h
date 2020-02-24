@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 18:27:40 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 20:39:47 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 # define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m » "
 # define MSG_PROMPT_ERR	"🧨  \033[1;31m%s\033[0m » "
 # define MSG_EXIT		"🖐  \033[1;31mGood bye!\033[0m\n"
-# define HISTORY_PATH	"~/.minishell_history"
 # define PIPE_OUT		0
 # define PIPE_IN		1
 # define STDERR			2
@@ -234,5 +233,6 @@ void	redirect_buffer(int from, int to);
 int		init_history(t_shell *sh);
 int		add_to_history(t_shell *sh);
 void	free_history(t_list *element);
+void	print_history(t_shell *sh, t_term *term, int next);
 extern t_shell	g_sh;
 #endif

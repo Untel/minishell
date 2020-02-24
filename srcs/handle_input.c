@@ -6,41 +6,12 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/24 20:05:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 20:39:00 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 #include "minishell.h"
-
-void
-	print_history(t_shell *sh, t_term *term, int next)
-{
-	t_bilist		*idx;
-	char			*str;
-
-	if (!sh->history.input)
-	{
-		sh->history.input = get_current_word(sh);
-	}
-	str = sh->history.input;
-	if (!sh->history.index)
-		idx = next ? sh->history.elements : (t_bilist *)ft_lstlast((t_list *)sh->history.elements);
-	else
-		idx = next ? sh->history.index->next : sh->history.index->prev;
-	while (idx)
-	{
-		if (match(idx->content, str))
-		{
-			sh->history.index = idx;
-			add_str_to_lst(sh, str, idx->content);
-			return ;
-		}
-		sh->history.index = idx;
-		idx = next ? idx->next : idx->prev;
-	}
-	add_str_to_lst(sh, str, "");
-}
 
 void
 	handle_arrows(char buff[3], t_term *term)

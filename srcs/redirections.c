@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 23:36:36 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 20:42:47 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int
 		while (lst && (red = (t_redirect *)lst->content))
 		{
 			fd = open(red->filename, O_WRONLY | O_CREAT |
-				(red->type == OUT_END_REDIR ? O_APPEND : 0)
+				(red->type == OUT_END_REDIR ? O_APPEND : O_TRUNC)
 				, 0644);
 			lst = lst->next;
 			if (lst)
