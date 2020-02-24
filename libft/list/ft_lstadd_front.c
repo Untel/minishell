@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 15:54:26 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 18:21:49 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 19:07:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	ft_bilstadd_front(t_bilist **alst, t_bilist *new)
 	if (alst && new)
 	{
 		new->next = *alst;
+		if (new->next)
+			new->next->prev = new;
 		*alst = new;
 	}
 }
