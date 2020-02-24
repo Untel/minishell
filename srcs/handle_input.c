@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/24 18:44:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 20:05:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,15 @@ void
 	char			*str;
 
 	if (!sh->history.input)
+	{
 		sh->history.input = get_current_word(sh);
+	}
 	str = sh->history.input;
-	// if (sh->history.index)
-	// 	sh->history.index = (next ? sh->history.index->next : sh->history.index->prev);
 	if (!sh->history.index)
-		sh->history.index = sh->history.elements;
-	idx = next ? sh->history.index->next : sh->history.index->prev;
-	if (!idx)
 		idx = next ? sh->history.elements : (t_bilist *)ft_lstlast((t_list *)sh->history.elements);
-	while (idx != sh->history.index)
+	else
+		idx = next ? sh->history.index->next : sh->history.index->prev;
+	while (idx)
 	{
 		if (match(idx->content, str))
 		{
@@ -37,9 +36,8 @@ void
 			add_str_to_lst(sh, str, idx->content);
 			return ;
 		}
+		sh->history.index = idx;
 		idx = next ? idx->next : idx->prev;
-		if (!idx)
-			idx = next ? sh->history.elements : (t_bilist *)ft_lstlast((t_list *)sh->history.elements);
 	}
 	add_str_to_lst(sh, str, "");
 }
@@ -66,9 +64,9 @@ void
 		}
 	}
 	if (buff[1] == '[' && buff[2] == 'A')
-		print_history(&g_sh, term, 0);
-	else if (buff[1] == '[' && buff[2] == 'B')
 		print_history(&g_sh, term, 1);
+	else if (buff[1] == '[' && buff[2] == 'B')
+		print_history(&g_sh, term, 0);
 }
 
 void

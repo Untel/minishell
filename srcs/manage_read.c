@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 18:58:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 19:48:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@ char	*handle_input(t_shell *sh, int *match, char buff[3])
 		return ((char *)1);
 	}
 	else if (sh->term.input->size < g_sh.term.pos.x - sh->term.size_prt)
+	{
 		add_after(sh->term.input, buff[0], sh->term.pos_str);
+		sh->history.input = NULL;
+		sh->history.index = NULL;
+	}
 	return ((char *)2);
 }
 

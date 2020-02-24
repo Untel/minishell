@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 14:28:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 18:59:50 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 19:10:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int
 	str[1] = ".minishell_history";
 	sh->history.path = ft_strmjoin(2, (char **)str, "/");
 	sh->history.input = NULL;
-	sh->history.elements = NULL;
 	sh->history.index = NULL;
+	sh->history.elements = NULL;
 	if ((fd = open(sh->history.path, O_RDONLY)) == -1)
 		return (SUC);
 	while ((ret = get_next_line(fd, &str[0])) > 0)
