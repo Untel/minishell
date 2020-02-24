@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*   ft_lstlast copy.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 15:54:26 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 18:21:49 by adda-sil         ###   ########.fr       */
+/*   Created: 2019/10/10 16:13:02 by adda-sil          #+#    #+#             */
+/*   Updated: 2020/02/24 16:06:40 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_front(t_list **alst, t_list *new)
+t_list	*ft_lstpop(t_list **lst)
 {
-	if (alst && new)
-	{
-		new->next = *alst;
-		*alst = new;
-	}
-}
+	t_list *last;
+	t_list *prev;
 
-void	ft_bilstadd_front(t_bilist **alst, t_bilist *new)
-{
-	if (alst && new)
+	prev = NULL;
+	last = NULL;
+	if (!lst)
+		return (NULL);
+	last = *lst;
+	while (last)
 	{
-		new->next = *alst;
-		*alst = new;
+		if (!last->next)
+		{
+			if (prev)
+				prev->next = NULL;
+			return (last);
+		}
+		prev = last;
+		last = last->next;
 	}
+	return (last);
 }

@@ -6,12 +6,43 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 18:30:57 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 18:44:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 #include "minishell.h"
+
+void
+	print_history(t_shell *sh, t_term *term, int next)
+{
+	t_bilist		*idx;
+	char			*str;
+
+	if (!sh->history.input)
+		sh->history.input = get_current_word(sh);
+	str = sh->history.input;
+	// if (sh->history.index)
+	// 	sh->history.index = (next ? sh->history.index->next : sh->history.index->prev);
+	if (!sh->history.index)
+		sh->history.index = sh->history.elements;
+	idx = next ? sh->history.index->next : sh->history.index->prev;
+	if (!idx)
+		idx = next ? sh->history.elements : (t_bilist *)ft_lstlast((t_list *)sh->history.elements);
+	while (idx != sh->history.index)
+	{
+		if (match(idx->content, str))
+		{
+			sh->history.index = idx;
+			add_str_to_lst(sh, str, idx->content);
+			return ;
+		}
+		idx = next ? idx->next : idx->prev;
+		if (!idx)
+			idx = next ? sh->history.elements : (t_bilist *)ft_lstlast((t_list *)sh->history.elements);
+	}
+	add_str_to_lst(sh, str, "");
+}
 
 void
 	handle_arrows(char buff[3], t_term *term)
@@ -34,6 +65,10 @@ void
 				+ 1 : term->pos_str;
 		}
 	}
+	if (buff[1] == '[' && buff[2] == 'A')
+		print_history(&g_sh, term, 0);
+	else if (buff[1] == '[' && buff[2] == 'B')
+		print_history(&g_sh, term, 1);
 }
 
 void

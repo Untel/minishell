@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/23 18:49:24 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/02/24 14:28:21 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRCS_FILES	= \
 	sanitize.c\
 	heredoc.c\
 	signals.c\
+	history.c\
 	redirections.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 23:50:24 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:54:41 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int
 	{
 		cmd = (t_cmd *)lst->content;
 		if (pipe(cmd->pipe) == ERR)
-			return (-1);
+			return (ERR);
 		lst = lst->next;
 	}
-	return (1);
+	return (SUC);
 }
