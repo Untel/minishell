@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/24 14:28:21 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/02/25 18:21:01 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRCS_FILES	= \
 	main.c\
 	prompt.c\
 	input.c\
+	input2.c\
 	commands.c\
 	env.c\
 	env_utils.c\

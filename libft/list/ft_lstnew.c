@@ -6,14 +6,15 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 15:50:17 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 18:23:28 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 18:09:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-t_list	*ft_lstnew(void *content, size_t size)
+t_list
+	*ft_lstnew(void *content, size_t size)
 {
 	t_list *node;
 
@@ -25,7 +26,8 @@ t_list	*ft_lstnew(void *content, size_t size)
 	return (node);
 }
 
-t_bilist	*ft_bilstnew(void *content, size_t size)
+t_bilist
+	*ft_bilstnew(void *content, size_t size)
 {
 	t_bilist *node;
 

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 20:39:47 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 18:20:31 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,16 @@ int		unset_env(t_shell *sh, t_cmd *cmd);
 void	err_shutdown(t_shell *sh, char *str);
 int		change_directory(t_shell *sh, t_cmd *cmd);
 int		export_env(t_shell *sh, t_cmd *cmd);
+t_operator
+		get_operator(t_shell *sh, int *i);
+int		copy_from_idx(t_shell *sh, t_read *rd, int idx);
+int		is_cmd_separator(char c);
+char	*replace_vars(t_shell *sh, char *str);
+int		handle_double_quote(t_shell *sh, t_read *rd, int *i);
+int		handle_simple_quote(t_shell *sh, t_read *rd, int *i);
+int		handle_space(t_shell *sh, t_read *rd, int *i);
+int		handle_separator(t_shell *sh, t_read *rd, int *i);
+int		handle_redirections(t_shell *sh, t_read *rd, int *i);
 /* Promt */
 int		prompt_line(t_shell *sh);
 int		parse_input(t_shell *sh);
@@ -203,6 +213,7 @@ void	handle_backspace(char buff[3], t_term *term);
 int		handle_ctrl_d(char buff[3], t_term *term);
 void	handle_ctrl_u(t_term term);
 void	handle_ctrl_c(t_term *term);
+int		get_termx(t_shell *sh, char **av, char **env);
 void	handle_winch(int sig);
 int		redirect_in_subprocess(t_shell *sh, t_cmd *cmd);
 void	run_redirect_in(t_shell *sh, t_cmd *cmd);
@@ -218,7 +229,6 @@ int		is_first_word(t_shell *sh);
 t_list	*get_nmatch_bin(t_shell *sh, char **paths, char *str);
 int		match_bin(t_shell *sh, int i, t_list *occur, int nb_elem);
 void	free_occur(t_list *occur);
-
 int		init_term(struct termios *s_termios, struct termios *s_termios_backup);
 char	*read_input(t_shell *sh);
 void	sigint_quit (int sig);

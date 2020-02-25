@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_termios.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 16:44:22 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/09 09:29:13 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/25 18:19:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,34 @@ int	init_term(struct termios *s_termios, struct termios *s_termios_backup)
 	s_termios->c_cc[VMIN] = 1;
 	if (tcsetattr(0, 0, s_termios) == -1)
 		return (-1);
+	return (0);
+}
+
+int
+	get_termx(t_shell *sh, char **av, char **env)
+{
+	int		pid;
+	int		p[2];
+	char	str[11];
+	int		ret;
+
+	pipe(p);
+	if ((pid = fork()) == -1)
+		return (-1);
+	else if (pid == 0)
+	{
+		dup2(p[1], 1);
+		close(p[0]);
+		ret = execve("/usr/bin/tput", av, env);
+		exit(ret);
+	}
+	else
+	{
+		close(p[1]);
+		wait(0);
+		ret = read(p[0], str, 10);
+		str[ret] = 0;
+		return (ft_atoi(str));
+	}
 	return (0);
 }

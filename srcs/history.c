@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 14:28:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 23:10:05 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 18:22:02 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int
 		ft_bilstadd_front(&(sh->history.elements),
 			ft_bilstnew(str[0], ft_strlen(str[0])));
 	close(fd);
+	return (SUC);
 }
 
 int
@@ -44,7 +45,6 @@ int
 	if (ft_strlen(sh->input) > 0)
 		ft_bilstadd_front(&(sh->history.elements),
 			ft_bilstnew(sh->input, ft_strlen(sh->input)));
-	// ft_bilstprint(sh->history.elements, "New history is");
 	return (SUC);
 }
 
@@ -66,6 +66,7 @@ int
 		ft_memdel((void **)&el);
 	}
 	close(fd);
+	return (SUC);
 }
 
 void

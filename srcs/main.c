@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 16:16:21 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 18:21:34 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,37 +18,6 @@
 // }
 
 t_shell	g_sh;
-
-int
-	get_termx(t_shell *sh, char **av, char **env)
-{
-	int		pid;
-	int		p[2];
-	char	str[11];
-	int		ret;
-	int		res;
-
-	pipe(p);
-	res = 0;
-	if ((pid = fork()) == -1)
-		return (-1);
-	else if (pid == 0)
-	{
-		dup2(p[1], 1);
-		close(p[0]);
-		ret = execve("/usr/bin/tput", av, env);
-		exit(ret);
-	}
-	else
-	{
-		close(p[1]);
-		wait(0);
-		ret = read(p[0], str, 10);
-		str[ret] = 0;
-		res = ft_atoi(str);
-	}
-	return (res);
-}
 
 void
 	initialize_shell(t_shell *sh)
@@ -67,6 +36,16 @@ void
 	init_history(sh);
 }
 
+void
+	run(t_shell *sh)
+{
+	handle_winch(0);
+	format_directory(sh);
+	prompt_line(sh);
+	ft_lstclear(&sh->cmds, free_command);
+	tcsetattr(0, 0, &sh->term.old_term);
+}
+
 int
 	main(int ac, char **av, char **envp)
 {
@@ -79,18 +58,12 @@ int
 	};
 	initialize_shell(&g_sh);
 	if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)
-	{
-		handle_winch(0);
-		format_directory(&g_sh);
-		prompt_line(&g_sh);
-		ft_lstclear(&g_sh.cmds, free_command);
-		tcsetattr(0, 0, &g_sh.term.old_term);
-	}
+		run(&g_sh);
 	else
 	{
 		get_next_line(0, &g_sh.input);
-		if (sanitize(&g_sh) && parse_input(&g_sh))
-			exec_lines(&g_sh);
+		if (sanitize(&g_sh))
+			parse_input(&g_sh);
 		clear_last_prompt(&g_sh);
 	}
 	persist_history(&g_sh);
