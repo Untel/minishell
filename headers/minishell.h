@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 13:28:44 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/25 12:25:37 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,14 @@ typedef struct	s_read
 	int			index;
 	t_mode		add_to;
 }				t_read;
+
+typedef struct	s_history
+{
+	char		*path;
+	t_bilist	*elements;
+	t_bilist	*index;
+	char		*input;
+}				t_hist;
 
 typedef struct	s_quoter
 {
@@ -127,6 +135,7 @@ typedef struct	s_shell
 	t_list	*cmds;
 	t_list	*env;
 	t_list	*heredocs;
+	t_hist	history;
 	int		hd_index;
 	t_term	term;
 	int		ctrl_c;
@@ -248,4 +257,10 @@ int				print_match(t_shell *sh, char buff[3]);
 int				sanitize(t_shell *sh);
 int				after_redirect_out(t_shell *sh, t_cmd *cmd);
 int				after_child_exec(t_shell *sh, t_cmd *cmd);
+int				persist_history(t_shell *sh);
+void			redirect_buffer(int from, int to);
+int				init_history(t_shell *sh);
+int				add_to_history(t_shell *sh);
+void			free_history(t_list *element);
+void			print_history(t_shell *sh, t_term *term, int next);
 #endif

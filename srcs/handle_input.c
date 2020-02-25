@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 18:30:57 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 20:39:00 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void
 				+ 1 : term->pos_str;
 		}
 	}
+	if (buff[1] == '[' && buff[2] == 'A')
+		print_history(&g_sh, term, 1);
+	else if (buff[1] == '[' && buff[2] == 'B')
+		print_history(&g_sh, term, 0);
 }
 
 void

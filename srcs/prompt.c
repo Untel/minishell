@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 18:58:15 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 16:27:53 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int
 		sh->stop = 1;
 	if (!sh->stop && sanitize(sh))
 	{
+		add_to_history(sh);
 		parse_input(sh);
 		clear_last_prompt(sh);
 	}

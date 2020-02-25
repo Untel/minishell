@@ -15,11 +15,11 @@ _STR			= ft_escape.c ft_strcmp.c ft_strreplace.c ft_strcat.c ft_strcpy_free.c ft
 _CHAR			= ft_isalpha.c ft_isascii.c ft_tolower.c ft_toupper.c ft_islower.c ft_isupper.c ft_isdigit.c ft_isalnum.c ft_isprint.c ft_isspace.c
 _PRINT			= ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c
 _MEM			= ft_memdel.c ft_memcmp.c ft_bzero.c ft_memcpy.c ft_calloc.c ft_memccpy.c ft_memmove.c ft_memchr.c ft_memset.c
-_LIST			= ft_lstshift.c ft_lstindex.c ft_lstadd_before.c ft_lstdelone.c ft_lstnew.c ft_lstadd_back.c ft_lstiter.c ft_lstsize.c ft_lstclear.c ft_lstprint.c ft_lstmap.c ft_lstadd_front.c ft_lstlast.c
+_LIST			= ft_lstremove_if.c ft_lstpop.c ft_lstshift.c ft_lstindex.c ft_lstadd_before.c ft_lstdelone.c ft_lstnew.c ft_lstadd_back.c ft_lstiter.c ft_lstsize.c ft_lstclear.c ft_lstprint.c ft_lstmap.c ft_lstadd_front.c ft_lstlast.c
 _WCHAR			= ft_wchar_to_char.c ft_is_wchar.c
 _FILES			= get_next_line.c
 _PRINTF			= ft_parseint.c ft_parsechar.c ft_parsebase.c ft_parsefloat.c ft_parseexp.c ft_convert_base.c ft_printf_utils.c ft_extract_flags.c ft_convert.c ft_printf.c
-_ASM			= list/ft_lstremove_if.s
+_ASM			=
 
 STR				= $(addprefix $(STR_DIR)/, $(_STR))
 CHAR			= $(addprefix $(CHAR_DIR)/, $(_CHAR))

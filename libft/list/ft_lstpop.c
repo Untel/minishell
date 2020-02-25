@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstlast copy.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 15:50:17 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 18:23:28 by adda-sil         ###   ########.fr       */
+/*   Created: 2019/10/10 16:13:02 by adda-sil          #+#    #+#             */
+/*   Updated: 2020/02/24 16:06:40 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-t_list	*ft_lstnew(void *content, size_t size)
+t_list	*ft_lstpop(t_list **lst)
 {
-	t_list *node;
+	t_list *last;
+	t_list *prev;
 
-	if (!(node = malloc(sizeof(t_list))))
+	prev = NULL;
+	last = NULL;
+	if (!lst)
 		return (NULL);
-	node->content = content;
-	node->size = size;
-	node->next = NULL;
-	return (node);
-}
-
-t_bilist	*ft_bilstnew(void *content, size_t size)
-{
-	t_bilist *node;
-
-	if (!(node = malloc(sizeof(t_bilist))))
-		return (NULL);
-	node->content = content;
-	node->size = size;
-	node->next = NULL;
-	node->prev = NULL;
-	return (node);
+	last = *lst;
+	while (last)
+	{
+		if (!last->next)
+		{
+			if (prev)
+				prev->next = NULL;
+			return (last);
+		}
+		prev = last;
+		last = last->next;
+	}
+	return (last);
 }

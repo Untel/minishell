@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/19 13:24:29 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 21:23:09 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ typedef	struct	s_list
 	struct s_list	*next;
 	size_t			size;
 }				t_list;
+typedef	struct	s_bilist
+{
+	void			*content;
+	struct s_bilist	*next;
+	size_t			size;
+	struct s_bilist	*prev;
+}				t_bilist;
 int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
 int				ft_isupper(int c);
@@ -111,9 +118,16 @@ void			ft_lstadd_before(t_list **lst,
 void			ft_lstdelone(t_list *lst, void (*del)(t_list *));
 void			ft_lstremove_if(t_list **begin_list, void *data_ref,
 	int (*cmp)(), void (*free_fct)(void *));
+void			ft_bilstremove_if(t_bilist **begin_list, void *data_ref,
+	int (*cmp)(), void (*free_fct)(void *));
 void			ft_lstclear(t_list **lst, void (*del)(t_list *));
 void			ft_lstprint(t_list *lst, char *cmt);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *));
 t_list			*ft_lstindex(t_list *lst, size_t index);
 t_list			*ft_lstshift(t_list **alst);
+t_list			*ft_lstpop(t_list **lst);
+void			ft_bilstadd_front(t_bilist **alst, t_bilist *new);
+void			ft_bilstadd_back(t_bilist **alst, t_bilist *new);
+t_bilist		*ft_bilstnew(void *content, size_t size);
+void			ft_bilstprint(t_bilist *lst, char *cmt);
 #endif

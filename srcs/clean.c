@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:21:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:40:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:16:30 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void
 	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
 	sh->hd_index = 0;
-	ft_memdel((void **)&sh->input);
 }
 
 void
@@ -38,4 +37,10 @@ void
 	ft_memdel((void **)&hd->label);
 	ft_memdel((void **)&hd->buffer);
 	ft_memdel((void **)&hd);
+}
+
+void
+	free_history(t_list *element)
+{
+	ft_memdel((void **)element->content);
 }
