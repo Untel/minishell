@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:28:33 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 22:50:26 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int
 {
 	if (c == ';')
 		return (1);
-	else if (c == '|' || c == '&')
+	if (c == '|' || c == '&')
 		return (2);
 	else
 		return (0);
@@ -32,32 +32,30 @@ char
 	char	*key;
 	char	*value;
 
-	if ((ptr = ft_strchr(str, '$')))
+	if (!(ptr = ft_strchr(str, '$')))
+		return (str);
+	tmp = ft_strndup(str, ptr - str);
+	key_len = 1;
+	if (*(ptr + 1) == '?')
 	{
-		tmp = ft_strndup(str, ptr - str);
-		key_len = 1;
-		if (*(ptr + 1) == '?')
-		{
-			value = ft_itoa(sh->last_ret);
-			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
-			ft_memdel((void **)&value);
-		}
-		else
-		{
-			while (ptr[key_len] && !ft_strchr(" /$", ptr[key_len]))
-				++key_len;
-			key = ft_strndup(ptr + 1, key_len);
-			value = get_value(sh->env, key, NULL);
-			ft_memdel((void **)&key);
-			key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
-		}
-		value = ft_strjoin(key, ptr + 1 + key_len);
-		ft_memdel((void **)&tmp);
-		ft_memdel((void **)&key);
-		ft_memdel((void **)&str);
-		return (replace_vars(sh, value));
+		value = ft_itoa(sh->last_ret);
+		key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
+		ft_memdel((void **)&value);
 	}
-	return (str);
+	else
+	{
+		while (ptr[key_len] && !ft_strchr(" /$", ptr[key_len]))
+			++key_len;
+		key = ft_strndup(ptr + 1, key_len);
+		value = get_value(sh->env, key, NULL);
+		ft_memdel((void **)&key);
+		key = value ? ft_strjoin(tmp, value) : ft_strdup(tmp);
+	}
+	value = ft_strjoin(key, ptr + 1 + key_len);
+	ft_memdel((void **)&tmp);
+	ft_memdel((void **)&key);
+	ft_memdel((void **)&str);
+	return (replace_vars(sh, value));
 }
 
 int
@@ -94,34 +92,32 @@ t_operator
 int
 	parse_input(t_shell *sh)
 {
-	int			i;
-	char		c;
 	t_read		rd;
 	int			ret;
 
-	i = -1;
 	ret = 1;
 	rd = (t_read) { .buffer = NULL, .index = 0,
-		.add_to = ARGS, .input = NULL,
+		.add_to = ARGS, .input = NULL, .i = -1, .c = 0
 	};
 	new_command(sh, NONE);
-	while ((c = sh->input[++i]))
+	while (sh->input[++(rd.i)])
 	{
-		if (c == '\\' && (++i || 1))
+		rd.c = sh->input[rd.i];
+		if (rd.c == '\\' && (++rd.i || 1))
 			continue;
-		else if (c == '\'')
-			handle_simple_quote(sh, &rd, &i);
-		else if (c == '"')
-			handle_double_quote(sh, &rd, &i);
-		else if (c == ' ')
-			ret = handle_space(sh, &rd, &i);
-		else if (is_cmd_separator(c))
-			ret = handle_separator(sh, &rd, &i);
-		else if (c == '<' || c == '>')
-			ret = handle_redirections(sh, &rd, &i);
+		else if (rd.c == '\'')
+			handle_simple_quote(sh, &rd, &rd.i);
+		else if (rd.c == '"')
+			handle_double_quote(sh, &rd, &rd.i);
+		else if (rd.c == ' ')
+			ret = handle_space(sh, &rd, &rd.i);
+		else if (is_cmd_separator(rd.c))
+			ret = handle_separator(sh, &rd, &rd.i);
+		else if (rd.c == '<' || rd.c == '>')
+			ret = handle_redirections(sh, &rd, &rd.i);
 		if (!ret)
 			return (ret);
 	}
-	ret = handle_separator(sh, &rd, &i);
+	ret = handle_separator(sh, &rd, &rd.i);
 	return (ret);
 }

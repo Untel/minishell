@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:11:44 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 22:51:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int
 		ft_lstclear(&sh->cmds, free_command);
 	}
 	new_command(sh, op);
-	while (sh->input[*i] == ' ')
+	while (sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	if (is_cmd_separator(sh->input[*i + 1]) == 2)
 		return (ft_fprintf(STDERR, MSG_ERROR, "parse error") && 0);

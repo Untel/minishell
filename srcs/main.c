@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 22:13:49 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 22:34:49 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,11 @@ int
 {
 	(void)ac;
 	(void)av;
-	t_hist hist;
-	hist = (t_hist) { .elements = NULL, .index = NULL, .input = NULL };
 	g_sh = (t_shell) {
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
-		.env = create_env_list(envp), .ctrl_c = 0, .history = hist
+		.env = create_env_list(envp), .ctrl_c = 0,
+		.heredocs = NULL,
 	};
 	initialize_shell(&g_sh);
 	if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)

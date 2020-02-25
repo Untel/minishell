@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 21:38:13 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 15:54:41 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 23:26:36 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int
 int
 	exec_cmd(t_shell *sh, t_cmd *cmd, int (*fn)(t_shell *sh, t_cmd *cmd))
 {
-	if (cmd->right || cmd->left)
+	if (cmd->right || cmd->left || cmd->redir_out)
 		return (builtin_subprocess(sh, cmd, fn));
 	else
 		return (fn(sh, cmd));
@@ -72,8 +72,9 @@ int
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-		if (pipe(cmd->pipe) == ERR)
-			return (ERR);
+		if (cmd->right)
+			if (pipe(cmd->pipe) == ERR)
+				return (ERR);
 		lst = lst->next;
 	}
 	return (SUC);

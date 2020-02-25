@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 20:34:46 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 23:20:51 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int
 	else if (exec_is(cmd, BUILTIN_EXIT))
 		sh->last_ret = exec_cmd(sh, cmd, exit_prog);
 	else if (exec_is(cmd, BUILTIN_ECHO))
-		sh->last_ret = builtin_subprocess(sh, cmd, ft_echo);
+		sh->last_ret = exec_cmd(sh, cmd, ft_echo);
 	else if (exec_is(cmd, BUILTIN_PWD))
-		sh->last_ret = builtin_subprocess(sh, cmd, ft_pwd);
+		sh->last_ret = exec_cmd(sh, cmd, ft_pwd);
 	else if (exec_is(cmd, BUILTIN_EXPORT))
 		sh->last_ret = exec_cmd(sh, cmd, export_env);
 	else if (exec_is(cmd, BUILTIN_UNSET))

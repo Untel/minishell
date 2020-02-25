@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:21:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 20:34:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 22:40:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void
 	hd = (t_heredoc *)lst->content;
 	ft_memdel((void **)&hd->label);
 	ft_memdel((void **)&hd->buffer);
-	ft_memdel((void **)&hd);
+	// ft_memdel((void **)&hd);
 }
 
 void
@@ -51,7 +51,16 @@ void
 	t_redirect	*red;
 
 	red = ((t_redirect *)lst->content);
-	ft_memdel((void **)&red->value);
+	if (red->type != HEREDOC)
+		ft_memdel((void **)&red->value);
 	ft_memdel((void **)&red->filename);
 	ft_memdel((void **)&red);
+}
+
+int
+	reset_history_position(t_shell *sh)
+{
+	ft_memdel((void **)&sh->history.input);
+	sh->history.index = NULL;
+	return (SUC);
 }

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 19:24:24 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 22:26:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct	s_read
 	char		*input;
 	int			index;
 	t_mode		add_to;
+	char		c;
+	int			i;
 }				t_read;
 
 typedef struct	s_history
