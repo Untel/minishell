@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/24 16:47:54 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 19:06:47 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int		print_match(t_shell *sh, char buff[3])
 	ret = handle_match(sh, buff, nb_elem, str, occur);
 	if (is_first_word(sh))
 	{
-		ft_lstclear(&occur, free_occur);
+		ft_lstclear(&occur, free_content);
 		ft_memdel((void **)&occur);
 		free_env_array(paths);
 	}

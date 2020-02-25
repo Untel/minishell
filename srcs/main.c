@@ -6,16 +6,16 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:21:34 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 21:33:18 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// __attribute__((destructor)) void lul(void)
-// {
-// 	system("leaks minishell");
-// }
+__attribute__((destructor)) void lul(void)
+{
+	system("leaks minishell");
+}
 
 t_shell	g_sh;
 
@@ -41,8 +41,9 @@ void
 {
 	handle_winch(0);
 	format_directory(sh);
-	prompt_line(sh);
-	ft_lstclear(&sh->cmds, free_command);
+	while (!sh->stop)
+		prompt_line(sh);
+	ft_printf(MSG_EXIT);
 	tcsetattr(0, 0, &sh->term.old_term);
 }
 
@@ -51,10 +52,12 @@ int
 {
 	(void)ac;
 	(void)av;
+	t_hist hist;
+	hist = (t_hist) { .elements = NULL, .index = NULL, .input = NULL };
 	g_sh = (t_shell) {
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
-		.env = create_env_list(envp), .ctrl_c = 0, 
+		.env = create_env_list(envp), .ctrl_c = 0, .history = hist
 	};
 	initialize_shell(&g_sh);
 	if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 22:27:42 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/19 18:03:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 19:06:14 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,6 @@ t_list	*get_nmatch_bin(t_shell *sh, char **paths, char *str)
 	while (paths[++i])
 		is_match_bin(sh, paths[i], str, &occur);
 	return (occur);
-}
-
-void	free_occur(t_list *occur)
-{
-	ft_memdel((void **)&occur->content);
 }
 
 int		match_bin(t_shell *sh, int i, t_list *occur, int nb_elem)

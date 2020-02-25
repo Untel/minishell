@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 14:28:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:22:02 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 21:40:06 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,16 @@ int
 		if (ft_strlen(str[0]))
 			ft_bilstadd_front(&(sh->history.elements),
 				ft_bilstnew(str[0], ft_strlen(str[0])));
-	if (ret == 0 && (get_next_line(fd, &str[0]) != -1) && ft_strlen(str[0]))
-		ft_bilstadd_front(&(sh->history.elements),
-			ft_bilstnew(str[0], ft_strlen(str[0])));
+		else
+			ft_memdel((void **)&str[0]);
+	if (ret == 0)
+	{
+		if (ft_strlen(str[0]))	
+			ft_bilstadd_front(&(sh->history.elements),
+				ft_bilstnew(str[0], ft_strlen(str[0])));
+		else
+			ft_memdel((void **)&str[0]);
+	}
 	close(fd);
 	return (SUC);
 }
@@ -45,8 +52,14 @@ int
 	if (ft_strlen(sh->input) > 0)
 		ft_bilstadd_front(&(sh->history.elements),
 			ft_bilstnew(sh->input, ft_strlen(sh->input)));
+	else
+	{
+		ft_memdel((void **)&sh->input);
+		return (FALSE);
+	}
 	return (SUC);
 }
+
 
 int
 	persist_history(t_shell *sh)
@@ -65,6 +78,8 @@ int
 		ft_memdel((void **)&el->content);
 		ft_memdel((void **)&el);
 	}
+	ft_memdel((void **)&sh->history.path);
+	ft_memdel((void **)&sh->history.input);
 	close(fd);
 	return (SUC);
 }
@@ -97,4 +112,12 @@ void
 		}
 		idx = next ? idx->next : idx->prev;
 	}
+}
+
+int
+	reset_history_position(t_shell *sh)
+{
+	ft_memdel((void **)&sh->history.input);
+	sh->history.index = NULL;
+	return (SUC);
 }

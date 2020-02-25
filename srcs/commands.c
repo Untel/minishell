@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:46:22 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 19:09:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ void
 	cmd = (t_cmd *)lst->content;
 	while (cmd->argc--)
 		ft_memdel((void **)&cmd->argv[cmd->argc]);
+	ft_lstclear(&cmd->redir_in, free_redirection);
+	ft_lstclear(&cmd->redir_out, free_redirection);
 	ft_memdel((void **)&cmd->argv);
 	ft_memdel((void **)&cmd);
 }

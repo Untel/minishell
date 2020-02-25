@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:21:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 15:16:30 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 20:34:53 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void
 {
 	ft_fprintf(STDERR, MSG_ERROR, str);
 	clear_last_prompt(sh);
-	exit(1);
+	exit(EXIT_SUCCESS);
 }
 
 void
@@ -40,7 +40,18 @@ void
 }
 
 void
-	free_history(t_list *element)
+	free_content(t_list *element)
 {
 	ft_memdel((void **)element->content);
+}
+
+void
+	free_redirection(t_list *lst)
+{
+	t_redirect	*red;
+
+	red = ((t_redirect *)lst->content);
+	ft_memdel((void **)&red->value);
+	ft_memdel((void **)&red->filename);
+	ft_memdel((void **)&red);
 }

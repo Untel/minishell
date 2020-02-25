@@ -6,13 +6,13 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:50:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 19:12:05 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void
+int
 	redirect_buffer(int from, int to)
 {
 	int		ret;
@@ -20,6 +20,7 @@ void
 
 	while ((ret = read(from, &buff, BUFFER_SIZE)))
 		write(to, buff, ret);
+	return (SUC);
 }
 
 void
@@ -37,19 +38,18 @@ void
 	if ((lst = cmd->redir_in))
 		while (lst && (red = (t_redirect *)lst->content))
 		{
-			if (red->type == IN_REDIR &&
-				(fd = open(red->filename, O_RDONLY)) > 2)
-			{
-				redirect_buffer(fd, p[PIPE_IN]);
+			if (red->type == IN_REDIR
+				&& (fd = open(red->filename, O_RDONLY)) > 2
+				&& redirect_buffer(fd, p[PIPE_IN]))
 				close(fd);
-			}
 			else if (red->type == HEREDOC)
 				write(p[PIPE_IN],
 					red->value, ft_strlen(red->value));
 			lst = lst->next;
 		}
-	!close(p[PIPE_IN]) && dup2(p[PIPE_OUT], STDIN_FILENO) != ERR
-		&& !close(p[PIPE_OUT]);
+	close(p[PIPE_IN]);
+	dup2(p[PIPE_OUT], STDIN_FILENO);
+	close(p[PIPE_OUT]);
 }
 
 int

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:45:14 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 19:24:24 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,11 +183,11 @@ void			clear_last_prompt(t_shell *sh);
 void			free_env_unset(void *content);
 void			free_command(t_list *lst);
 void			free_heredocs(t_list *lst);
-void			free_history(t_list *element);
-void			free_occur(t_list *occur);
+void			free_content(t_list *el);
 void			free_env_array(char **envp);
 void			free_env_var(t_list *lst_env);
 void			free_env_list(t_list **env);
+void			free_redirection(t_list *lst);
 void			err_shutdown(t_shell *sh, char *str);
 
 /*
@@ -274,12 +274,13 @@ int				init_history(t_shell *sh);
 int				add_to_history(t_shell *sh);
 void			print_history(t_shell *sh, t_term *term, int next);
 int				persist_history(t_shell *sh);
+int				reset_history_position(t_shell *sh);
 
 /*
 **	Redirections / Pipelines
 */
-void			redirect_buffer(int from, int to);
 void			run_redirect_in(t_shell *sh, t_cmd *cmd);
+int				redirect_buffer(int from, int to);
 int				run_redirect_out(t_shell *sh, t_cmd *cmd);
 int				after_redirect_out(t_shell *sh, t_cmd *cmd);
 int				mount_pipes(t_shell *sh);
