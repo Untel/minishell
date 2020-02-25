@@ -6,16 +6,11 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 21:33:18 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 22:13:49 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-__attribute__((destructor)) void lul(void)
-{
-	system("leaks minishell");
-}
 
 t_shell	g_sh;
 
@@ -27,7 +22,8 @@ void
 	signal(SIGINT, sigint_quit);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	if (!(tmp = ft_itoa(ft_atoi((char *)get_value(sh->env, "SHLVL", "0")) + 1)))
+	if (!(tmp = ft_itoa(ft_atoi(
+		(char *)get_value(sh->env, "SHLVL", "0")) + 1)))
 		err_shutdown(sh, "Cannot upgrade sh_level");
 	set_value(&sh->env, "SHLVL", tmp);
 	set_value(&sh->env, "GREP_OPTIONS", "--color=auto");
