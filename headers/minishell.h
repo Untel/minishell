@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:42:09 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 18:45:14 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ typedef struct	s_cmd
 	char			**env;
 	t_operator		op;
 	int				pipe[2];
-	int				pipe_redir_in[2];
 	t_list			*redir_in;
 	t_list			*redir_out;
 	struct s_cmd	*left;

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 16:16:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 18:46:22 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_cmd
 		return (NULL);
 	*cmd = (t_cmd) { .input = NULL, .argc = 0, .argv = NULL, .env = NULL,
 		.op = op, .left = NULL, .right = NULL, .pipe = { 0, 0 },
-		.redir_in = NULL, .redir_out = NULL, .pipe_redir_in = { 0, 0 } };
+		.redir_in = NULL, .redir_out = NULL };
 	if (!(el = ft_lstnew(cmd, sizeof(t_cmd *)))
 		&& ft_imemdel((void **)&cmd))
 		return (NULL);

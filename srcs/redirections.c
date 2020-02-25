@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/24 20:42:47 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 18:50:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,28 @@ void
 	t_redirect	*red;
 	t_list		*lst;
 	int			fd;
+	int			p[2];
 
-	if (pipe(cmd->pipe_redir_in) == ERR)
+	if (pipe(p) == ERR)
 		err_shutdown(sh, "Cannot mount pipe redir in pipe");
 	if (cmd->left)
-		redirect_buffer(cmd->left->pipe[PIPE_OUT], cmd->pipe_redir_in[PIPE_IN]);
+		redirect_buffer(cmd->left->pipe[PIPE_OUT], p[PIPE_IN]);
 	if ((lst = cmd->redir_in))
 		while (lst && (red = (t_redirect *)lst->content))
 		{
 			if (red->type == IN_REDIR &&
 				(fd = open(red->filename, O_RDONLY)) > 2)
 			{
-				redirect_buffer(fd, cmd->pipe_redir_in[PIPE_IN]);
+				redirect_buffer(fd, p[PIPE_IN]);
 				close(fd);
 			}
 			else if (red->type == HEREDOC)
-				write(cmd->pipe_redir_in[PIPE_IN],
+				write(p[PIPE_IN],
 					red->value, ft_strlen(red->value));
 			lst = lst->next;
 		}
-	close(cmd->pipe_redir_in[PIPE_IN]);
-	dup2(cmd->pipe_redir_in[PIPE_OUT], STDIN_FILENO);
-	close(cmd->pipe_redir_in[PIPE_OUT]);
+	!close(p[PIPE_IN]) && dup2(p[PIPE_OUT], STDIN_FILENO) != ERR
+		&& !close(p[PIPE_OUT]);
 }
 
 int

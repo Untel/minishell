@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:38:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 18:46:13 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int
 		;
 	else
 		sh->last_ret = exec_cmd(sh, cmd, say_404);
-	return (1);
+	return (SUC);
 }
 
 int
