@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/02/24 14:28:21 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/02/26 15:38:45 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ all:		makelib
 			@$(MAKE) $(NAME)
 
 $(NAME):	$(OBJ)
-			$(CC) $(LIBS) $(CFLAGS) -o $@ $^ -g3 -lncurses #-fsanitize=address
+			$(CC) $(LIBS) $(CFLAGS) -o $@ $^ -g3 -lncurses -fsanitize=address
 
 makelib:	
 			$(LIBFT_MAKE)
@@ -83,7 +83,7 @@ makelib:
 -include $(DEP)
 $(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) -MMD $(INCLUDES) -o $@ -c $< -g3 #-fsanitize=address
+	$(CC) -MMD $(INCLUDES) -o $@ -c $< -g3 -fsanitize=address
 
 bonus:		all
 
