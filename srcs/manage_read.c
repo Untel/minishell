@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/26 18:01:38 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/02/26 19:11:33 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	print_line(t_shell *sh)
 	int			ret;
 
 	del = 127;
+//	printf("\n\nr: %d, l: %d, r_ofst: %d, l_ofst: %d\n\n", sh->term.r, sh->term.l, sh->term.r_ofst, sh->term.l_ofst);
 	offset = sh->term.size_prt % sh->term.pos.x;
 	write(1, "\r", 1);
 	while (--offset >= 0)
