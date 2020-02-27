@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 14:05:51 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 16:01:25 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,26 @@ void
 {
 	t_redirect	*redir;
 	t_list		*lst;
+	int			red_dir;
 
+	red_dir = (rd->add_to == HEREDOC || rd->add_to == IN_REDIR);
 	if (!(redir = malloc(sizeof(t_redirect))))
 		return ;
-	*redir = (t_redirect) { .filename = str,
-		.value = NULL, .type = rd->add_to, .fd = rd->fd };
-	rd->fd = STDOUT_FILENO;
+	*redir = (t_redirect) { .filename = str, .value = NULL, .type = rd->add_to, 
+		.fd = rd->fd };
+	if (red_dir && rd->fd == -1)
+		redir->fd = STDIN_FILENO;
+	else if (!red_dir && rd->fd == -1)
+		redir->fd = STDOUT_FILENO;
+	rd->fd = -1;
 	if (rd->add_to == HEREDOC &&
 		(lst = ft_lstindex(sh->heredocs, sh->hd_index++)))
 		redir->value = ((t_heredoc *)lst->content)->buffer;
 	ft_lstadd_back(
-		((rd->add_to == HEREDOC || rd->add_to == IN_REDIR)
+		(red_dir
 			? &cmd->redir_in
 			: &cmd->redir_out)
 		, ft_lstnew(redir, sizeof(t_redirect)));
-	ft_fprintf(STDERR, "HAS REDIR FROM FD %d\n\n", redir->fd);
 }
 
 void
