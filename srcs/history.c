@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 14:28:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 22:20:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 17:33:01 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int
 	}
 	return (SUC);
 }
-
 
 int
 	persist_history(t_shell *sh)
@@ -106,4 +105,12 @@ void
 		}
 		idx = next ? idx->next : idx->prev;
 	}
+}
+
+int
+	reset_history_position(t_shell *sh)
+{
+	ft_memdel((void **)&sh->history.input);
+	sh->history.index = NULL;
+	return (SUC);
 }

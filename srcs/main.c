@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 17:25:55 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 17:58:59 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,20 @@ void
 	tcsetattr(0, 0, &sh->term.old_term);
 }
 
-void
-	inline_mode(t_shell *sh)
+int
+	inline_mode(t_shell *sh, char *filename)
 {
-	int	ret;
-	while ((ret = get_next_line(0, &sh->input)) >= 0)
+	int		ret;
+	char	buff[BUFFER_SIZE + 1];
+
+	if (filename)
+	{
+		errno = 0;
+		if ((sh->inline_fd = open(filename, O_RDONLY) == ERR))
+			return (ft_fprintf(STDERR, MSG_GEN_ERR, filename, 
+				errno ? strerror(errno) : "no such file or directory"));
+	}
+	while ((ret = get_next_line(sh->inline_fd, &sh->input)) >= 0)
 	{
 		if (sanitize(sh))
 			parse_input(sh);
@@ -56,24 +65,26 @@ void
 		if (ret == 0)
 			break;
 	}
+	close(sh->inline_fd);
+	return (SUC);
 }
 
 int
 	main(int ac, char **av, char **envp)
 {
-	(void)ac;
-	(void)av;
 	g_sh = (t_shell) {
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
 		.env = create_env_list(envp), .ctrl_c = 0,
-		.heredocs = NULL,
+		.heredocs = NULL, .inline_fd = -1,
 	};
 	initialize_shell(&g_sh);
-	if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)
+	if (ac > 1)
+		inline_mode(&g_sh, *(av + 1));
+	else if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)
 		run(&g_sh);
 	else
-		inline_mode(&g_sh);
+		inline_mode(&g_sh, NULL);
 	persist_history(&g_sh);
 	free_env_list(&g_sh.env);
 	return (EXIT_SUCCESS);

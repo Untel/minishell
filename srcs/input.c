@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 17:24:01 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 17:29:54 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,7 @@ int
 int
 	handle_space(t_shell *sh, t_read *rd, int *i)
 {
-	if (*i != rd->index)
-		copy_from_idx(sh, rd, *i);
-	if (rd->buffer)
-		add_arg_to_last_cmd(sh, rd->buffer, rd);
+	copy_to_cmd(sh, rd, i);
 	while (sh->input[*i] && sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	rd->index = *i + 1;
@@ -85,10 +82,7 @@ int
 	t_operator op;
 
 	op = get_operator(sh, i);
-	if (*i != rd->index)
-		copy_from_idx(sh, rd, *i);
-	if (rd->buffer)
-		add_arg_to_last_cmd(sh, rd->buffer, rd);
+	copy_to_cmd(sh, rd, i);
 	if (op == AND || op == OR)
 		*i = *i + 1;
 	if (op >= NONE)
@@ -103,16 +97,6 @@ int
 		return (ft_fprintf(STDERR, MSG_ERROR, "parse error") && 0);
 	rd->buffer = NULL;
 	rd->index = *i + 1;
-	return (SUC);
-}
-
-int
-	copy_to_cmd(t_shell *sh, t_read *rd, int *i)
-{
-	if (*i != rd->index)
-		copy_from_idx(sh, rd, *i);
-	if (rd->buffer)
-		add_arg_to_last_cmd(sh, rd->buffer, rd);
 	return (SUC);
 }
 

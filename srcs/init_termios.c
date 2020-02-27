@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 16:44:22 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/25 18:19:07 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 17:51:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 #include "list.h"
 #include "minishell.h"
 
-int	init_term(struct termios *s_termios, struct termios *s_termios_backup)
+int
+	init_term(struct termios *s_termios, struct termios *s_termios_backup)
 {
 	int		ret;
 	char	*term_type;

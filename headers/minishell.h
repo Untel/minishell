@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 16:59:25 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 17:57:23 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define MSG_ERROR		"💩  \033[1;31mError\033[0m %s\n"
 # define MSG_ERRORN		"💩  \033[1;31mError\033[0m %s"
 # define MSG_404_CMD	"🤔  \033[1;33m%s\033[0m: command not found\n"
+# define MSG_GEN_ERR	"😭  \033[1;33m%s\033[0m: %s\n"
 # define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m » "
 # define MSG_PROMPT_ERR	"🧨  \033[1;31m%s\033[0m » "
 # define MSG_EXIT		"🖐  \033[1;31mGood bye!\033[0m\n"
@@ -139,6 +140,7 @@ typedef struct	s_shell
 	char	dir[BUFFER_SIZE];
 	char	printed_dir[BUFFER_SIZE];
 	int		last_ret;
+	int		inline_fd;
 	t_list	*cmds;
 	t_list	*env;
 	t_list	*heredocs;
@@ -245,6 +247,7 @@ int				handle_redirections(t_shell *sh, t_read *rd, int *i);
 int				is_cmd_separator(char c);
 char			*replace_vars(t_shell *sh, char *str);
 int				copy_from_idx(t_shell *sh, t_read *rd, int idx);
+int				copy_to_cmd(t_shell *sh, t_read *rd, int *i);
 t_operator		get_operator(t_shell *sh, int *i);
 int				parse_input(t_shell *sh);
 int				exec_lines(t_shell *sh);
