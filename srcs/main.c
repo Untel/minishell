@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 22:34:49 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 17:25:55 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,21 @@ void
 	tcsetattr(0, 0, &sh->term.old_term);
 }
 
+void
+	inline_mode(t_shell *sh)
+{
+	int	ret;
+	while ((ret = get_next_line(0, &sh->input)) >= 0)
+	{
+		if (sanitize(sh))
+			parse_input(sh);
+		ft_memdel((void **)&sh->input);
+		clear_last_prompt(sh);
+		if (ret == 0)
+			break;
+	}
+}
+
 int
 	main(int ac, char **av, char **envp)
 {
@@ -58,12 +73,7 @@ int
 	if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)
 		run(&g_sh);
 	else
-	{
-		get_next_line(0, &g_sh.input);
-		if (sanitize(&g_sh))
-			parse_input(&g_sh);
-		clear_last_prompt(&g_sh);
-	}
+		inline_mode(&g_sh);
 	persist_history(&g_sh);
 	free_env_list(&g_sh.env);
 	return (EXIT_SUCCESS);
