@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 10:44:05 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 16:59:25 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,15 @@ typedef struct	s_term
 	t_termios	old_term;
 	t_data		*input;
 	int			pos_str;
+	int			pos_aff;
 	int			size_prt;
 	int			old_s_in;
 	int			tmp;
 	t_point		pos;
+	int			l_ofst;
+	int			r_ofst;
+	int			l;
+	int			r;
 }				t_term;
 
 typedef struct	s_shell

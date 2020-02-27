@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:11:01 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 17:45:37 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/25 19:08:17 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,14 @@ void	free_all(t_data *lst)
 		delone(lst, 1);
 }
 
-void	affiche_inv(t_data *lst)
+void	affiche_inv(t_data *lst, int offset, int max)
 {
-	t_lst_in *tmp;
+	t_lst_in	*tmp;
 
 	tmp = lst->end;
-	while (tmp != NULL)
+	while (--offset >= 0 && tmp)
+		tmp = tmp->prev;
+	while (--max >= 0 && tmp != NULL)
 	{
 		write(1, &tmp->c, 1);
 		tmp = tmp->prev;
