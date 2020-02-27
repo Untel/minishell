@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 22:50:26 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 11:11:01 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int
 
 	ret = 1;
 	rd = (t_read) { .buffer = NULL, .index = 0,
-		.add_to = ARGS, .input = NULL, .i = -1, .c = 0
+		.add_to = ARGS, .input = NULL, .i = -1, .c = 0,
+		.fd = STDOUT_FILENO,
 	};
 	new_command(sh, NONE);
 	while (sh->input[++(rd.i)])

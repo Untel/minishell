@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 18:09:28 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 13:56:32 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef	struct	s_bilist
 	struct s_bilist	*prev;
 }				t_bilist;
 int				ft_atoi(const char *str);
+int				ft_rev_atoi_idx(const char *str, int i);
+int				ft_natoi(const char *str, unsigned int len);
 int				ft_isalpha(int c);
 int				ft_isupper(int c);
 int				ft_islower(int c);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 19:12:05 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 14:10:34 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,10 @@ int
 				(red->type == OUT_END_REDIR ? O_APPEND : O_TRUNC)
 				, 0644);
 			lst = lst->next;
-			if (lst)
-				close(fd);
+			if (red->fd != STDOUT_FILENO)
+				dup2(fd, red->fd);
+			// if (lst)
+			// 	close(fd);
 		}
 		if (fd != ERR && dup2(fd, STDOUT_FILENO) != ERR)
 			close(fd);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 22:51:07 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/02/27 14:02:13 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,25 @@ int
 }
 
 int
-	handle_redirections(t_shell *sh, t_read *rd, int *i)
+	copy_to_cmd(t_shell *sh, t_read *rd, int *i)
 {
-	int		j;
-	char	*str;
-
 	if (*i != rd->index)
 		copy_from_idx(sh, rd, *i);
 	if (rd->buffer)
 		add_arg_to_last_cmd(sh, rd->buffer, rd);
+	return (SUC);
+}
+
+int
+	handle_redirections(t_shell *sh, t_read *rd, int *i)
+{
+	int		j;
+	char	*str;
+	
+	if (*i > 0 && ft_isdigit(sh->input[*i - 1]))
+		rd->fd = ft_rev_atoi_idx(sh->input, *i - 1);
+	else
+		copy_to_cmd(sh, rd, i);
 	if (sh->input[*i] == '<')
 	{
 		if (sh->input[*i + 1] == '<' && ((*i = *i + 1) || 1))
