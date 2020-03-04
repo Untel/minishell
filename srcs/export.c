@@ -16,7 +16,6 @@ int
 	export_env(t_shell *sh, t_cmd *cmd)
 {
 	char	*pos;
-	char	msg[BUFFER_SIZE];
 
 	if (cmd->argc > 1)
 	{

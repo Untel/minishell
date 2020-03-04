@@ -48,6 +48,7 @@ int
 	char	str[11];
 	int		ret;
 
+	(void)sh;
 	pipe(p);
 	if ((pid = fork()) == -1)
 		return (-1);

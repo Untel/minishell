@@ -50,17 +50,17 @@ SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
 ###	Libft
 LIBFT_LINK	=	-L$(LIBFT_PATH) -lft
-LIBFT_PATH	=	./libft
+LIBFT_PATH	=	$(PWD)/libft
 LIBFT_MAKE	=	@$(MAKE) -C $(LIBFT_PATH)
 LIBFT_INCL	=	-I $(LIBFT_PATH) -I $(LIBFT_PATH)/headers
-LIBS		=	$(LIBFT_LINK)
+LIBS		=	$(LIBFT_LINK) -lncurses
 
 ### Headers 
-INCLUDES	=	-I./headers $(LIBFT_INCL)
+INCLUDES	=	-I $(PWD)/headers $(LIBFT_INCL)
 
 ### Compiler
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -w $(INCLUDES)
 
 ### Objects
 OBJ_DIR		=	./objs
@@ -76,16 +76,16 @@ ARGS		=
 all:		makelib
 			@$(MAKE) $(NAME)
 
-$(NAME):	$(OBJ)
-			$(CC) $(LIBS) $(CFLAGS) -o $@ $^ -g3 -lncurses -fsanitize=address
+-include $(DEP)
+$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c
+			@mkdir -p $(OBJ_DIR)
+			$(CC) $(CFLAGS) -MMD -o $@ -c $<
 
+$(NAME):	$(OBJ)
+			$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 makelib:	
 			$(LIBFT_MAKE)
 
--include $(DEP)
-$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) -MMD $(INCLUDES) -o $@ -c $< -g3 -fsanitize=address
 
 bonus:		all
 
@@ -108,6 +108,6 @@ re:			clean all
 
 fre:		fclean all
 
-.PHONY:				all clean fclean re fre norme bonus run makelib
+.PHONY:		all clean fclean re fre norme bonus run makelib
 
 ################################################################################

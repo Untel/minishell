@@ -23,17 +23,21 @@
 int
 	exec_is(t_cmd *cmd, char *str)
 {
-	int i;
+	size_t	i;
 
-	i = -1;
-	while (++i < ft_strlen(cmd->argv[0]))
+	i = 0;
+	while (i < ft_strlen(cmd->argv[0]))
+	{
 		cmd->argv[0][i] = ft_tolower(cmd->argv[0][i]);
+		i++;
+	}
 	return (ft_strcmp(str, cmd->argv[0]) == 0);
 }
 
 int
 	exit_prog(t_shell *sh, t_cmd *cmd)
 {
+	(void)cmd;
 	sh->stop = 1;
 	return (EXIT_SUCCESS);
 }
@@ -41,6 +45,7 @@ int
 int
 	say_404(t_shell *sh, t_cmd *cmd)
 {
+	(void)sh;
 	ft_fprintf(STDERR, MSG_404_CMD, cmd->argv[0]);
 	return (127);
 }

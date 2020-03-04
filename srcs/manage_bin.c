@@ -88,7 +88,6 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 {
 	pid_t	child;
 	char	*bin_path;
-	char	*res;
 	int		ret;
 
 	child = -1;
@@ -97,6 +96,8 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 		bin_path = ft_strmjoin(2, tmp, "/");
 	else if (nb == 1)
 		bin_path = ft_strdup(tmp[0]);
+	else
+		return (FALSE);
 	child = fork();
 	signal(SIGINT, sigint_void);
 	if (child == 0)

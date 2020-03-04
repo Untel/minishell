@@ -47,7 +47,6 @@ int
 	inline_mode(t_shell *sh, char *filename)
 {
 	int		ret;
-	char	buff[BUFFER_SIZE + 1];
 
 	if (filename)
 	{

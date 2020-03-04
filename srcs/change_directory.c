@@ -25,7 +25,6 @@ int
 {
 	int		ret;
 	char	*dir;
-	char	*old;
 
 	if (cmd->argc == 1)
 	{

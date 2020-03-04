@@ -17,7 +17,6 @@ int
 {
 	char	*tmp;
 	char	*sub;
-	char	*vars;
 	int		len;
 
 	if (!(tmp = ft_strchr_escape(sh->input + *i + 1, '"', '\\')))
@@ -102,10 +101,7 @@ int
 
 int
 	handle_redirections(t_shell *sh, t_read *rd, int *i)
-{
-	int		j;
-	char	*str;
-	
+{	
 	if (*i > 0 && ft_isdigit(sh->input[*i - 1]))
 		rd->fd = ft_rev_atoi_idx(sh->input, *i - 1);
 	else

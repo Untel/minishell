@@ -8,7 +8,7 @@ WCHAR_DIR		= wide
 FILES_DIR		= files
 PRINTF_DIR		= printf
 
-INCLUDES_DIR	= headers
+INCLUDES_DIR	= ./headers
 
 _MATH			= ft_intlen.c ft_itoa.c ft_uitoa.c ft_atoi.c ft_pow.c
 _STR			= ft_escape.c ft_strcmp.c ft_strreplace.c ft_strcat.c ft_strcpy_free.c ft_strdup.c ft_split.c ft_split_charset.c ft_split_spaces.c ft_strlen.c ft_strnstr.c ft_strcpy.c ft_substr.c ft_strjoin.c ft_strmjoin.c ft_strmapi.c ft_strrchr.c ft_strlcat.c ft_strstr.c ft_strchr.c ft_strlcpy.c ft_strncmp.c ft_strtrim.c ft_strupcase.c ft_strlowcase.c ft_strcapitalize.c ft_strslice.c
@@ -34,8 +34,8 @@ PRINTF			= $(addprefix $(PRINTF_DIR)/, $(_PRINTF))
 SRCS			= $(STR) $(CHAR) $(PRINT) $(MEM) $(MATH) $(LIST) $(WCHAR) $(FILES) $(PRINTF)
 OBJSC			= $(SRCS:.c=.o)
 OBJSS			= $(_ASM:.s=.o)
-CFLAGS			= -Wall -Wextra -Werror -I $(INCLUDES_DIR)
-CC				= clang
+CFLAGS			= -Wall -Wextra -Werror -w -I$(INCLUDES_DIR)
+CC				= gcc
 AR				= ar rc
 AS				= nasm
 ASFLAGS			= -fmacho64
