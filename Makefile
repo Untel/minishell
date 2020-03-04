@@ -86,7 +86,6 @@ $(NAME):	$(OBJ)
 makelib:	
 			$(LIBFT_MAKE)
 
-
 bonus:		all
 
 run:		all
@@ -97,7 +96,7 @@ norme:
 			norminette $(SRCS)
 
 clean:
-			$(RM) $(OBJ)
+			$(RM) -r $(OBJ_DIR)
 
 fclean:
 			$(RM) -r $(OBJ_DIR)
