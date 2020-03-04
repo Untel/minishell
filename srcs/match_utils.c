@@ -121,6 +121,6 @@ void
 	sh->term.tmp = sh->term.old_s_in;
 	sh->term.old_s_in = ft_strlen(filename) - offset;
 	offset -= (size < 0 || (size == 0 && (tmp->c == 32 || tmp->c == 0)));
-	while (++offset < ft_strlen(filename))
+	while (++offset < (int)ft_strlen(filename))
 		add_after(sh->term.input, filename[offset], sh->term.pos_str);
 }

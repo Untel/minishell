@@ -60,7 +60,7 @@ INCLUDES	=	-I $(PWD)/headers $(LIBFT_INCL)
 
 ### Compiler
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror -w $(INCLUDES)
+CFLAGS		=	-Wall -Wextra -Werror $(INCLUDES)
 
 ### Objects
 OBJ_DIR		=	./objs

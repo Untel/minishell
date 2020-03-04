@@ -33,6 +33,7 @@ int		is_match_bin(t_shell *sh, char *path, char *str, t_list **occur)
 	struct dirent	*file;
 	int				nmatch;
 
+	(void)sh;
 	nmatch = 0;
 	if ((rep = opendir(path)) == NULL)
 		return (-1);
@@ -52,7 +53,6 @@ t_list	*get_nmatch_bin(t_shell *sh, char **paths, char *str)
 {
 	int		i;
 	int		nmatch;
-	int		ret;
 	t_list	*occur;
 
 	occur = NULL;
@@ -68,11 +68,12 @@ int		match_bin(t_shell *sh, int i, t_list *occur, int nb_elem)
 	t_list	*tmp;
 	char	*str;
 	int		j;
-	int		size;
+	size_t	size;
 
 	str = get_current_word(sh);
 	tmp = occur;
 	j = 0;
+	size = 0;
 	while (tmp)
 	{
 		if (j % nb_elem == i % nb_elem)

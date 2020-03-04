@@ -117,6 +117,7 @@ int		print_match(t_shell *sh, char buff[3])
 	char		**paths;
 	int			ret;
 
+	occur = NULL;
 	str = get_current_word(sh);
 	if (is_first_word(sh))
 	{

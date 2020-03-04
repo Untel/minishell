@@ -18,6 +18,7 @@ int
 	int	i;
 	int	last_line;
 
+	(void)sh;
 	i = 0;
 	last_line = 1;
 	while (++i < cmd->argc && ft_strcmp(cmd->argv[i], "-n") == 0)

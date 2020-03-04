@@ -18,10 +18,9 @@ void	print_line(t_shell *sh)
 	int			i;
 	int			del;
 	int			offset;
-	int			ret;
 
 	del = 127;
-//	printf("\n\nr: %d, l: %d, r_ofst: %d, l_ofst: %d\n\n", sh->term.r, sh->term.l, sh->term.r_ofst, sh->term.l_ofst);
+	
 	offset = sh->term.size_prt % sh->term.pos.x;
 	write(1, "\r", 1);
 	while (--offset >= 0)
