@@ -284,7 +284,7 @@ int				exec_bin(t_shell *sh, t_cmd *cmd);
 */
 int				init_history(t_shell *sh);
 int				add_to_history(t_shell *sh);
-void			print_history(t_shell *sh, t_term *term, int next);
+void			print_history(t_shell *sh, int next);
 int				persist_history(t_shell *sh);
 int				reset_history_position(t_shell *sh);
 

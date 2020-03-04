@@ -31,6 +31,7 @@ void
 	int			fd;
 	int			p[2];
 
+	(void)sh;
 	if (pipe(p) == ERR)
 		err_shutdown(sh, "Cannot mount pipe redir in pipe");
 	if (cmd->left)
@@ -61,6 +62,7 @@ int
 	int			fd;
 
 	fd = -1;
+	(void)sh;
 	if ((lst = cmd->redir_out))
 		while (lst && (redir = (t_redirect *)lst->content))
 		{
@@ -82,6 +84,7 @@ int
 	t_list		*lst;
 	t_redirect	*red;
 
+	(void)sh;
 	if (!(lst = ft_lstlast(cmd->redir_out)))
 		return (FALSE);
 	if (!(red = (t_redirect *)(lst->content)))

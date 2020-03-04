@@ -50,9 +50,9 @@ void
 		}
 	}
 	if (buff[1] == '[' && buff[2] == 'A')
-		print_history(&g_sh, term, 1);
+		print_history(&g_sh, 1);
 	else if (buff[1] == '[' && buff[2] == 'B')
-		print_history(&g_sh, term, 0);
+		print_history(&g_sh, 0);
 }
 
 void

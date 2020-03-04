@@ -78,7 +78,7 @@ int
 }
 
 void
-	print_history(t_shell *sh, t_term *term, int next)
+	print_history(t_shell *sh, int next)
 {
 	t_bilist		*idx;
 	char			*str;

@@ -15,6 +15,7 @@
 void
 	sigint_void(int sig)
 {
+	(void)sig;
 	write(1, "\r", 1);
 }
 
@@ -38,6 +39,7 @@ void
 	char	**env;
 	char	*av[3];
 
+	(void)sig;
 	env = convert_env_list(g_sh.env);
 	av[0] = "tput";
 	av[1] = "cols";
