@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 16:21:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:53:18 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,7 +272,9 @@ int				match_bin(t_shell *sh, int i, t_list *occur, int nb_elem);
 int				get_nmatch(t_shell *sh, char *str);
 int				init_term(struct termios *s_termios,
 					struct termios *s_termios_backup);
+int				get_termx(t_shell *sh, char **av, char **env);
 char			*read_input(t_shell *sh);
+int				print_match(t_shell *sh, char buff[3]);
 
 /*
 **	Processus
@@ -308,6 +310,5 @@ int				mount_pipes(t_shell *sh);
 void			sigint_quit (int sig);
 void			sigint_void(int sig);
 void			handle_winch(int sig);
-int				get_termx(t_shell *sh, char **av, char **env);
-int				print_match(t_shell *sh, char buff[3]);
+void			init_child_signals(pid_t child);
 #endif

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 23:57:32 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:55:01 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int
 	return (FALSE);
 }
 
-int		ft_inset(char *str, char c)
+int
+	ft_inset(char *str, char c)
 {
 	int		i;
 
@@ -84,7 +85,8 @@ int		ft_inset(char *str, char c)
 	return (-1);
 }
 
-int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
+int
+	fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 {
 	pid_t	child;
 	char	*bin_path;
@@ -99,13 +101,7 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 	else
 		return (FALSE);
 	child = fork();
-	signal(SIGINT, sigint_void);
-	if (child == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGTSTP, SIG_IGN);
-		signal(SIGQUIT, SIG_DFL);
-	}
+	init_child_signals(child);
 	tcsetattr(1, 0, &sh->term.old_term);
 	ret = try_exec(sh, bin_path, cmd, child);
 	signal(SIGINT, sigint_quit);
@@ -117,7 +113,8 @@ int		fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb)
 }
 
 
-int		exec_bin(t_shell *sh, t_cmd *cmd)
+int
+	exec_bin(t_shell *sh, t_cmd *cmd)
 {
 	char	**paths;
 	char	*tmp[2];
