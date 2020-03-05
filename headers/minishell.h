@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 15:40:22 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:21:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct	s_read
 	char		c;
 	int			i;
 	int			fd;
+	int			ret;
 }				t_read;
 
 typedef struct	s_history
@@ -225,6 +226,8 @@ int				ask_heredocs(t_shell *sh);
 **	Input handling
 */
 void			handle_arrows(char buff[3], t_term *term);
+void			handle_right_arrow(char buff[3], t_term *term);
+void			handle_left_arrow(char buff[3], t_term *term);
 void			handle_backspace(char buff[3], t_term *term);
 int				handle_ctrl_d(char buff[3], t_term *term);
 void			handle_ctrl_u(t_term term);

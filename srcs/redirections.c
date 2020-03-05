@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 16:20:09 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:15:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void
 	int			fd;
 	int			p[2];
 
-	(void)sh;
 	if (pipe(p) == ERR)
 		err_shutdown(sh, "Cannot mount pipe redir in pipe");
 	if (cmd->left)

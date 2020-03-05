@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 16:09:07 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:12:02 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int
 	{
 		errno = 0;
 		if ((sh->inline_fd = open(filename, O_RDONLY) == ERR))
-			return (ft_fprintf(STDERR, MSG_GEN_ERR, filename, 
+			return (ft_fprintf(STDERR, MSG_GEN_ERR, filename,
 				errno ? strerror(errno) : "no such file or directory"));
 	}
 	while ((ret = get_next_line(sh->inline_fd, &sh->input)) >= 0)
@@ -70,7 +70,7 @@ int
 		ft_memdel((void **)&sh->input);
 		clear_last_prompt(sh);
 		if (ret == 0)
-			break;
+			break ;
 	}
 	close(sh->inline_fd);
 	return (SUC);

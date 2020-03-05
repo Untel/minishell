@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/26 19:10:42 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/05 16:22:27 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,38 +18,11 @@ void
 {
 	read(0, buff + 1, 1);
 	read(0, buff + 2, 1);
-	if (!(buff[1] == '[' && buff[2] == 'A') &&
-			!(buff[1] == '[' && buff[2] == 'B'))
-	{
-		if (buff[1] == '[' && buff[2] == 'C')
-		{
-			term->r += term->r_ofst < (term->pos.x -
-					(term->size_prt % term->pos.x)) ? 1 : 0;
-			if (term->r == 0 && term->l != 0)
-				--term->l;
-			else
-				write(1, buff, 3 * (term->pos_str > 1));
-			if (term->pos_str > 1)
-				--term->pos_str;
-			if (term->pos_aff > 1)
-				--term->pos_aff;
-		}
-		else if (buff[1] == '[' && buff[2] == 'D')
-		{
-			if (term->pos_str <= term->input->size)
-			{
-				term->r -= term->r_ofst > 0 ? 1 : 0;
-				if (term->r_ofst == 0 &&
-						term->l + term->pos_aff <= term->input->size)
-					++term->l;
-				else if (term->r_ofst && term->pos_aff < term->input->size)
-					++term->pos_aff;
-				write(1, buff, 3 * (term->pos_aff < term->input->size));
-				term->pos_str += term->pos_str < term->input->size ? 1 : 0;
-			}
-		}
-	}
-	if (buff[1] == '[' && buff[2] == 'A')
+	if (buff[1] == '[' && buff[2] == 'C')
+		handle_left_arrow(buff, term);
+	else if (buff[1] == '[' && buff[2] == 'D')
+		handle_right_arrow(buff, term);
+	else if (buff[1] == '[' && buff[2] == 'A')
 		print_history(&g_sh, 1);
 	else if (buff[1] == '[' && buff[2] == 'B')
 		print_history(&g_sh, 0);

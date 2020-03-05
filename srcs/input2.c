@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 15:59:25 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:13:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,32 +59,27 @@ int
 	parse_input(t_shell *sh)
 {
 	t_read		rd;
-	int			ret;
 
-	ret = 1;
-	rd = (t_read) { .buffer = NULL, .index = 0,
-		.add_to = ARGS, .input = NULL, .i = -1, .c = 0,
-		.fd = -1,
-	};
+	rd = (t_read) { .buffer = NULL, .index = 0, .add_to = ARGS,
+		.input = NULL, .i = -1, .c = 0, .fd = -1, .ret = 1 };
 	new_command(sh, NONE);
 	while (sh->input[++(rd.i)])
 	{
-		rd.c = sh->input[rd.i];
-		if (rd.c == '\\' && (++rd.i || 1))
+		if ((rd.c = sh->input[rd.i]) == '\\' && (++rd.i || 1))
 			continue;
 		else if (rd.c == '\'')
 			handle_simple_quote(sh, &rd, &rd.i);
 		else if (rd.c == '"')
 			handle_double_quote(sh, &rd, &rd.i);
 		else if (rd.c == ' ')
-			ret = handle_space(sh, &rd, &rd.i);
+			rd.ret = handle_space(sh, &rd, &rd.i);
 		else if (is_cmd_separator(rd.c))
-			ret = handle_separator(sh, &rd, &rd.i);
+			rd.ret = handle_separator(sh, &rd, &rd.i);
 		else if (rd.c == '<' || rd.c == '>')
-			ret = handle_redirections(sh, &rd, &rd.i);
-		if (!ret)
-			return (ret);
+			rd.ret = handle_redirections(sh, &rd, &rd.i);
+		if (!rd.ret)
+			return (rd.ret);
 	}
-	ret = handle_separator(sh, &rd, &rd.i);
-	return (ret);
+	rd.ret = handle_separator(sh, &rd, &rd.i);
+	return (rd.ret);
 }

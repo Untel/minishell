@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 00:11:58 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/24 16:47:47 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:45:44 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ void
 	while (++i < size - 1)
 		write(1, "\e[D", 3);
 	ft_printf("%*c", sh->term.old_s_in, 127);
-	if (!filename)
-		return ;
 	offset = 0;
 	while (str[offset] && offset < size)
 		++offset;

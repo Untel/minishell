@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 14:28:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 17:33:01 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:31:56 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void
 	{
 		if (match(idx->content, str))
 		{
+			ft_fprintf(2, "\nfound %s %s\n\n", idx->content, str);
 			sh->history.index = idx;
 			add_str_to_lst(sh, str, idx->content);
 			return ;
