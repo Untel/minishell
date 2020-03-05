@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 16:12:02 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/06 00:43:52 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,21 @@ void
 	initialize_shell(t_shell *sh)
 {
 	char	*tmp;
+	int		shlvl;
 
 	signal(SIGINT, sigint_quit);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	if (!(tmp = ft_itoa(ft_atoi(
-		(char *)get_value(sh->env, "SHLVL", "0")) + 1)))
+	tmp = get_value(sh->env, "SHLVL", "0");
+	shlvl = ft_str_isnumeric(tmp) ? ft_atoi((char *)tmp) : 0;
+	shlvl = (shlvl < 0 ? 0 : shlvl + 1);
+	if (!(tmp = ft_itoa(shlvl)))
 		err_shutdown(sh, "Cannot upgrade sh_level");
 	set_value(&sh->env, "SHLVL", tmp);
-	set_value(&sh->env, "GREP_OPTIONS", "--color=auto");
-	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
+	format_directory(sh);
+	set_value(&sh->env, "PWD", sh->dir);
+	// set_value(&sh->env, "GREP_OPTIONS", "--color=auto");
+	// set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);
 	init_history(sh);
 }
@@ -59,20 +64,24 @@ int
 	if (filename)
 	{
 		errno = 0;
-		if ((sh->inline_fd = open(filename, O_RDONLY) == ERR))
+		if ((sh->inline_fd = open(filename, O_RDONLY)) == ERR)
 			return (ft_fprintf(STDERR, MSG_GEN_ERR, filename,
 				errno ? strerror(errno) : "no such file or directory"));
 	}
-	while ((ret = get_next_line(sh->inline_fd, &sh->input)) >= 0)
-	{
-		if (sanitize(sh))
-			parse_input(sh);
-		ft_memdel((void **)&sh->input);
-		clear_last_prompt(sh);
-		if (ret == 0)
-			break ;
-	}
-	close(sh->inline_fd);
+	else
+		sh->inline_fd = STDIN_FILENO;
+	if (sh->inline_fd != ERR)
+		while ((ret = get_next_line(sh->inline_fd, &sh->input)) >= 0)
+		{
+			if (sanitize(sh))
+				parse_input(sh);
+			ft_memdel((void **)&sh->input);
+			clear_last_prompt(sh);
+			if (ret == 0)
+				break ;
+		}
+	if (sh->inline_fd != STDIN_FILENO)
+		close(sh->inline_fd);
 	return (SUC);
 }
 
@@ -83,7 +92,7 @@ int
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
 		.env = create_env_list(envp), .ctrl_c = 0,
-		.heredocs = NULL, .inline_fd = -1, .sub = 0
+		.heredocs = NULL, .inline_fd = STDIN_FILENO, .sub = 0
 	};
 	initialize_shell(&g_sh);
 	if (ac > 1)

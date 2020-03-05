@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/05 16:20:59 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/03/05 22:58:18 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,13 +52,13 @@ SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
 ###	Libft
 LIBFT_LINK	=	-L$(LIBFT_PATH) -lft
-LIBFT_PATH	=	$(PWD)/libft
+LIBFT_PATH	=	./libft
 LIBFT_MAKE	=	@$(MAKE) -C $(LIBFT_PATH)
 LIBFT_INCL	=	-I $(LIBFT_PATH) -I $(LIBFT_PATH)/headers
 LIBS		=	$(LIBFT_LINK) -lncurses
 
 ### Headers 
-INCLUDES	=	-I $(PWD)/headers $(LIBFT_INCL)
+INCLUDES	=	-I ./headers $(LIBFT_INCL)
 
 ### Compiler
 CC			=	clang
