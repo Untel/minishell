@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:21:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 17:32:20 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 17:49:43 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ void
 {
 	t_redirect	*red;
 
+	ft_fprintf(STDERR, "Freesing %p\n", lst);
 	red = ((t_redirect *)lst->content);
 	if (red->type != HEREDOC)
 		ft_memdel((void **)&red->value);
 	ft_memdel((void **)&red->filename);
 	ft_memdel((void **)&red);
-	close(red->fd);
 }
