@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 16:13:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 17:12:40 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int
 	while (sh->input[++(rd.i)])
 	{
 		if ((rd.c = sh->input[rd.i]) == '\\' && (++rd.i || 1))
-			continue;
+			continue ;
 		else if (rd.c == '\'')
 			handle_simple_quote(sh, &rd, &rd.i);
 		else if (rd.c == '"')
