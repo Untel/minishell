@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 16:01:25 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:20:50 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void
 	red_dir = (rd->add_to == HEREDOC || rd->add_to == IN_REDIR);
 	if (!(redir = malloc(sizeof(t_redirect))))
 		return ;
-	*redir = (t_redirect) { .filename = str, .value = NULL, .type = rd->add_to, 
+	*redir = (t_redirect) { .filename = str, .value = NULL, .type = rd->add_to,
 		.fd = rd->fd };
 	if (red_dir && rd->fd == -1)
 		redir->fd = STDIN_FILENO;
