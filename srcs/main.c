@@ -6,13 +6,21 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 17:58:59 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:09:07 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_shell	g_sh;
+
+/*
+** __attribute__((destructor)) void lul(void)
+** {
+** 	if (!g_sh.sub)
+** 		system("leaks minishell");
+** }
+*/
 
 void
 	initialize_shell(t_shell *sh)
@@ -75,7 +83,7 @@ int
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
 		.env = create_env_list(envp), .ctrl_c = 0,
-		.heredocs = NULL, .inline_fd = -1,
+		.heredocs = NULL, .inline_fd = -1, .sub = 0
 	};
 	initialize_shell(&g_sh);
 	if (ac > 1)
