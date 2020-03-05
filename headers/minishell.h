@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 12:31:30 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 15:12:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ int				handle_separator(t_shell *sh, t_read *rd, int *i);
 int				handle_redirections(t_shell *sh, t_read *rd, int *i);
 int				is_cmd_separator(char c);
 char			*replace_vars(t_shell *sh, char *str);
+char			*replace_tilde(t_shell *sh, char *str);
 int				copy_from_idx(t_shell *sh, t_read *rd, int idx);
 int				copy_to_cmd(t_shell *sh, t_read *rd, int *i);
 t_operator		get_operator(t_shell *sh, int *i);

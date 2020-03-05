@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 12:26:56 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/05 15:12:24 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int
 
 	sub = ft_substr(sh->input + rd->index, 0, idx - rd->index);
 	sub = replace_vars(sh, sub);
+	sub = replace_tilde(sh, sub);
 	if (rd->buffer)
 	{
 		tmp = ft_strjoin(rd->buffer, sub);
