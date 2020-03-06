@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/06 00:43:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/06 01:21:51 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void
 	set_value(&sh->env, "SHLVL", tmp);
 	format_directory(sh);
 	set_value(&sh->env, "PWD", sh->dir);
+	set_value(&sh->env, "OLDPWD", NULL);
 	// set_value(&sh->env, "GREP_OPTIONS", "--color=auto");
 	// set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);

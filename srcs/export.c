@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:38:03 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/23 17:44:54 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/06 01:12:12 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,35 @@ int
 	export_env(t_shell *sh, t_cmd *cmd)
 {
 	char	*pos;
+	int		i;
+	t_key	*key;
+	t_list	*lst_env;
 
+	i = 0;
 	if (cmd->argc > 1)
-	{
-		pos = ft_strchr(cmd->argv[1], '=');
-		if (!pos)
-			return (EXIT_SUCCESS);
-		*pos++ = 0;
-		if (!set_value(&sh->env, cmd->argv[1], pos))
+		while (++i < cmd->argc)
 		{
-			ft_fprintf(STDERR, MSG_ERRORN, "export: not an identifier: ");
-			write(STDERR, cmd->argv[1], ft_strlen(cmd->argv[1]));
-			write(STDERR, "\n", 1);
-			return (EXIT_FAILURE);
+			pos = ft_strchr(cmd->argv[i], '=');
+			if (pos)
+				*pos++ = 0;
+			if (!set_value(&sh->env, cmd->argv[i], pos))
+			{
+				ft_fprintf(STDERR, MSG_ERRORN, "export: not an identifier: ");
+				write(STDERR, cmd->argv[i], ft_strlen(cmd->argv[i]));
+				write(STDERR, "\n", 1);
+				return (EXIT_FAILURE);
+			}
 		}
-	}
-	else
-		return (ft_env(sh, cmd));
+	else if ((lst_env = sh->env))
+		while (lst_env && (key = (t_key *)(lst_env->content)))
+		{
+			ft_printf("declare -x %s", key->key);
+			if (key->value)
+				ft_printf("=\"%s\"\n", key->value);
+			else
+				write(STDOUT_FILENO, "\n", 1);
+			lst_env = lst_env->next;
+		}
 	return (EXIT_SUCCESS);
 }
 

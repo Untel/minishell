@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 22:00:49 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 20:11:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/06 01:50:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ size_t
 	while (str[i])
 	{
 		if (str[i] == escape)
+		{
+			if (str[i + 1] == escape)
+				i++;
 			count++;
+		}
 		else
 			str[i - count] = str[i];
 		i++;

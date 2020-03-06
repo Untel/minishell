@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/05 16:08:14 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/06 01:28:23 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void
 	while (*lst_env)
 	{
 		if ((*lst_env)->next && (var = (t_key *)(*lst_env)->next->content))
-			if (!ft_strncmp(var->key, key, ft_strlen(key) + 1) && (found = 1))
+			if (!ft_strcmp(var->key, key) && (found = 1))
 				break ;
 		lst_env = &(*lst_env)->next;
 	}
@@ -48,12 +48,12 @@ void
 		if (!(var = malloc(sizeof(*var))))
 			return (NULL);
 		var->key = ft_strdup(key);
-		var->value = ft_strdup(value);
+		var->value = value ? ft_strdup(value) : value;
 		ft_lstadd_front(lst_env, ft_lstnew(var, sizeof(var)));
 		return (*lst_env);
 	}
 	ft_memdel((void **)&var->value);
-	var->value = ft_strdup(value);
+	var->value = value ? ft_strdup(value) : value;
 	return (*lst_env);
 }
 
@@ -65,13 +65,12 @@ void
 	found = 0;
 	while (lst_env)
 	{
-		if (!ft_strncmp(((t_key *)(*lst_env).content)->key, key,
-					ft_strlen(key) + 1) && (found = 1))
+		if (!ft_strcmp(((t_key *)lst_env->content)->key, key) && (found = 1))
 			break ;
 		lst_env = lst_env->next;
 	}
 	if (found == 1)
-		return (((t_key *)(*lst_env).content)->value);
+		return (((t_key *)lst_env->content)->value);
 	else
 		return (def);
 }
@@ -79,7 +78,7 @@ void
 int
 	ft_cmp_key(t_key *env, char *key)
 {
-	return (ft_strncmp(env->key, key, ft_strlen(key) + 1));
+	return (ft_strcmp(env->key, key));
 }
 
 void

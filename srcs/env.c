@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:11:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/23 18:53:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/06 01:15:35 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int		ft_env(t_shell *sh, t_cmd *cmd)
 	while (lst_env)
 	{
 		key = (t_key *)(lst_env->content);
-		ft_printf("%s=%s\n", key->key, key->value);
+		if (key->value)
+			ft_printf("%s=%s\n", key->key, key->value);
 		lst_env = lst_env->next;
 	}
 	return (EXIT_SUCCESS);
