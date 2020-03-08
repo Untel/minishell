@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/05 22:58:18 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/03/08 18:52:54 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ SRCS_FILES	= \
 	signals.c\
 	history.c\
 	env_vars.c\
-	redirections.c
+	redirections.c\
+	wildcards.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
