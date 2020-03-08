@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 19:21:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:14:38 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int
 	return (sanitize(sh));
 }
 
-void
+int
 	check_input(t_shell *sh, t_quoter *q)
 {
 	int i;
@@ -70,9 +70,11 @@ void
 			q->d = !q->d;
 		else if (q->c == '<' && sh->input[i + 1] == '<'
 			&& !q->s && q->bslash != i++)
-			add_heredoc(sh, &i);
+			if (!add_heredoc(sh, &i))
+				return (FALSE);
 	}
 	q->i = i;
+	return (SUC);
 }
 
 int
@@ -81,7 +83,8 @@ int
 	t_quoter	q;
 
 	q = (t_quoter) { .s = 0, .d = 0, .bslash = -1, .c = 0, .cc = 0, .i = 0 };
-	check_input(sh, &q);
+	if (!(check_input(sh, &q)))
+		return (FALSE);
 	if (q.s)
 		return (ask_to_close(sh, "quote"));
 	else if (q.d)

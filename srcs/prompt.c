@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/25 20:52:01 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:15:28 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ int
 		sh->stop = 1;
 	if (!sh->stop)
 	{
-		sanitize(sh);
-		parse_input(sh);
-		if (!add_to_history(sh))
-			ft_memdel((void **)&sh->input);
+		if (sanitize(sh))
+		{
+			parse_input(sh);	
+			if (!add_to_history(sh))
+				ft_memdel((void **)&sh->input);
+		}
 	}
 	else
 		ft_memdel((void **)&sh->input);

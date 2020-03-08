@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 18:43:20 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/27 17:24:57 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:13:22 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int
 	*hd = (t_heredoc) { .label = NULL, .buffer = NULL, };
 	while (sh->input[*i + j] && ft_isalnum(sh->input[*i + 1 + j]))
 		j++;
+	if (j == 0)
+		return (ft_fprintf(STDERR, MSG_ERROR, "heredoc has no label") && 0);
 	hd->label = ft_strndup(&sh->input[*i + 1], j);
 	*i += j;
 	ft_lstadd_back(&sh->heredocs, ft_lstnew(hd, sizeof(t_heredoc *)));

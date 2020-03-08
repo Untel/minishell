@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 16:53:18 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:10:49 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@
 # define FALSE 0
 # define SUC 1
 # define MSG_ERROR		"💩  \033[1;31mError\033[0m %s\n"
+# define MSG_SYNTAX_ERR	"💩  \033[1;31mError\033[0m syntax error near token '%c' at position %d\n"
 # define MSG_ERRORN		"💩  \033[1;31mError\033[0m %s"
+# define MSG_CMDARG_ERR	"💩  \033[1;31mError\033[0m command previous token '%c' at position %d has no arguments"
 # define MSG_404_CMD	"🤔  \033[1;33m%s\033[0m: command not found\n"
 # define MSG_GEN_ERR	"😭  \033[1;33m%s\033[0m: %s\n"
 # define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m » "

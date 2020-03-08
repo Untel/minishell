@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 12:24:54 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:22:20 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int
 		*i = *i + 1;
 	rd->index = *i + 1;
 	rd->buffer = NULL;
-	return (1);
+	return (SUC);
 }
 
 int
@@ -82,18 +82,19 @@ int
 
 	op = get_operator(sh, i);
 	copy_to_cmd(sh, rd, i);
+	if (rd->add_to != ARGS)
+		return (ft_fprintf(STDERR, MSG_ERROR, "Missing redirection argument") && 0);
+	if (((t_cmd *)ft_lstlast(sh->cmds)->content)->argc == 0)
+		return (ft_fprintf(STDERR, MSG_CMDARG_ERR, sh->input[*i], *i) && 0);
 	if (op == AND || op == OR)
 		*i = *i + 1;
 	if (op >= NONE)
-	{
 		exec_lines(sh);
-		ft_lstclear(&sh->cmds, free_command);
-	}
 	new_command(sh, op);
 	while (sh->input[*i] && sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	if (sh->input[*i] && is_cmd_separator(sh->input[*i + 1]) == 2)
-		return (ft_fprintf(STDERR, MSG_ERROR, "parse error") && 0);
+		return (ft_fprintf(STDERR, MSG_SYNTAX_ERR, sh->input[*i + 1], *i + 1) && 0);
 	rd->buffer = NULL;
 	rd->index = *i + 1;
 	return (SUC);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/06 01:56:32 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/08 15:21:01 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ int
 		if (!rd.ret)
 			return (rd.ret);
 	}
-	rd.ret = handle_separator(sh, &rd, &rd.i);
+	rd.ret = rd.c ? handle_separator(sh, &rd, &rd.i) : 0;
 	return (rd.ret);
 }
