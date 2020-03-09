@@ -6,19 +6,33 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:38:03 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/06 01:12:12 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 18:23:03 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void
+	export_env_noargs(t_list *lst_env)
+{
+	t_key	*key;
+
+	while (lst_env && (key = (t_key *)(lst_env->content)))
+	{
+		ft_printf("declare -x %s", key->key);
+		if (key->value)
+			ft_printf("=\"%s\"\n", key->value);
+		else
+			write(STDOUT_FILENO, "\n", 1);
+		lst_env = lst_env->next;
+	}
+}
 
 int
 	export_env(t_shell *sh, t_cmd *cmd)
 {
 	char	*pos;
 	int		i;
-	t_key	*key;
-	t_list	*lst_env;
 
 	i = 0;
 	if (cmd->argc > 1)
@@ -35,16 +49,8 @@ int
 				return (EXIT_FAILURE);
 			}
 		}
-	else if ((lst_env = sh->env))
-		while (lst_env && (key = (t_key *)(lst_env->content)))
-		{
-			ft_printf("declare -x %s", key->key);
-			if (key->value)
-				ft_printf("=\"%s\"\n", key->value);
-			else
-				write(STDOUT_FILENO, "\n", 1);
-			lst_env = lst_env->next;
-		}
+	else
+		export_env_noargs(sh->env);
 	return (EXIT_SUCCESS);
 }
 

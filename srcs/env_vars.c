@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 12:26:48 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/06 02:55:41 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 18:20:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int
 	int		position;
 
 	key_len = 1;
-	while ((*ptr)[key_len] && (ft_isalnum((*ptr)[key_len]) || (*ptr)[key_len] == '_'))
+	while ((*ptr)[key_len] && (ft_isalnum((*ptr)[key_len])
+		|| (*ptr)[key_len] == '_'))
 		++key_len;
 	if (key_len == 1)
 		return ((*ptr) - (*str));
@@ -72,24 +73,6 @@ char
 	mjoin[2] = ptr + 1;
 	ptr = ft_strmjoin(3, mjoin, "");
 	ft_memdel((void **)&str);
-	ft_memdel((void **)&mjoin[0]);
-	return (ptr);
-}
-
-char
-	*replace_wild(t_shell *sh, char *str)
-{
-	char	*ptr;
-	char	*mjoin[3];
-
-	if (!(ptr = ft_strchr_escape(str, '*', '\\')))
-		return (str);
-	if (!(ptr[1] == ' ' || ptr[1] == '/' || !ptr[1]))
-		return (str);
-	mjoin[0] = ft_strndup(str, ptr - str);
-	mjoin[1] = get_value(sh->env, "HOME", "");
-	mjoin[2] = ptr + 1;
-	ptr = ft_strmjoin(3, mjoin, "");
 	ft_memdel((void **)&mjoin[0]);
 	return (ptr);
 }
