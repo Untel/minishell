@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 16:47:30 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 17:31:40 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ int				format_directory(t_shell *sh);
 */
 t_cmd			*new_command(t_shell *sh, t_operator op);
 char			*add_argument(t_cmd *cmd, char *str);
+char			*add_argument_index(t_cmd *cmd, char *str, int index);
 int				add_arg_to_last_cmd(t_shell *sh, char *str, t_read *rd);
 void			add_redir(t_shell *sh, t_cmd *cmd, char *str, t_read *rd);
 int				check_wildcards(t_shell *sh, t_cmd *cmd, t_read *rd, char *pattern);

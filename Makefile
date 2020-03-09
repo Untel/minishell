@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/09 15:41:39 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/03/09 17:17:44 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRCS_FILES	= \
 	process.c\
 	echo.c\
 	clean.c\
+	clean2.c\
 	sanitize.c\
 	heredoc.c\
 	signals.c\

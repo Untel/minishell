@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 15:41:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 17:17:02 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,33 @@ t_cmd
 }
 
 char
-	*add_argument(t_cmd *cmd, char *str)
+	*add_argument_index(t_cmd *cmd, char *str, int index)
 {
 	char	**new_argv;
 	int		i;
+	int		j;
 
 	if (!(new_argv = malloc(sizeof(char *) * (cmd->argc + 2))))
 		return (NULL);
 	i = -1;
-	while (++i < cmd->argc)
-		new_argv[i] = cmd->argv[i];
-	new_argv[cmd->argc++] = str;
-	new_argv[cmd->argc] = NULL;
+	j = 0;
+	while (++i < cmd->argc + 1)
+	{
+		if (i == index)
+			new_argv[i] = str;
+		else
+			new_argv[i] = cmd->argv[j++];
+	}
+	new_argv[++cmd->argc] = NULL;
 	ft_memdel((void **)&cmd->argv);
 	cmd->argv = new_argv;
 	return (str);
+}
+
+char
+	*add_argument(t_cmd *cmd, char *str)
+{
+	return (add_argument_index(cmd, str, cmd->argc));
 }
 
 void
@@ -108,18 +120,4 @@ int
 	}
 	rd->add_to = ARGS;
 	return (SUC);
-}
-
-void
-	free_command(t_list *lst)
-{
-	t_cmd *cmd;
-
-	cmd = (t_cmd *)lst->content;
-	while (cmd->argc--)
-		ft_memdel((void **)&cmd->argv[cmd->argc]);
-	ft_lstclear(&cmd->redir_in, free_redirection);
-	ft_lstclear(&cmd->redir_out, free_redirection);
-	ft_memdel((void **)&cmd->argv);
-	ft_memdel((void **)&cmd);
 }
