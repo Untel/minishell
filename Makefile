@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/08 18:52:54 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/03/09 15:41:39 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,7 +92,7 @@ makelib:
 bonus:		all
 
 run:		all
-			./$(NAME) $(ARGS)		
+			./$(NAME) $(ARGS)
 
 norme:
 			$(LIBFT_MAKE) norme

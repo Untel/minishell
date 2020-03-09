@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/08 19:42:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 15:41:45 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ char
 	char	**new_argv;
 	int		i;
 
-
 	if (!(new_argv = malloc(sizeof(char *) * (cmd->argc + 2))))
 		return (NULL);
 	i = -1;
@@ -87,7 +86,7 @@ void
 		, ft_lstnew(redir, sizeof(t_redirect)));
 }
 
-void
+int
 	add_arg_to_last_cmd(t_shell *sh, char *str, t_read *rd)
 {
 	t_list	*el;
@@ -97,14 +96,18 @@ void
 		err_shutdown(sh, "Error commands.c add_arg_to_last_cmd");
 	if (ft_strchr_escape(str, '*', '\\'))
 	{
-		// ft_fprintf(STDERR, "YO\n");
-		check_wildcards(str);
+		if (!check_wildcards(sh, (t_cmd *)el->content, rd, str))
+			return (FALSE);
 	}
-	if (rd->add_to != ARGS)
-		add_redir(sh, (t_cmd *)el->content, str, rd);
 	else
-		add_argument((t_cmd *)el->content, str);
+	{
+		if (rd->add_to != ARGS)
+			add_redir(sh, (t_cmd *)el->content, str, rd);
+		else
+			add_argument((t_cmd *)el->content, str);
+	}
 	rd->add_to = ARGS;
+	return (SUC);
 }
 
 void

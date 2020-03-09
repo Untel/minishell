@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/08 17:38:46 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/08 20:02:30 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 16:51:50 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,57 +15,92 @@
 typedef struct		s_wildcards_checker
 {
 	char			**paths;
-	int				root;
 	int				depth;
 	int				max_depth;
-	int				index;
 	t_list			*matchs;
-	DIR				*dir;
 }					t_wildcards_checker;
 
-char
-	*check_matchs(t_wildcards_checker *wc, char *path, int depth)
+int
+	check_matchs(t_wildcards_checker *wc, char *path, int depth, char *deep)
 {
 	struct dirent	*file;
 	DIR				*dir;
+	char			*str;
 
-	ft_fprintf(STDERR, "Checking at %s\n", path);
 	if (!(dir = opendir(path)))
-		return (NULL);
+		return (0);
+	depth = depth >= wc->max_depth ? wc->max_depth : depth;
+	if (ft_strstr(wc->paths[depth], "**"))
+		deep = wc->paths[depth];
 	while ((file = readdir(dir)) != NULL)
 	{
-		ft_fprintf(STDERR, "%s vs %s: ", file->d_name, wc->paths[depth]);
+		if (ft_strcmp(file->d_name, ".") == 0 || ft_strcmp(file->d_name, "..") == 0)
+			continue ;
 		if (match(file->d_name, wc->paths[depth]))
 		{
-			ft_lstadd_front(&wc->matchs, ft_lstnew(
-				ft_strjoin(path, file->d_name), ft_strlen(file->d_name)
-			));
-			ft_fprintf(STDERR, "Matching %s\n", (char *)wc->matchs->content);
+			str = depth > 0 ? ft_strjoin_sep(path, file->d_name, '/') : ft_strdup(file->d_name);
+			if (depth >= wc->max_depth - 1)
+				ft_lstadd_back(&wc->matchs, ft_lstnew(ft_strdup(str), ft_strlen(str)));
+			else if (depth < wc->max_depth - 1)
+				check_matchs(wc, str, depth + 1, deep);
+			free(str);
 		}
-		else
-			ft_fprintf(STDERR, "Nomatch %s\n", file->d_name);
+		// else if (deep)
+		// {
+		// 	ft_fprintf(STDERR, "🍏 Deep entry\n");
+		// 	check_matchs(wc, file->d_name, depth >= wc->max_depth ? wc->max_depth : depth + 1, deep);
+		// }
 	}
-	ft_fprintf(STDERR, "END?\n");
-	return (NULL);
+	closedir(dir);
+	return (1);
 }
 
-t_list
-	*check_wildcards(char *pattern)
+void
+	clean_wildcards(t_wildcards_checker *wc, char *pattern)
+{
+	t_list	*el;
+	int		i;
+
+	i = 0;
+	while(wc->paths[i])
+		ft_memdel((void **)&wc->paths[i++]);
+	ft_memdel((void **)&wc->paths);
+	while ((el = wc->matchs))
+	{
+		wc->matchs = wc->matchs->next;
+		ft_memdel((void **)&el);
+	}
+	ft_memdel((void **)&pattern);
+}
+
+int
+	check_wildcards(t_shell *sh, t_cmd *cmd, t_read *rd, char *pattern)
 {
 	t_wildcards_checker wc;
+	t_list				*lst;
+	int					ret;
+
+	ret = SUC;
 	wc = (t_wildcards_checker) {
-		.matchs = NULL,
-		.paths = NULL,
-		.depth = -1,
-		.max_depth = 0,
-		.index = 0,
-		.dir = NULL,
-	};
-	ft_fprintf(STDERR, "Start checking from pattern %s\n", pattern);
-	wc.paths = ft_split(pattern, '/');
+		.matchs = NULL, .paths = ft_split(pattern, '/'),
+		.depth = -1, .max_depth = 0, };
 	while (wc.paths[wc.max_depth])
 		wc.max_depth++;
-	if (wc.max_depth > 0)
-		check_matchs(&wc, *pattern == '/' ? "/" : ".", 0);
-	return (wc.matchs);
+	if (wc.max_depth > 0 && 
+		check_matchs(&wc, *pattern == '/' ? "/" : ".", 0, NULL))
+	{
+		lst = wc.matchs;
+		while (lst)
+		{
+			if (rd->add_to == ARGS)
+				add_argument(cmd, lst->content);
+			else
+				add_redir(sh, cmd, lst->content, rd);
+			lst = lst->next;
+		}
+	}
+	if (ft_lstsize(wc.matchs) == 0)
+		ret = (ft_fprintf(STDERR, MSG_ERR_REG, pattern) && FALSE);
+	clean_wildcards(&wc, pattern);
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/06 01:21:51 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 16:50:15 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 t_shell	g_sh;
 
-/*
-** __attribute__((destructor)) void lul(void)
-** {
-** 	if (!g_sh.sub)
-** 		system("leaks minishell");
-** }
-*/
+__attribute__((destructor)) void lul(void)
+{
+	if (!g_sh.sub)
+		system("leaks minishell");
+}
 
 void
 	initialize_shell(t_shell *sh)

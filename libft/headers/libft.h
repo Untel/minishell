@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:45:14 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 22:59:07 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 16:24:43 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char			*ft_strdup_until(const char *src, char c);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_subwstr(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
+char			*ft_strjoin_sep(char const *s1, char const *s2, char sep);
 char			*ft_strmjoin(int size, char **strs, char *sep);
 char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_itoa(int n);
