@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/27 16:59:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 23:16:02 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	print_line(t_shell *sh)
 
 char	*handle_input(t_shell *sh, int *match, char buff[3])
 {
+	// ft_fprintf(STDERR, "%c %c %c\n", buff[0], buff[1], buff[2]);
 	if (buff[0] == 27)
 		handle_arrows(buff, &sh->term);
 	else if (buff[0] == 21)
 		handle_ctrl_u(sh->term);
-	else if (buff[0] == 127)
+	else if (buff[0] == 127 && reset_history_position(sh))
 	{
 		sh->term.l -= sh->term.l > 0 ? 1 : 0;
-		reset_history_position(sh);
 		handle_backspace(buff, &sh->term);
 	}
 	else if (buff[0] == 4)
@@ -50,11 +50,8 @@ char	*handle_input(t_shell *sh, int *match, char buff[3])
 		if (handle_ctrl_d(buff, &sh->term) == -1)
 			return ((char *)-1);
 	}
-	else if (buff[0] == 10)
-	{
-		reset_history_position(sh);
+	else if (buff[0] == 10 && reset_history_position(sh))
 		return (convert_to_str(sh->term.input));
-	}
 	else if (buff[0] == 9)
 	{
 		*match = print_match(sh, buff);

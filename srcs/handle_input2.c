@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 16:21:25 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 16:24:31 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 23:31:53 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell.h"
 
 void
-	handle_left_arrow(char buff[3], t_term *term)
+	handle_right_arrow(char buff[3], t_term *term)
 {
 	term->r += term->r_ofst < (term->pos.x -
 			(term->size_prt % term->pos.x)) ? 1 : 0;
@@ -29,7 +29,7 @@ void
 }
 
 void
-	handle_right_arrow(char buff[3], t_term *term)
+	handle_left_arrow(char buff[3], t_term *term)
 {
 	if (term->pos_str <= term->input->size)
 	{
@@ -42,4 +42,28 @@ void
 		write(1, buff, 3 * (term->pos_aff < term->input->size));
 		term->pos_str += term->pos_str < term->input->size ? 1 : 0;
 	}
+}
+
+void
+	handle_home(t_shell *sh, char buff[3], t_term *term)
+{
+	int i;
+
+	(void)sh;
+	i = -1;
+	buff[2] = 'D';
+	while (++i < term->input->size)
+		handle_left_arrow(buff, term);
+}
+
+void
+	handle_end(t_shell *sh, char buff[3], t_term *term)
+{
+	int i;
+
+	(void)sh;
+	i = -1;
+	buff[2] = 'C';
+	while (++i < term->input->size)
+		handle_right_arrow(buff, term);
 }

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/05 16:22:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 23:29:22 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,17 @@ void
 	read(0, buff + 1, 1);
 	read(0, buff + 2, 1);
 	if (buff[1] == '[' && buff[2] == 'C')
-		handle_left_arrow(buff, term);
-	else if (buff[1] == '[' && buff[2] == 'D')
 		handle_right_arrow(buff, term);
+	else if (buff[1] == '[' && buff[2] == 'D')
+		handle_left_arrow(buff, term);
 	else if (buff[1] == '[' && buff[2] == 'A')
 		print_history(&g_sh, 1);
 	else if (buff[1] == '[' && buff[2] == 'B')
 		print_history(&g_sh, 0);
+	else if (buff[1] == '[' && buff[2] == 'H')
+		handle_home(&g_sh, buff, term);
+	else if (buff[1] == '[' && buff[2] == 'F')
+		handle_end(&g_sh, buff, term);
 }
 
 void
