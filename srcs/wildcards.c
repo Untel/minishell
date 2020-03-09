@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/08 17:38:46 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 16:51:50 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 17:05:21 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,17 @@ int
 	{
 		if (ft_strcmp(file->d_name, ".") == 0 || ft_strcmp(file->d_name, "..") == 0)
 			continue ;
+		str = depth > 0 ? ft_strjoin_sep(path, file->d_name, '/') : ft_strdup(file->d_name);
 		if (match(file->d_name, wc->paths[depth]))
 		{
-			str = depth > 0 ? ft_strjoin_sep(path, file->d_name, '/') : ft_strdup(file->d_name);
 			if (depth >= wc->max_depth - 1)
 				ft_lstadd_back(&wc->matchs, ft_lstnew(ft_strdup(str), ft_strlen(str)));
 			else if (depth < wc->max_depth - 1)
 				check_matchs(wc, str, depth + 1, deep);
-			free(str);
 		}
-		// else if (deep)
-		// {
-		// 	ft_fprintf(STDERR, "🍏 Deep entry\n");
-		// 	check_matchs(wc, file->d_name, depth >= wc->max_depth ? wc->max_depth : depth + 1, deep);
-		// }
+		else if (deep && match(file->d_name, deep))
+			check_matchs(wc, str, depth, deep);			
+		free(str);
 	}
 	closedir(dir);
 	return (1);
