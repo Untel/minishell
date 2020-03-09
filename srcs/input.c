@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 18:57:37 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 20:17:41 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int
 		return (ft_fprintf(STDERR, MSG_CMDARG_ERR, sh->input[*i], *i) && 0);
 	if (op == AND || op == OR)
 		*i = *i + 1;
-	new_command(sh, op);
 	while (sh->input[*i] && sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	if (sh->input[*i] && is_cmd_separator(sh->input[*i + 1]) == 2)
@@ -99,6 +98,7 @@ int
 	rd->index = *i + 1;
 	if (op >= NONE)
 		exec_lines(sh);
+	new_command(sh, op);
 	return (SUC);
 }
 
