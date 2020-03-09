@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 19:01:17 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/09 22:21:26 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int
 {
 	sh->term.size_prt = ft_strlen(sh->printed_dir) + 7;
 	sh->input = read_input(sh);
+	if (sh->input == ((char *)-1))
+		sh->input = NULL;
 	write(1, "\n", 1);
-	return ((sh->input == (char *)-1) ? 0 : 1);
+	return (!!sh->input);
 }
 
 int
@@ -27,7 +29,7 @@ int
 	ft_printf("\e[7m%%\e[0m%*s\r", g_sh.term.pos.x - 1, "");
 	ft_printf(sh->last_ret == EXIT_SUCCESS ?
 		MSG_PROMPT : MSG_PROMPT_ERR, sh->printed_dir);
-	if (ft_read(sh) == 0)
+	if (!ft_read(sh))
 		sh->stop = 1;
 	if (!sh->stop)
 	{
