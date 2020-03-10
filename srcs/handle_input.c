@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/10 15:44:04 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 17:26:17 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,28 @@
 #include "minishell.h"
 
 void
-	handle_arrows(char buff[3], t_term *term)
+	handle_arrows(char buff[6], t_term *term)
 {
-	read(0, buff + 1, 1);
-	read(0, buff + 2, 1);
-	if (buff[1] == '[' && buff[2] == 'C')
+	if (buff[1] != 91)
+		return ;
+	if (buff[2] == 49)
+		handle_ctrl_keys(buff, term);
+	else if (buff[2] == 'C')
 		handle_right_arrow(buff, term);
-	else if (buff[1] == '[' && buff[2] == 'D')
+	else if (buff[2] == 'D')
 		handle_left_arrow(buff, term);
-	else if (buff[1] == '[' && buff[2] == 'A')
+	else if (buff[2] == 'A')
 		print_history(&g_sh, 1);
-	else if (buff[1] == '[' && buff[2] == 'B')
+	else if (buff[2] == 'B')
 		print_history(&g_sh, 0);
-	else if (buff[1] == '[' && buff[2] == 'H')
+	else if (buff[2] == 'H')
 		handle_home(&g_sh, buff, term);
-	else if (buff[1] == '[' && buff[2] == 'F')
+	else if (buff[2] == 'F')
 		handle_end(&g_sh, buff, term);
 }
 
 void
-	handle_backspace(char buff[3], t_term *term)
+	handle_backspace(char buff[6], t_term *term)
 {
 	if (term->input->size > 1 && term->pos_str < term->input->size)
 		delone(term->input, term->pos_str + 1);
@@ -53,7 +55,7 @@ void
 }
 
 int
-	handle_ctrl_d(char buff[3], t_term *term)
+	handle_ctrl_d(char buff[6], t_term *term)
 {
 	if (term->input->size == 1)
 	{

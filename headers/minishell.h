@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/10 15:31:29 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 17:28:30 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,15 +244,16 @@ int				ask_heredocs(t_shell *sh);
 /*
 **	Input handling
 */
-void			handle_arrows(char buff[3], t_term *term);
-void			handle_right_arrow(char buff[3], t_term *term);
-void			handle_left_arrow(char buff[3], t_term *term);
-void			handle_backspace(char buff[3], t_term *term);
-int				handle_ctrl_d(char buff[3], t_term *term);
+void			handle_arrows(char buff[6], t_term *term);
+void			handle_right_arrow(char buff[6], t_term *term);
+void			handle_left_arrow(char buff[6], t_term *term);
+void			handle_backspace(char buff[6], t_term *term);
+int				handle_ctrl_d(char buff[6], t_term *term);
 void			handle_ctrl_u(t_term term);
 void			handle_ctrl_c(t_term *term);
-void			handle_home(t_shell *sh, char buff[3], t_term *term);
-void			handle_end(t_shell *sh, char buff[3], t_term *term);
+void			handle_home(t_shell *sh, char buff[6], t_term *term);
+void			handle_end(t_shell *sh, char buff[6], t_term *term);
+void			handle_ctrl_keys(char buff[6], t_term *term);
 int				del_right(t_term *term);
 
 /*
@@ -296,7 +297,7 @@ int				init_term(struct termios *s_termios,
 					struct termios *s_termios_backup);
 int				get_termx(t_shell *sh, char **av, char **env);
 char			*read_input(t_shell *sh);
-int				print_match(t_shell *sh, char buff[3]);
+int				print_match(t_shell *sh, char buff[6]);
 
 /*
 **	Processus

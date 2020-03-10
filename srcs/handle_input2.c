@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 16:21:25 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 23:31:53 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 17:20:09 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell.h"
 
 void
-	handle_right_arrow(char buff[3], t_term *term)
+	handle_right_arrow(char buff[6], t_term *term)
 {
 	term->r += term->r_ofst < (term->pos.x -
 			(term->size_prt % term->pos.x)) ? 1 : 0;
@@ -29,7 +29,7 @@ void
 }
 
 void
-	handle_left_arrow(char buff[3], t_term *term)
+	handle_left_arrow(char buff[6], t_term *term)
 {
 	if (term->pos_str <= term->input->size)
 	{
@@ -45,7 +45,7 @@ void
 }
 
 void
-	handle_home(t_shell *sh, char buff[3], t_term *term)
+	handle_home(t_shell *sh, char buff[6], t_term *term)
 {
 	int i;
 
@@ -57,7 +57,7 @@ void
 }
 
 void
-	handle_end(t_shell *sh, char buff[3], t_term *term)
+	handle_end(t_shell *sh, char buff[6], t_term *term)
 {
 	int i;
 

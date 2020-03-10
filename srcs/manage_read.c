@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/10 15:45:05 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 17:41:43 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ void	print_line(t_shell *sh)
 		write(1, "\e[D", 3);
 }
 
-char	*handle_input(t_shell *sh, int *match, char buff[3])
+char	*handle_input(t_shell *sh, int *match, char buff[6])
 {
-	// ft_fprintf(STDERR, "%d %c %c\n\n\n", buff[0], buff[1], buff[2]);
 	if (buff[0] == 27)
 		handle_arrows(buff, &sh->term);
 	else if (buff[0] == 21)
@@ -69,7 +68,7 @@ char	*handle_input(t_shell *sh, int *match, char buff[3])
 
 char	*read_input(t_shell *sh)
 {
-	char	buff[3];
+	char	buff[6];
 	char	*ret;
 	int		match;
 
@@ -82,9 +81,10 @@ char	*read_input(t_shell *sh)
 	sh->term.tmp = 0;
 	sh->term.l = 0;
 	sh->term.r = 0;
-	while (match || read(0, buff, 1) > 0)
+	while (match || read(0, buff, 6) > 0)
 	{
 		ret = handle_input(sh, &match, buff);
+		ft_memset(buff, 0, 6);
 		if (sh->term.input && ret <= (char *)2)
 		{
 			sh->term.l_ofst =  sh->term.input->size - (sh->term.pos.x -
