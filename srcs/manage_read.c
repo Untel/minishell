@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/09 23:16:02 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 15:45:05 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_line(t_shell *sh)
 
 char	*handle_input(t_shell *sh, int *match, char buff[3])
 {
-	// ft_fprintf(STDERR, "%c %c %c\n", buff[0], buff[1], buff[2]);
+	// ft_fprintf(STDERR, "%d %c %c\n\n\n", buff[0], buff[1], buff[2]);
 	if (buff[0] == 27)
 		handle_arrows(buff, &sh->term);
 	else if (buff[0] == 21)
@@ -45,6 +45,8 @@ char	*handle_input(t_shell *sh, int *match, char buff[3])
 		sh->term.l -= sh->term.l > 0 ? 1 : 0;
 		handle_backspace(buff, &sh->term);
 	}
+	else if (buff[0] == 126 && buff[1] == '[' && buff[2] == '3')
+		del_right(&sh->term);
 	else if (buff[0] == 4)
 	{
 		if (handle_ctrl_d(buff, &sh->term) == -1)

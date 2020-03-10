@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 23:06:43 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 15:31:29 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,7 @@ void			handle_ctrl_u(t_term term);
 void			handle_ctrl_c(t_term *term);
 void			handle_home(t_shell *sh, char buff[3], t_term *term);
 void			handle_end(t_shell *sh, char buff[3], t_term *term);
+int				del_right(t_term *term);
 
 /*
 **	Input sanitizing

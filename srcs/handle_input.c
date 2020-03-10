@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/09 23:29:22 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 15:44:04 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,7 @@ int
 		ft_memdel((void **)&term->input);
 		return (-1);
 	}
-	if (term->pos_str > 1)
-	{
-		delone(term->input, term->pos_str);
-		term->pos_str -= 1;
-		term->pos_aff -= 1;
-	}
+	del_right(term);
 	write(1, buff, 1);
 	return (1);
 }

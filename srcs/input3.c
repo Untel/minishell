@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 17:30:32 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 15:15:10 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 15:31:14 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,17 @@ int
 			return (FALSE);
 	}
 	return (SUC);
+}
+
+int
+	del_right(t_term *term)
+{
+	if (term->pos_str > 1)
+	{
+		delone(term->input, term->pos_str);
+		term->pos_str -= 1;
+		term->pos_aff -= 1;
+		return (1);
+	}
+	return (0);
 }
