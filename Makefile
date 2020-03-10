@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/10 17:28:38 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/03/10 19:41:30 by adda-sil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,12 +32,14 @@ SRCS_FILES	= \
 	list_utils.c\
 	list_utils2.c\
 	list_utils3.c\
+	list_utils4.c\
 	match.c\
 	match_utils.c\
 	match_utils2.c\
 	handle_input.c\
 	handle_input2.c\
 	handle_input3.c\
+	handle_input4.c\
 	manage_read.c\
 	process.c\
 	echo.c\

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/10 17:41:43 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/10 19:19:23 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ void	print_line(t_shell *sh)
 
 char	*handle_input(t_shell *sh, int *match, char buff[6])
 {
-	if (buff[0] == 27)
+	if (buff[0] < 0)
+		handle_option_cases(sh, buff);
+	else if (buff[0] == 27)
 		handle_arrows(buff, &sh->term);
 	else if (buff[0] == 21)
 		handle_ctrl_u(sh->term);
@@ -83,6 +85,7 @@ char	*read_input(t_shell *sh)
 	sh->term.r = 0;
 	while (match || read(0, buff, 6) > 0)
 	{
+		// ft_fprintf(2, "%d %d %d %d %d %d\n", buff[0],buff[1],buff[2],buff[3],buff[4],buff[5]);
 		ret = handle_input(sh, &match, buff);
 		ft_memset(buff, 0, 6);
 		if (sh->term.input && ret <= (char *)2)
