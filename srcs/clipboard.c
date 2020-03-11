@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_input4.c                                    :+:      :+:    :+:   */
+/*   clipboard.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 19:11:56 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/11 05:18:58 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 21:23:09 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@ void
 	int i;
 
 	i = 0;
-	while (sh->term.clipboard[i])
-	{
-		add_after(sh->term.input,
-			sh->term.clipboard[i], sh->term.pos_str);
-		i++;
-	}
+	if (sh->term.clipboard)
+		while (sh->term.clipboard[i])
+		{
+			add_after(sh->term.input,
+				sh->term.clipboard[i], sh->term.pos_str);
+			i++;
+		}
 }
 
 void

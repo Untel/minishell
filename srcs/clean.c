@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:21:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/11 04:13:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 21:20:16 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void
 {
 	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
-	// ft_memdel((void **)sh->term.clipboard);
 	sh->hd_index = 0;
 }
 
