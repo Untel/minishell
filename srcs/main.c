@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 18:09:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 05:50:56 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void
 	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);
 	init_history(sh);
+	ft_memset(&g_sh.term, 0, sizeof(t_term));
 }
 
 void
@@ -91,7 +92,7 @@ int
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
 		.env = create_env_list(envp), .ctrl_c = 0,
-		.heredocs = NULL, .inline_fd = STDIN_FILENO, .sub = 0
+		.heredocs = NULL, .inline_fd = STDIN_FILENO, .sub = 0,
 	};
 	initialize_shell(&g_sh);
 	if (ac > 1)

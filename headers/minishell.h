@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/10 19:20:13 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 04:07:35 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ typedef struct	s_term
 	t_termios	term;
 	t_termios	old_term;
 	t_data		*input;
-	t_data		*clipboard;
+	char		*clipboard;
 	int			pos_str;
 	int			pos_aff;
 	int			size_prt;

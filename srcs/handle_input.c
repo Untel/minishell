@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/10 17:26:17 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 05:31:19 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void
 	handle_arrows(char buff[6], t_term *term)
 {
+	read(0, buff + 1, 5);
 	if (buff[1] != 91)
 		return ;
 	if (buff[2] == 49)
@@ -32,6 +33,8 @@ void
 		handle_home(&g_sh, buff, term);
 	else if (buff[2] == 'F')
 		handle_end(&g_sh, buff, term);
+	else if (buff[2] == '3')
+		del_right(&g_sh.term);
 }
 
 void

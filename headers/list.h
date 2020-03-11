@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 11:49:54 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/10 19:37:46 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 04:06:41 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char			*convert_to_str(t_data *lst);
 t_lst_in		*get_elem_by_pos(t_data *lst, int pos);
 void			free_all(t_data *lst);
 t_data			*copy_at(t_data *lst, int pos);
+char			*copy_str_at(t_data *lst, int pos);
 
 /*
 **------------------------------- SUPPRESSION ----------------------------------

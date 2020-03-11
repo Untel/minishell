@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 09:34:51 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/10 20:32:43 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 04:26:25 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,33 @@ t_data	*copy_at(t_data *lst, int pos)
 	i = 0;
 	while (tmp)
 	{
-		ft_fprintf(2, "adding %c\n", tmp->c);
 		add_after(cpy, tmp->c, i);
 		i++;
 		tmp = tmp->next;
 	}
+	return (cpy);
+}
+
+char	*copy_str_at(t_data *lst, int pos)
+{
+	int			i;
+	char		*cpy;
+	t_lst_in	*tmp;
+
+	if (!(cpy = malloc(sizeof(char) * (lst->size - pos + 1))))
+		return (NULL);
+	tmp = lst->end;
+	i = 0;
+	while (++i <= pos)
+		tmp = tmp->prev;
+	i = 0;
+	while (tmp)
+	{
+		cpy[i] = tmp->c;
+		i++;
+		tmp = tmp->prev;
+	}
+	cpy[i] = 0;
 	return (cpy);
 }
 
