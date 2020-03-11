@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 19:11:56 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/11 21:23:09 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 21:29:17 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ void
 			i++;
 		}
 }
+
+/*
+** Special case for copy past cut
+** Opt+c for copy
+** Opt+x for cut
+** Opt+v for past
+*/
 
 void
 	handle_option_cases(t_shell *sh, char b[6])

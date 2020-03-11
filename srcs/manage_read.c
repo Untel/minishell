@@ -5,23 +5,22 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/09 09:07:09 by riblanc           #+#    #+#             */
-
-/*   Updated: 2020/03/10 19:19:23 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/03/11 21:29:57 by adda-sil          #+#    #+#             */
+/*   Updated: 2020/03/11 21:48:51 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 #include "minishell.h"
 
-void	print_line(t_shell *sh)
+void
+	print_line(t_shell *sh)
 {
 	int			i;
 	int			del;
 	int			offset;
 
 	del = 127;
-	
 	offset = sh->term.size_prt % sh->term.pos.x;
 	write(1, "\r", 1);
 	while (--offset >= 0)
@@ -34,7 +33,26 @@ void	print_line(t_shell *sh)
 		write(1, "\e[D", 3);
 }
 
-char	*handle_input(t_shell *sh, int *match, char buff[6])
+char
+	*handle_input2(t_shell *sh, int *match, char buff[6])
+{
+	if (buff[0] == 10 && reset_history_position(sh))
+		return (convert_to_str(sh->term.input));
+	else if (buff[0] == 9)
+	{
+		*match = print_match(sh, buff);
+		return ((char *)1);
+	}
+	else
+	{
+		reset_history_position(sh);
+		add_after(sh->term.input, buff[0], sh->term.pos_str);
+	}
+	return ((char *)2);
+}
+
+char
+	*handle_input(t_shell *sh, int *match, char buff[6])
 {
 	if (buff[0] < 0)
 		handle_option_cases(sh, buff);
@@ -52,36 +70,33 @@ char	*handle_input(t_shell *sh, int *match, char buff[6])
 		if (handle_ctrl_d(buff, &sh->term) == -1)
 			return ((char *)-1);
 	}
-	else if (buff[0] == 10 && reset_history_position(sh))
-		return (convert_to_str(sh->term.input));
-	else if (buff[0] == 9)
-	{
-		*match = print_match(sh, buff);
-		return ((char *)1);
-	}
 	else
-	{
-		reset_history_position(sh);
-		add_after(sh->term.input, buff[0], sh->term.pos_str);
-	}
+		return (handle_input2(sh, match, buff));
 	return ((char *)2);
 }
 
-char	*read_input(t_shell *sh)
+void
+	init_reader(t_shell *sh)
 {
-	char	buff[6];
-	char	*ret;
-	int		match;
-
 	sh->term.input = malloc(sizeof(t_data));
 	init_lst(sh->term.input);
 	add_empty(sh->term.input, '\0');
-	match = 0;
 	sh->term.pos_str = 1;
 	sh->term.pos_aff = 1;
 	sh->term.tmp = 0;
 	sh->term.l = 0;
 	sh->term.r = 0;
+}
+
+char
+	*read_input(t_shell *sh)
+{
+	char	buff[6];
+	char	*ret;
+	int		match;
+
+	match = 0;
+	init_reader(sh);
 	while (match || read(0, buff, 1) > 0)
 	{
 		ret = handle_input(sh, &match, buff);
@@ -95,8 +110,6 @@ char	*read_input(t_shell *sh)
 		}
 		if (ret == (char *)1)
 			continue ;
-		if (ret == (char *)-1)
-			return ((char *)-1);
 		if (ret != (char *)2)
 			return (ret);
 		print_line(sh);

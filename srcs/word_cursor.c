@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 17:26:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/11 21:22:05 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 21:30:27 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 int
 	is_first_letter(t_term *term, int pos)
 {
-	char c;
-	char cc;
-	int	 is;
+	char	c;
+	char	cc;
+	int		is;
+
 	if (pos >= term->input->size)
 		return (1);
 	c = get_elem_by_pos(term->input, pos - 1)->c;
