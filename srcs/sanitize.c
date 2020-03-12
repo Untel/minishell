@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/08 15:14:38 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:58:05 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ int
 	if (buffer == (char *)ERR)
 		return (ERR);
 	if (stopif && ft_strcmp(stopif, buffer) == 0)
-	{
-		ft_memdel((void **)&buffer);
-		return (0);
-	}
+		return (!ft_imemdel((void **)&buffer));
 	tmps[0] = *place ? *place : "";
 	tmps[1] = buffer;
 	tmp = ft_strmjoin(2, tmps, *place ? "\n" : "");
@@ -41,10 +38,13 @@ int
 }
 
 int
-	ask_to_close(t_shell *sh, char *ask)
+	ask_to_close(t_shell *sh, char *ask, int bypass)
 {
 	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
+	if (sh->inline_fd != ERR)
+		return (bypass ? SUC :
+			!ft_fprintf(STDERR, MSG_ERROR, "syntax error"));
 	if (ask_concat(sh, ask, &sh->input, NULL) == ERR)
 		return (ERR);
 	return (sanitize(sh));
@@ -62,7 +62,7 @@ int
 			continue;
 		q->cc = q->c;
 		q->c = sh->input[i];
-		if (q->c == '\\')
+		if (q->c == '\\' && !q->s && q->bslash != i)
 			q->bslash = i + 1;
 		else if (q->c == '\'' && !q->d && q->bslash != i)
 			q->s = !q->s;
@@ -86,15 +86,15 @@ int
 	if (!(check_input(sh, &q)))
 		return (FALSE);
 	if (q.s)
-		return (ask_to_close(sh, "quote"));
+		return (ask_to_close(sh, "quote", 0));
 	else if (q.d)
-		return (ask_to_close(sh, "dquote"));
+		return (ask_to_close(sh, "dquote", 0));
 	else if (q.c == '|')
-		return (ask_to_close(sh, q.cc == '|' ? "cmdor" : "pipe"));
+		return (ask_to_close(sh, q.cc == '|' ? "cmdor" : "pipe", 0));
 	else if (q.c == '&' && q.cc == '&')
-		return (ask_to_close(sh, "cmdand"));
+		return (ask_to_close(sh, "cmdand", 0));
 	else if (q.bslash == q.i)
-		return (ask_to_close(sh, ""));
+		return (ask_to_close(sh, "", 1));
 	ask_heredocs(sh);
 	return (SUC);
 }

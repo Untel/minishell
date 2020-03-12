@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:28 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/02/16 20:16:40 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:01:44 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,21 @@ char	*ft_strchr(const char *s, int c)
 char	*ft_strchr_escape(const char *s, int c, int escape)
 {
 	int i;
+	int	esc;
 
 	i = 0;
+	esc = 0;
 	while (s && s[i])
-		if (s[i] == c && (i == 0 || s[i - 1] != escape))
+	{
+		if (s[i] == escape)
+		{
+			i += 2;
+			esc = 1;
+		}
+		else if (s[i] == c)
 			return ((char *)&s[i]);
 		else
 			i++;
+	}
 	return (!c && !s[i] ? (char *)&s[i] : 0);
 }

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/08 15:21:01 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:33:27 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int
 	sub = ft_substr(sh->input + rd->index, 0, idx - rd->index);
 	sub = replace_tilde(sh, sub);
 	sub = replace_vars(sh, sub);
+	ft_escape_malloc(&sub, '\\');
 	if (rd->buffer)
 	{
 		tmp = ft_strjoin(rd->buffer, sub);
@@ -58,7 +59,7 @@ t_operator
 int
 	parse_input(t_shell *sh)
 {
-	t_read		rd;
+	t_read	rd;
 
 	rd = (t_read) { .buffer = NULL, .index = 0, .add_to = ARGS,
 		.input = NULL, .i = -1, .c = 0, .fd = -1, .ret = 1 };

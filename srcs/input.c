@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 22:17:39 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:50:05 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ int
 	copy_from_idx(sh, rd, *i);
 	len = tmp - (sh->input + *i + 1);
 	sub = ft_substr(sh->input + *i + 1, 0, len);
-	ft_escape(sub, '\\');
 	sub = replace_vars(sh, sub);
+	// ft_escape_sequence(sub, '\\', "abdfenrtv", 1);
+	ft_escape_sequence(sub, '\\', "\\\"$", 0);
 	if (rd->buffer)
 	{
 		tmp = ft_strjoin(rd->buffer, sub);

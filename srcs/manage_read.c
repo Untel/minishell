@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:29:57 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/11 21:48:51 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 21:50:03 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char
 		ft_memset(buff, 0, 6);
 		if (sh->term.input && ret <= (char *)2)
 		{
-			sh->term.l_ofst =  sh->term.input->size - (sh->term.pos.x -
+			sh->term.l_ofst = sh->term.input->size - (sh->term.pos.x -
 					(sh->term.size_prt % sh->term.pos.x) + sh->term.l);
 			sh->term.r_ofst = (sh->term.pos.x -
 					(sh->term.size_prt % sh->term.pos.x)) + sh->term.r;

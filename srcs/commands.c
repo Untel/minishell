@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 20:14:09 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 17:17:02 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/12 16:52:18 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int
 {
 	t_list	*el;
 
-	ft_escape(str, '\\');
 	if (!(el = ft_lstlast(sh->cmds)))
 		err_shutdown(sh, "Error commands.c add_arg_to_last_cmd");
 	if (ft_strchr_escape(str, '*', '\\'))
