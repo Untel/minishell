@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 12:26:48 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 18:20:19 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/12 16:01:06 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,9 @@ char
 	{
 		if (!ptr[1])
 			return (str);
-		if (!(ft_isalpha(ptr[1]) || ptr[1] == '_' || ptr[1] == '?'))
-		{
-			diff += 1;
+		if (!(ft_isalpha(ptr[1]) || ptr[1] == '_' || ptr[1] == '?') && ++diff)
 			continue ;
-		}
-		diff = ptr[1] == '?'
-			? replace_last_ret(sh, &str, &ptr)
+		diff = ptr[1] == '?' ? replace_last_ret(sh, &str, &ptr)
 			: replace_var(sh, &str, &ptr);
 	}
 	return (str);

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/11 05:50:56 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:42:47 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 t_shell	g_sh;
 
-__attribute__((destructor)) void lul(void)
-{
-	if (!g_sh.sub)
-		system("leaks minishell");
-}
+/*
+** __attribute__((destructor)) void lul(void)
+** {
+** 	if (!g_sh.sub)
+** 		system("leaks minishell");
+** }
+*/
 
 void
 	initialize_shell(t_shell *sh)
@@ -92,7 +94,7 @@ int
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
 		.env = create_env_list(envp), .ctrl_c = 0,
-		.heredocs = NULL, .inline_fd = STDIN_FILENO, .sub = 0,
+		.heredocs = NULL, .inline_fd = -1, .sub = 0,
 	};
 	initialize_shell(&g_sh);
 	if (ac > 1)

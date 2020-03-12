@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/05 16:55:01 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/11 22:20:55 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int
 		if (cmd->redir_in || cmd->left)
 			run_redirect_in(sh, cmd);
 		errno = 0;
+		if (cmd->argc > 0)
+			set_value(&sh->env, "_", cmd->argv[cmd->argc - 1]);
 		ret = execve(path, cmd->argv,
 			(cmd->env = convert_env_list(sh->env)));
 		if (errno != 0)

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 22:00:49 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/06 01:50:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:24:44 by adda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,28 @@ size_t
 				i++;
 			count++;
 		}
+		else
+			str[i - count] = str[i];
+		i++;
+	}
+	str[i - count] = 0;
+	return (count);
+}
+
+size_t
+	ft_escape_sequence(char *str, int escape,
+		char *sequence, int jump)
+{
+	size_t	count;
+	size_t	i;
+
+	count = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == escape && (i == 0 || str[i - 1] != escape)
+			&& ft_strchr(sequence, str[i + 1]))
+			count += jump + 1;
 		else
 			str[i - count] = str[i];
 		i++;
