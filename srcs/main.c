@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/12 17:42:47 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/26 15:56:06 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void
 	char	*tmp;
 	int		shlvl;
 
-	signal(SIGINT, sigint_quit);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	tmp = get_value(sh->env, "SHLVL", "0");
@@ -43,19 +42,15 @@ void
 	set_value(&sh->env, "GREP_OPTIONS", "--color=auto");
 	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);
-	init_history(sh);
-	ft_memset(&g_sh.term, 0, sizeof(t_term));
 }
 
 void
 	run(t_shell *sh)
 {
-	handle_winch(0);
 	format_directory(sh);
 	while (!sh->stop)
 		prompt_line(sh);
 	ft_printf(MSG_EXIT);
-	tcsetattr(0, 0, &sh->term.old_term);
 }
 
 int
@@ -93,17 +88,14 @@ int
 	g_sh = (t_shell) {
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
-		.env = create_env_list(envp), .ctrl_c = 0,
+		.env = create_env_list(envp),
 		.heredocs = NULL, .inline_fd = -1, .sub = 0,
 	};
 	initialize_shell(&g_sh);
 	if (ac > 1)
 		inline_mode(&g_sh, *(av + 1));
-	else if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)
-		run(&g_sh);
 	else
-		inline_mode(&g_sh, NULL);
-	persist_history(&g_sh);
+		run(&g_sh);
 	free_env_list(&g_sh.env);
 	return (EXIT_SUCCESS);
 }

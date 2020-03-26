@@ -3,106 +3,343 @@
 /*                                                        :::      ::::::::   */
 /*   handle_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/11 05:31:19 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
+/*   Updated: 2020/03/26 10:30:56 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include "libft.h"
 #include "list.h"
-#include "minishell.h"
+#include "line_edit.h"
+#include "ft_printf.h"
+#include <stdlib.h>
+#include <termios.h>
 
-void
-	handle_arrows(char buff[6], t_term *term)
+char		*g_yank = NULL;
+extern int	g_resize;
+extern int	g_termx;
+
+static void	handle_backspace(t_line *line)
 {
-	read(0, buff + 1, 5);
-	if (buff[1] != 91)
-		return ;
-	if (buff[2] == 49)
-		handle_ctrl_keys(buff, term);
-	else if (buff[2] == 'C')
-		handle_right_arrow(buff, term);
-	else if (buff[2] == 'D')
-		handle_left_arrow(buff, term);
-	else if (buff[2] == 'A')
-		print_history(&g_sh, 1);
-	else if (buff[2] == 'B')
-		print_history(&g_sh, 0);
-	else if (buff[2] == 'H')
-		handle_home(&g_sh, buff, term);
-	else if (buff[2] == 'F')
-		handle_end(&g_sh, buff, term);
-	else if (buff[2] == '3')
-		del_right(&g_sh.term);
+	if (line->pos > 1)
+		delone(line->lst_input, line->pos--);
+	return ;
 }
 
-void
-	handle_backspace(char buff[6], t_term *term)
+static void	go_right(t_line *line)
 {
-	if (term->input->size > 1 && term->pos_str < term->input->size)
-		delone(term->input, term->pos_str + 1);
-	if (term->l > 0)
+	t_lst_in	*elem;
+
+	elem = get_elem_by_pos(line->lst_input, line->pos);
+	while (elem && elem->next && !ft_isalnum(elem->c))
 	{
-		if (term->l_ofst <= 0)
-		{
-			++term->pos_aff;
-			--term->r;
-		}
-		else
-			++term->l;
+		elem = elem->next;
+		++line->pos;
 	}
-	write(1, "\e[D", 3);
-	write(1, buff, 1);
-	write(1, "\e[D", 3);
+	while (elem && ft_isalnum(elem->c))
+	{
+		elem = elem->next;
+		++line->pos;
+	}
+	while (elem && !ft_isalnum(elem->c))
+	{
+		elem = elem->next;
+		++line->pos;
+	}
 }
 
-int
-	handle_ctrl_d(char buff[6], t_term *term)
+static void	go_left(t_line *line)
 {
-	if (term->input->size == 1)
+	t_lst_in	*elem;
+
+	elem = get_elem_by_pos(line->lst_input, line->pos - 1);
+	while (elem && elem->c && !ft_isalnum(elem->c))
 	{
-		free_all(term->input);
-		ft_memdel((void **)&term->input);
+		elem = elem->prev;
+		--line->pos;
+	}
+	while (elem && elem->c && ft_isalnum(elem->c))
+	{
+		elem = elem->prev;
+		--line->pos;
+	}
+}
+
+static int	handle_ctrld(t_line *line)
+{
+	if (line->lst_input->size == 1)
 		return (-1);
+	else if (line->lst_input->size > 1
+			&& line->pos + 1 <= line->lst_input->size)
+		delone(line->lst_input, line->pos + 1);
+	return (0);
+}
+
+static void	select_mode(t_line *line, char *prompt);
+
+static int	handle_escape(t_line *line, char *prompt, int edit)
+{
+	struct	termios nonblock;
+	int		ret;
+
+	tcgetattr(0, &nonblock);
+	nonblock.c_cc[VMIN] = 0;
+	if (tcsetattr(0, 0, &nonblock) == -1)
+		return (-1);
+	if ((ret = read(0, line->buff + 1, 5)) > 0)
+	{
+		if (!strcmp(line->buff, "\x1b[D"))
+			line->pos -= line->pos > 1 ? 1 : 0;
+		else if (!strcmp(line->buff, "\x1b[C"))
+			line->pos += line->pos < line->lst_input->size ? 1 : 0;
+		else if (!strcmp(line->buff, "\x1b[1;5B") && line->multi)
+			line->pos += (line->pos + g_termx < line->lst_input->size + 1) ? g_termx : 0;
+		else if (!strcmp(line->buff, "\x1b[1;5A") && line->multi)
+			line->pos -= (line->pos - g_termx > 0) ? g_termx : 0;
+		else if (!strcmp(line->buff, "\x1b[1;5D"))
+			go_left(line);
+		else if (!strcmp(line->buff, "\x1b[1;5C"))
+			go_right(line);
+		else if (!strcmp(line->buff, "\x1b[A") && !edit)
+			history_pn(line, HPREV, &g_history);
+		else if (!strcmp(line->buff, "\x1b[B") && !edit)
+			history_pn(line, HNEXT, &g_history);
+		else if (!strcmp(line->buff, "\x1b[H"))
+			line->pos = 1;
+		else if (!strcmp(line->buff, "\x1b[F"))
+			line->pos = line->lst_input->size;
+		else if (!strcmp(line->buff, "\x1b[3~"))
+			handle_ctrld(line);
+		else
+			ret = -10;
 	}
-	del_right(term);
-	write(1, buff, 1);
-	return (1);
+	nonblock.c_cc[VMIN] = 1;
+	if (tcsetattr(0, 0, &nonblock) == -1)
+		return (-1);
+	if (!ret)
+	{
+		if (!edit)
+			select_mode(line, prompt);
+		else
+			return (1);
+	}
+	return (0);
 }
 
-void
-	handle_ctrl_u(t_term term)
+static void	ft_swap(int *a, int *b)
 {
-	int		i;
-	char	del;
-
-	del = 127;
-	i = -1;
-	while (++i <= term.input->size - term.pos_aff)
-		write(1, "\e[D", 3);
-	i = -1;
-	while (++i < term.input->size)
-		write(1, &del, 1);
-	while (term.input->size > 1 && term.pos_str < term.input->size)
-		delone(term.input, term.pos_str + 1);
+	*a ^= *b;
+	*b ^= *a;
+	*a ^= *b;
 }
 
-void
-	handle_ctrl_c(t_term *term)
+static char *get_str_by_pos(t_line *line, int del)
+{
+	t_lst_in	*tmp;
+	char		*str;
+	int			a;
+	int			b;
+	int			i;
+
+	a = line->sel[0];
+	b = line->sel[1] - (line->sel[1] > a);
+	if (a >= b)
+		ft_swap(&a, &b);
+	b -= (line->pos >= line->lst_input->size || b >= line->lst_input->size);
+	if (line->copy_buff)
+		free(line->copy_buff);
+	tmp = get_elem_by_pos(line->lst_input, a == 0 ? line->pos : a);
+	if (!(str = malloc(sizeof(char) * (b - a + 2))))
+		return (NULL);
+	str[b - a + 1] = 0;
+	i = 0;
+	while (tmp)
+	{
+		if (i <= b - a)
+			str[i++] = tmp->c;
+		tmp = tmp->next;
+	}
+	if (del)
+	{
+		i = -1;
+		while (++i <= b - a)
+			delone(line->lst_input, (a == 0 ? line->pos : a) + 1);
+		while (line->pos > a && a != 0 && b != 0)
+			--line->pos;
+	}
+	return ((line->copy_buff = str));
+}
+
+static void	past(t_line *line, int before)
 {
 	int		i;
-	char	del;
+	int		len;
+	char	*str;
 
-	del = 127;
-	i = -1;
-	while (++i <= term->input->size - term->pos_aff)
-		write(1, "\e[D", 3);
-	i = -1;
-	while (++i < term->input->size)
-		write(1, &del, 1);
-	free_all(term->input);
-	term->pos_str = 1;
-	term->pos_aff = 1;
-	add_empty(term->input, 0);
+	if (line->copy_buff)
+	{
+
+		++line->edit_history.index;
+		len = ft_strlen(line->copy_buff);
+		i = -1;
+		while (++i < len)
+		{
+			++line->pos;
+			add_after(line->lst_input, line->copy_buff[i], line->pos - before);
+		}
+		str = convert_to_str(line->lst_input, 0);
+		free_history(&line->edit_history, line->edit_history.index);
+		add_history(&(line->edit_history), ft_strdup(str), H_EMPTYL, line->pos);
+		free (str);
+	}
+}
+
+static void	handle_ctrlu(t_line *line)
+{
+	while (line->lst_input->size > 0)
+	{
+		delone(line->lst_input, 1);
+		line->pos -= line->pos > 0 ? 1 : 0;
+	}
+	add_empty(line->lst_input, 0);
+	++line->pos;
+}
+
+static void	select_mode(t_line *line, char *prompt)
+{
+	int		ret;
+	int		sel;
+	char	*str;
+	t_list	*lst;
+	sel = 0;
+	if (line->pos > 1)
+		line->pos =	line->pos >= line->lst_input->size ?
+			line->lst_input->size - 1 : line->pos;
+	refresh_line(line, prompt, 1);
+	line->edit_history.index = line->edit_history.len;
+	str = convert_to_str(line->lst_input, 0);
+	add_history(&(line->edit_history), ft_strdup(str), H_EMPTYL, line->pos);
+	free (str);
+	str = NULL;
+	line->edit = 1;
+	while ((ret = read(0, line->buff, 1)) > 0)
+	{
+		lst = ft_lstindex(line->edit_history.cursor_pos,
+			line->edit_history.index);
+		if (lst)
+			lst->content = (void *)((size_t)line->pos);
+		if (*line->buff == 27 && handle_escape(line, prompt, 1) == 1)
+		{
+			sel = 0;
+			ft_bzero(line->sel, sizeof(line->sel));
+		}
+		else if (*line->buff == 'h')
+					line->pos -= line->pos > 1 ? 1 : 0;
+		else if (*line->buff == 'j' && line->multi)
+					line->pos += (line->pos + g_termx < line->lst_input->size) ? g_termx : 0;
+		else if (*line->buff == 'k' && line->multi)
+					line->pos -= (line->pos - g_termx > 0) ? g_termx : 0;
+		else if (*line->buff == 'l')
+			line->pos += line->pos < line->lst_input->size ? 1 : 0;
+		else if (*line->buff == 'v' && (sel = 1))
+			line->sel[0] = line->pos;
+		else if (*line->buff == 'p' && !sel)
+			past(line, (line->lst_input->size == 1));
+		else if (*line->buff == 'P' && !sel)
+			past(line, 1);
+		else if (*line->buff == 'w')
+			go_right(line);
+		else if (*line->buff == 'u')
+			history_pn(line, HPREV, &(line->edit_history));
+		else if (*line->buff == 0x12)
+			history_pn(line, HNEXT, &(line->edit_history));
+		else if (*line->buff == 'x')
+		{
+			++line->edit_history.index;
+			sel = 0;
+			g_yank = get_str_by_pos(line, 1);
+			ft_bzero(line->sel, sizeof(line->sel));
+			str = convert_to_str(line->lst_input, 0);
+			free_history(&line->edit_history, line->edit_history.index);
+			add_history(&(line->edit_history), ft_strdup(str),
+					H_EMPTYL, line->pos);
+			free (str);
+			str = NULL;
+		}
+		else if (*line->buff == 'X')
+		{
+			++line->edit_history.index;
+			sel = 0;
+			ft_bzero(line->sel, sizeof(line->sel));
+			handle_ctrlu(line);
+			str = convert_to_str(line->lst_input, 0);
+			free_history(&line->edit_history, line->edit_history.index);
+			add_history(&(line->edit_history), ft_strdup(str), H_EMPTYL,
+					line->pos);
+			free (str);
+
+		}
+		else if (*line->buff == 10 && !sel)
+			break ;
+		else if (*line->buff == 'y' || *line->buff == 10)
+		{
+			sel = 0;
+			g_yank = get_str_by_pos(line, 0);
+			ft_bzero(line->sel, sizeof(line->sel));
+		}
+		if (*line->buff == 'i')
+			break ;
+		if (*line->buff == 'I' && (line->pos = 1))
+			break ;
+		if (*line->buff == 'A' && (line->pos = line->lst_input->size))
+			break ;
+		if (sel)
+			line->sel[1] = line->pos < line->sel[0] ? line->pos : line->pos + 1;
+		else
+			ft_bzero(line->sel, sizeof(line->sel));
+		if (line->pos > 1)
+			line->pos =	line->pos >= line->lst_input->size ?
+				line->lst_input->size - 1 : line->pos;
+		if (g_resize && !((g_resize = 0)))
+			ft_printf("\r\x1b[0K%s", prompt);
+		refresh_line(line, prompt, 1);
+		ft_bzero(line->buff, 6);
+	}
+	line->edit = 0;
+	ft_bzero(line->sel, sizeof(line->sel));
+}
+
+static void	add_char(t_line *line)
+{
+	add_after(line->lst_input, line->buff[0], line->pos);
+	++line->pos;
+}
+
+static void	handle_ctrll(t_line *line, char *prompt)
+{
+	write(1, "\x1b[H\x1b[2J", 7);
+	write(1, prompt, ft_strlen(prompt));
+	refresh_line(line, prompt, 0);
+}
+
+int			handle_input(t_line *line, char *prompt)
+{
+	if (line->buff[0] == 4)
+		return (handle_ctrld(line));
+	else if (line->buff[0] == 12)
+		handle_ctrll(line, prompt);
+	if (line->buff[0] == 127 || line->buff[0] == 8)
+		handle_backspace(line);
+	else if (line->buff[0] == 27)
+		handle_escape(line, prompt, 0);
+	else if (line->buff[0] == 21)
+		handle_ctrlu(line);
+	else if (line->buff[0] == 10)
+		return (1);
+	else if (ft_isprint(line->buff[0]))
+		add_char(line);
+	return (0);
 }

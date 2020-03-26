@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/11 22:20:55 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/26 15:56:33 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,7 @@ int
 		return (FALSE);
 	child = fork();
 	init_child_signals(child);
-	tcsetattr(1, 0, &sh->term.old_term);
 	ret = try_exec(sh, bin_path, cmd, child);
-	signal(SIGINT, sigint_quit);
-	tcsetattr(1, 0, &sh->term.term);
 	if (child == 0 && ret != 0)
 		exit(ret);
 	ft_memdel((void **)&bin_path);

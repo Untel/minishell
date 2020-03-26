@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/11 21:21:01 by adda-sil         ###   ########.fr        #
+#    Updated: 2020/03/26 15:52:58 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,43 +15,47 @@ NAME		= minishell
 ### Sources
 SRCS_DIR	= srcs
 SRCS_FILES	= \
-	main.c\
-	prompt.c\
-	input.c\
-	input2.c\
-	input3.c\
-	commands.c\
-	env.c\
-	env_utils.c\
-	free_env.c\
-	execute.c\
-	change_directory.c\
-	manage_bin.c\
-	export.c\
-	init_termios.c\
-	list_utils.c\
-	list_utils2.c\
-	list_utils3.c\
-	list_utils4.c\
-	match.c\
-	match_utils.c\
-	match_utils2.c\
-	handle_input.c\
-	handle_input2.c\
-	word_cursor.c\
-	clipboard.c\
-	manage_read.c\
-	process.c\
-	echo.c\
-	clean.c\
-	clean2.c\
-	sanitize.c\
-	heredoc.c\
-	signals.c\
-	history.c\
-	env_vars.c\
-	redirections.c\
-	wildcards.c
+	main.c \
+	prompt.c \
+	commands.c \
+	input.c \
+	input2.c \
+	input3.c \
+	env.c \
+	env_utils.c \
+	free_env.c \
+	execute.c \
+	change_directory.c \
+	manage_bin.c \
+	export.c \
+	process.c \
+	echo.c \
+	clean.c \
+	clean2.c \
+	match.c \
+	sanitize.c \
+	heredoc.c \
+	signals.c \
+	env_vars.c \
+	redirections.c \
+	wildcards.c \
+	winch.c \
+	read_input.c \
+	handle_input.c \
+	list_utils.c \
+	list_utils3.c \
+	list_utils4.c \
+	list_utils2.c \
+	init_termios.c \
+	get_next_line.c \
+	get_next_line_utils.c \
+	history.c \
+	history_utils.c
+
+#	word_cursor.c\
+//	match_utils.c\
+//	match_utils2.c\
+//	clipboard.c\
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/10 17:15:06 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/26 13:37:07 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		match(char *s1, char *s2)
 		return (1);
 	return (0);
 }
-
+/*
 int		print_highlight(t_shell *sh, char *str, int nb_elem, int i, t_list *occur)
 {
 	DIR				*rep;
@@ -140,3 +140,4 @@ int		print_match(t_shell *sh, char buff[6])
 	}
 	return (ret);
 }
+*/

@@ -3,114 +3,120 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/24 14:28:24 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 16:47:03 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/03/21 23:15:52 by riblanc           #+#    #+#             */
+/*   Updated: 2020/03/25 11:06:00 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "get_next_line.h"
+#include "ft_printf.h"
+#include "libft.h"
+#include "line_edit.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 
-int
-	init_history(t_shell *sh)
+t_history	g_history = {.filename = ".history"};
+
+void	add_history(t_history *history, char *cmd, int arg, size_t pos)
+{
+	if ((strcmp(cmd, "") || (arg & H_EMPTYL) == H_EMPTYL)
+				&& !ft_lstlast(history->lst))
+	{
+		ft_lstadd_back(&(history->lst), ft_lstnew(cmd, sizeof(char*)));
+		ft_lstadd_back(&(history->cursor_pos),
+				ft_lstnew((void*)pos, sizeof(int)));
+		++history->len;
+		if ((arg & H_SAVE) == H_SAVE)
+			history_save(history->filename, cmd);
+	}
+	else if ((strcmp(cmd, "") || (arg & H_EMPTYL) == H_EMPTYL) &&
+			strcmp((char *)(ft_lstlast(history->lst)->content), cmd))
+	{
+		ft_lstadd_back(&(history->lst), ft_lstnew(cmd, sizeof(char*)));
+		ft_lstadd_back(&(history->cursor_pos),
+				ft_lstnew((void *)pos, sizeof(int)));
+		++history->len;
+		if ((arg & H_SAVE) == H_SAVE)
+			history_save(history->filename, cmd);
+	}
+	else
+		ft_memdel((void **)&cmd);
+}
+
+void	load_history(const char *filename, t_history *history)
 {
 	int		fd;
 	int		ret;
-	char	*str[2];
+	char	*cmd;
 
-	str[0] = get_value(sh->env, "HOME", "/tmp");
-	str[1] = ".minishell_history";
-	sh->history = (t_hist) { .path = ft_strmjoin(2, (char **)str, "/"),
-		.input = NULL, .index = NULL, .elements = NULL };
-	if ((fd = open(sh->history.path, O_RDONLY)) == -1)
-		return (SUC);
-	while ((ret = get_next_line(fd, &str[0])) >= 0)
+	if ((fd = open(filename, O_RDWR | O_CREAT, 0644)) == -1)
+		return ;
+	add_history(history, ft_strdup(""), H_NONE, 1);
+	while ((ret = get_next_line(fd, &cmd)) > 0)
 	{
-		if (ft_strlen(str[0]))
-			ft_bilstadd_front(&(sh->history.elements),
-				ft_bilstnew(str[0], ft_strlen(str[0])));
-		else
-			ft_memdel((void **)&str[0]);
-		if (ret == 0)
-			break ;
+		add_history(history, ft_strdup(cmd), H_NONE, ft_strlen(cmd) + 1);
+		ft_memdel((void **)&cmd);
 	}
+	if (ret == 0)
+		ft_memdel((void **)&cmd);
 	close(fd);
-	return (SUC);
 }
 
-int
-	add_to_history(t_shell *sh)
+void	actualize_cmd(t_line *line, char *str)
 {
-	ft_bilstremove_if(&(sh->history.elements), sh->input, ft_strcmp, free);
-	if (ft_strlen(sh->input) > 0)
-		ft_bilstadd_front(&(sh->history.elements),
-			ft_bilstnew(sh->input, ft_strlen(sh->input)));
-	else
+	while (line->lst_input->size > 0)
 	{
-		ft_memdel((void **)&sh->input);
-		return (FALSE);
+		delone(line->lst_input, 1);
+		--line->pos;
 	}
-	return (SUC);
+	add_empty(line->lst_input, 0);
+	--str;
+	while (*(++str))
+	{
+		add_end(line->lst_input, *str);
+		++line->pos;
+	}
+	++line->pos;
 }
 
-int
-	persist_history(t_shell *sh)
+int		history_save(const char *filename, char *cmd)
 {
-	int			fd;
-	t_bilist	*el;
+	int		fd;
+	char	buf[4096];
 
-	if ((fd = open(sh->history.path, O_WRONLY | O_CREAT | O_TRUNC, 0777)) == -1)
-		err_shutdown(sh, "Cannot open minishell history");
-	while ((el = sh->history.elements))
-	{
-		write(fd, el->content, el->size);
-		sh->history.elements = el->next;
-		if (el->next)
-			write(fd, "\n", 1);
-		ft_memdel((void **)&el->content);
-		ft_memdel((void **)&el);
-	}
-	ft_memdel((void **)&sh->history.path);
-	ft_memdel((void **)&sh->history.input);
+	if ((fd = open(filename, O_RDWR)) == -1)
+		return (-1);
+	while (read(fd, buf, 4096) > 0)
+		;
+	write(fd, cmd, ft_strlen(cmd));
+	write(fd, "\n", 1);
 	close(fd);
-	return (SUC);
+	return (0);
 }
 
-void
-	print_history(t_shell *sh, int next)
+void	history_pn(t_line *line, int sens, t_history *history)
 {
-	t_bilist		*idx;
-	char			*str;
+	char	*str;
+	t_list	*tmp;
+	t_list	*pos;
 
-	if (!sh->history.input)
-		sh->history.input = get_current_word(sh);
-	str = sh->history.input;
-	if (!sh->history.index)
-		idx = sh->history.elements;
-	else
+	if (history->len > 0)
 	{
-		if (next)
-			idx = (sh->history.index->next ? sh->history.index->next : NULL);
-		else
-			idx = (sh->history.index->prev ? sh->history.index->prev : NULL);
-	}
-	while (idx)
-	{
-		if (match(idx->content, str))
+		if (sens == 0)
+			history->index -= history->index > 0 ? 1 : 0;
+		else if (sens == 1)
+			history->index += history->index < history->len - 1 ? 1 : 0;
+		tmp = ft_lstindex(history->lst, history->index);
+		pos = ft_lstindex(history->cursor_pos, history->index);
+		if (tmp)
 		{
-			sh->history.index = idx;
-			add_str_to_lst(sh, str, idx->content);
-			return ;
+			str = (char*)(tmp->content);
+			actualize_cmd(line, str);
 		}
-		idx = next ? idx->next : idx->prev;
+		if (pos)
+			line->pos = (size_t)(pos->content);
 	}
-}
-
-int
-	reset_history_position(t_shell *sh)
-{
-	ft_memdel((void **)&sh->history.input);
-	sh->history.index = NULL;
-	return (SUC);
 }

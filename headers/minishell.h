@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/11 21:19:52 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/26 15:54:11 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ typedef struct	s_read
 	int			ret;
 }				t_read;
 
-typedef struct	s_history
-{
-	char		*path;
-	t_bilist	*elements;
-	t_bilist	*index;
-	char		*input;
-}				t_hist;
+//typedef struct	s_history
+//{
+//	char		*path;
+//	t_bilist	*elements;
+//	t_bilist	*index;
+//	char		*input;
+//}				t_hist;
 
 typedef struct	s_quoter
 {
@@ -123,20 +123,10 @@ typedef struct	s_point
 
 typedef struct	s_term
 {
-	t_termios	term;
-	t_termios	old_term;
 	t_data		*input;
-	char		*clipboard;
 	int			pos_str;
 	int			pos_aff;
 	int			size_prt;
-	int			old_s_in;
-	int			tmp;
-	t_point		pos;
-	int			l_ofst;
-	int			r_ofst;
-	int			l;
-	int			r;
 }				t_term;
 
 typedef struct	s_shell
@@ -150,10 +140,8 @@ typedef struct	s_shell
 	t_list	*cmds;
 	t_list	*env;
 	t_list	*heredocs;
-	t_hist	history;
 	int		hd_index;
 	t_term	term;
-	int		ctrl_c;
 	int		sub;
 }				t_shell;
 
@@ -298,7 +286,6 @@ int				get_nmatch(t_shell *sh, char *str);
 int				init_term(struct termios *s_termios,
 					struct termios *s_termios_backup);
 int				get_termx(t_shell *sh, char **av, char **env);
-char			*read_input(t_shell *sh);
 int				print_match(t_shell *sh, char buff[6]);
 
 /*
@@ -310,15 +297,6 @@ int				builtin_subprocess(t_shell *sh, t_cmd *cmd,
 int				exec_cmd(t_shell *sh, t_cmd *cmd,
 					int (*fn)(t_shell *sh, t_cmd *cmd));
 int				exec_bin(t_shell *sh, t_cmd *cmd);
-
-/*
-**	History
-*/
-int				init_history(t_shell *sh);
-int				add_to_history(t_shell *sh);
-void			print_history(t_shell *sh, int next);
-int				persist_history(t_shell *sh);
-int				reset_history_position(t_shell *sh);
 
 /*
 **	Redirections / Pipelines

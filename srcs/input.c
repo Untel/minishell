@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/12 17:50:05 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/03/26 15:04:32 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ int
 		*i = *i + 1;
 	while (sh->input[*i] && sh->input[*i + 1] == ' ')
 		*i = *i + 1;
-	if (sh->input[*i + 1] && is_cmd_separator(sh->input[*i + 1]) == 2)
+	if (sh->input[*i] &&
+			sh->input[*i + 1] && is_cmd_separator(sh->input[*i + 1]) == 2)
 		return (!ft_fprintf(STDERR, MSG_SYNTAX_ERR, sh->input[*i + 1], *i + 1));
 	rd->buffer = NULL;
 	rd->index = *i + 1;
