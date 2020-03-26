@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/26 15:56:06 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/26 16:42:06 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void
 	shlvl = (shlvl < 0 ? 0 : shlvl + 1);
 	if (!(tmp = ft_itoa(shlvl)))
 		err_shutdown(sh, "Cannot upgrade sh_level");
+	tcgetattr(0, &sh->term.term);
 	set_value(&sh->env, "SHLVL", tmp);
 	format_directory(sh);
 	set_value(&sh->env, "PWD", sh->dir);

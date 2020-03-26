@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/26 15:54:11 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/26 16:39:49 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ typedef struct	s_term
 	int			pos_str;
 	int			pos_aff;
 	int			size_prt;
+	t_termios	term;
 }				t_term;
 
 typedef struct	s_shell

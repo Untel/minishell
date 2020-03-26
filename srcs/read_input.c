@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 15:35:15 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/26 16:47:13 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ char		*read_input(char *prompt, int multi, int size_prompt)
 			line.old_size = line.lst_input->size;
 			if ((ret = handle_input(&line, prompt)))
 			{
+				tcsetattr(0, 0, &(line.s_term_backup));
 				if (ret == -1)
 					return (free_input(&line));
 				else
