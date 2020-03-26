@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/26 17:50:53 by riblanc          ###   ########.fr        #
+#    Updated: 2020/03/26 17:56:24 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,7 @@ INCLUDES	=	-I ./headers $(LIBFT_INCL)
 
 ### Compiler
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES) -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES) #-fsanitize=address
 
 ### Objects
 OBJ_DIR		=	./objs

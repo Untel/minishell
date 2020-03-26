@@ -6,11 +6,12 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/26 16:42:06 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/26 18:10:14 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "line_edit.h"
 
 t_shell	g_sh;
 
@@ -86,6 +87,7 @@ int
 int
 	main(int ac, char **av, char **envp)
 {
+	load_history(g_history.filename, &g_history);
 	g_sh = (t_shell) {
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
