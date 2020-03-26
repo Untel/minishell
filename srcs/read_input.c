@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 16:47:13 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/26 17:53:59 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,13 @@ void	nprint(char *str, int size)
 		write(1, str, ft_strlen(str));
 }
 
-static char	*free_input(t_line *line)
+static char	*free_input(t_line *line, int free_yank)
 {
-	if (line->copy_buff)
-		ft_memdel((void **)&line->copy_buff);
+	if (free_yank && line->copy_buff)
+	{
+		ft_memdel((void **)&(line->copy_buff));
+		g_yank = NULL;
+	}
 	free_all(line->lst_input);
 	ft_memdel((void **)&(line->lst_input));
 	free_history(&g_history, 0);
@@ -209,7 +212,8 @@ char		*read_input(char *prompt, int multi, int size_prompt)
 	g_history.index = g_history.len ? g_history.len : 1;
 	while (g_sigquit || (ret = read(0, line.buff, 1)) >= 0)
 	{
-		if (g_sigquit && !(g_sigquit = 0) && free_input(&line) == (char *)-1)
+		if (g_sigquit && !(g_sigquit = 0) && free_input(&line, 0) == (char *)-1 &&
+				(tcsetattr(0, 0, &(line.s_term_backup)) || 1))
 			return (ft_strdup(""));
 		if (ret > 0)
 		{
@@ -220,7 +224,7 @@ char		*read_input(char *prompt, int multi, int size_prompt)
 			{
 				tcsetattr(0, 0, &(line.s_term_backup));
 				if (ret == -1)
-					return (free_input(&line));
+					return (free_input(&line, 1));
 				else
 				{
 					str = convert_to_str(line.lst_input, 1);
@@ -231,9 +235,12 @@ char		*read_input(char *prompt, int multi, int size_prompt)
 					return (str);
 				}
 			}
+			if (g_sigquit)
+				continue ;
 			refresh_line(&line, prompt, 0);
 			ft_bzero(line.buff, 6);
 		}
 	}
+	tcsetattr(0, 0, &(line.s_term_backup));
 	return (NULL);
 }

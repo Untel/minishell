@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 10:30:56 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/26 17:47:31 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,10 @@ static void	select_mode(t_line *line, char *prompt);
 
 static int	handle_escape(t_line *line, char *prompt, int edit)
 {
-	struct	termios nonblock;
 	int		ret;
 
-	tcgetattr(0, &nonblock);
-	nonblock.c_cc[VMIN] = 0;
-	if (tcsetattr(0, 0, &nonblock) == -1)
-		return (-1);
-	if ((ret = read(0, line->buff + 1, 5)) > 0)
+	ret = 0;
+	if (!g_sigquit && ((ret = read(0, line->buff + 1, 5)) > 0))
 	{
 		if (!strcmp(line->buff, "\x1b[D"))
 			line->pos -= line->pos > 1 ? 1 : 0;
@@ -116,9 +112,6 @@ static int	handle_escape(t_line *line, char *prompt, int edit)
 		else
 			ret = -10;
 	}
-	nonblock.c_cc[VMIN] = 1;
-	if (tcsetattr(0, 0, &nonblock) == -1)
-		return (-1);
 	if (!ret)
 	{
 		if (!edit)
@@ -225,88 +218,93 @@ static void	select_mode(t_line *line, char *prompt)
 	free (str);
 	str = NULL;
 	line->edit = 1;
-	while ((ret = read(0, line->buff, 1)) > 0)
+	while (!g_sigquit && (ret = read(0, line->buff, 1)) >= 0)
 	{
-		lst = ft_lstindex(line->edit_history.cursor_pos,
-			line->edit_history.index);
-		if (lst)
-			lst->content = (void *)((size_t)line->pos);
-		if (*line->buff == 27 && handle_escape(line, prompt, 1) == 1)
+		if (g_sigquit)
+			break ;
+		if (ret > 0)
 		{
-			sel = 0;
-			ft_bzero(line->sel, sizeof(line->sel));
-		}
-		else if (*line->buff == 'h')
-					line->pos -= line->pos > 1 ? 1 : 0;
-		else if (*line->buff == 'j' && line->multi)
-					line->pos += (line->pos + g_termx < line->lst_input->size) ? g_termx : 0;
-		else if (*line->buff == 'k' && line->multi)
-					line->pos -= (line->pos - g_termx > 0) ? g_termx : 0;
-		else if (*line->buff == 'l')
-			line->pos += line->pos < line->lst_input->size ? 1 : 0;
-		else if (*line->buff == 'v' && (sel = 1))
-			line->sel[0] = line->pos;
-		else if (*line->buff == 'p' && !sel)
-			past(line, (line->lst_input->size == 1));
-		else if (*line->buff == 'P' && !sel)
-			past(line, 1);
-		else if (*line->buff == 'w')
-			go_right(line);
-		else if (*line->buff == 'u')
-			history_pn(line, HPREV, &(line->edit_history));
-		else if (*line->buff == 0x12)
-			history_pn(line, HNEXT, &(line->edit_history));
-		else if (*line->buff == 'x')
-		{
-			++line->edit_history.index;
-			sel = 0;
-			g_yank = get_str_by_pos(line, 1);
-			ft_bzero(line->sel, sizeof(line->sel));
-			str = convert_to_str(line->lst_input, 0);
-			free_history(&line->edit_history, line->edit_history.index);
-			add_history(&(line->edit_history), ft_strdup(str),
-					H_EMPTYL, line->pos);
-			free (str);
-			str = NULL;
-		}
-		else if (*line->buff == 'X')
-		{
-			++line->edit_history.index;
-			sel = 0;
-			ft_bzero(line->sel, sizeof(line->sel));
-			handle_ctrlu(line);
-			str = convert_to_str(line->lst_input, 0);
-			free_history(&line->edit_history, line->edit_history.index);
-			add_history(&(line->edit_history), ft_strdup(str), H_EMPTYL,
-					line->pos);
-			free (str);
+			lst = ft_lstindex(line->edit_history.cursor_pos,
+				line->edit_history.index);
+			if (lst)
+				lst->content = (void *)((size_t)line->pos);
+			if (*line->buff == 27 && handle_escape(line, prompt, 1) == 1)
+			{
+				sel = 0;
+				ft_bzero(line->sel, sizeof(line->sel));
+			}
+			else if (*line->buff == 'h')
+						line->pos -= line->pos > 1 ? 1 : 0;
+			else if (*line->buff == 'j' && line->multi)
+						line->pos += (line->pos + g_termx < line->lst_input->size) ? g_termx : 0;
+			else if (*line->buff == 'k' && line->multi)
+						line->pos -= (line->pos - g_termx > 0) ? g_termx : 0;
+			else if (*line->buff == 'l')
+				line->pos += line->pos < line->lst_input->size ? 1 : 0;
+			else if (*line->buff == 'v' && (sel = 1))
+				line->sel[0] = line->pos;
+			else if (*line->buff == 'p' && !sel)
+				past(line, (line->lst_input->size == 1));
+			else if (*line->buff == 'P' && !sel)
+				past(line, 1);
+			else if (*line->buff == 'w')
+				go_right(line);
+			else if (*line->buff == 'u')
+				history_pn(line, HPREV, &(line->edit_history));
+			else if (*line->buff == 0x12)
+				history_pn(line, HNEXT, &(line->edit_history));
+			else if (*line->buff == 'x')
+			{
+				++line->edit_history.index;
+				sel = 0;
+				g_yank = get_str_by_pos(line, 1);
+				ft_bzero(line->sel, sizeof(line->sel));
+				str = convert_to_str(line->lst_input, 0);
+				free_history(&line->edit_history, line->edit_history.index);
+				add_history(&(line->edit_history), ft_strdup(str),
+						H_EMPTYL, line->pos);
+				free (str);
+				str = NULL;
+			}
+			else if (*line->buff == 'X')
+			{
+				++line->edit_history.index;
+				sel = 0;
+				ft_bzero(line->sel, sizeof(line->sel));
+				handle_ctrlu(line);
+				str = convert_to_str(line->lst_input, 0);
+				free_history(&line->edit_history, line->edit_history.index);
+				add_history(&(line->edit_history), ft_strdup(str), H_EMPTYL,
+						line->pos);
+				free (str);
 
+			}
+			else if (*line->buff == 10 && !sel)
+				break ;
+			else if (*line->buff == 'y' || *line->buff == 10)
+			{
+				sel = 0;
+				g_yank = get_str_by_pos(line, 0);
+				ft_bzero(line->sel, sizeof(line->sel));
+			}
+			if (*line->buff == 'i')
+				break ;
+			if (*line->buff == 'I' && (line->pos = 1))
+				break ;
+			if (*line->buff == 'A' && (line->pos = line->lst_input->size))
+				break ;
+			if (sel)
+				line->sel[1] = line->pos < line->sel[0] ? line->pos : line->pos + 1;
+			else
+				ft_bzero(line->sel, sizeof(line->sel));
+			if (line->pos > 1)
+				line->pos =	line->pos >= line->lst_input->size ?
+					line->lst_input->size - 1 : line->pos;
+			if (g_resize && !((g_resize = 0)))
+				ft_printf("\r\x1b[0K%s", prompt);
+			refresh_line(line, prompt, 1);
+			ft_bzero(line->buff, 6);
 		}
-		else if (*line->buff == 10 && !sel)
-			break ;
-		else if (*line->buff == 'y' || *line->buff == 10)
-		{
-			sel = 0;
-			g_yank = get_str_by_pos(line, 0);
-			ft_bzero(line->sel, sizeof(line->sel));
-		}
-		if (*line->buff == 'i')
-			break ;
-		if (*line->buff == 'I' && (line->pos = 1))
-			break ;
-		if (*line->buff == 'A' && (line->pos = line->lst_input->size))
-			break ;
-		if (sel)
-			line->sel[1] = line->pos < line->sel[0] ? line->pos : line->pos + 1;
-		else
-			ft_bzero(line->sel, sizeof(line->sel));
-		if (line->pos > 1)
-			line->pos =	line->pos >= line->lst_input->size ?
-				line->lst_input->size - 1 : line->pos;
-		if (g_resize && !((g_resize = 0)))
-			ft_printf("\r\x1b[0K%s", prompt);
-		refresh_line(line, prompt, 1);
-		ft_bzero(line->buff, 6);
 	}
 	line->edit = 0;
 	ft_bzero(line->sel, sizeof(line->sel));
