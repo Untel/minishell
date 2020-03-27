@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 17:53:59 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/27 14:07:44 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static char	*free_input(t_line *line, int free_yank)
 	ft_memdel((void **)&(line->lst_input));
 	free_history(&g_history, 0);
 	free_history(&(line->edit_history), 0);
+	write(1, "\n", 1);
 	return ((char *)-1);
 }
 

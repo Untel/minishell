@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 17:47:31 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/27 14:08:56 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,6 +308,7 @@ static void	select_mode(t_line *line, char *prompt)
 	}
 	line->edit = 0;
 	ft_bzero(line->sel, sizeof(line->sel));
+	refresh_line(line, prompt, 0);
 }
 
 static void	add_char(t_line *line)
