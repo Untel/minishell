@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/26 18:10:14 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/27 17:37:35 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ int
 	else
 		run(&g_sh);
 	free_env_list(&g_sh.env);
+	free_history(&g_history, 0);
 	return (EXIT_SUCCESS);
 }
