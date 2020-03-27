@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/26 17:56:24 by riblanc          ###   ########.fr        #
+#    Updated: 2020/03/27 00:14:50 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,8 +65,12 @@ LIBS		=	$(LIBFT_LINK) -lncurses
 INCLUDES	=	-I ./headers $(LIBFT_INCL)
 
 ### Compiler
+ML			=	-1
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES) #-fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES)
+ifneq ($(ML), -1)
+	CFLAGS	+= -D MULTI=$(ML)
+endif
 
 ### Objects
 OBJ_DIR		=	./objs
@@ -89,8 +93,12 @@ $(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c
 
 $(NAME):	$(OBJ)
 			$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
+
 makelib:	
 			$(LIBFT_MAKE)
+
+single:		clean
+			@$(MAKE) ML=0 --no-print-directory
 
 bonus:		all
 

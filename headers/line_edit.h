@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 17:54:16 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/03/26 23:53:34 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@
 ** read_input attributes
 */
 
-# define SINGLE	0
-# define MULTI	1
+# ifndef MULTI
+#  define MULTI	1
+# endif
 
 struct	s_history
 {
