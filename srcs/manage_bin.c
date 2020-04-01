@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 15:56:33 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/01 16:23:09 by khaase           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int
 {
 	struct dirent	*file;
 	DIR				*rep;
-	int				ret;
 
 	file = NULL;
 	rep = NULL;
@@ -61,10 +60,6 @@ int
 	{
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
-			if (file->d_type != 8 && file->d_type != 10)
-				ret = FALSE;
-			else
-				ret = SUC;
 			if (closedir(rep) == ERR)
 				return (ERR);
 			return (SUC);

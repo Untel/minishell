@@ -6,12 +6,11 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:39:41 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 13:37:07 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/01 16:23:19 by khaase           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <ncurses.h>
 #include <termios.h>
 
 int		match(char *s1, char *s2)

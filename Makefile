@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/03/27 00:14:50 by riblanc          ###   ########.fr        #
+#    Updated: 2020/04/01 16:21:17 by khaase           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,14 +59,14 @@ LIBFT_LINK	=	-L$(LIBFT_PATH) -lft
 LIBFT_PATH	=	./libft
 LIBFT_MAKE	=	@$(MAKE) -C $(LIBFT_PATH) --no-print-directory
 LIBFT_INCL	=	-I $(LIBFT_PATH) -I $(LIBFT_PATH)/headers
-LIBS		=	$(LIBFT_LINK) -lncurses
+LIBS		=	$(LIBFT_LINK)
 
 ### Headers 
 INCLUDES	=	-I ./headers $(LIBFT_INCL)
 
 ### Compiler
 ML			=	-1
-CC			=	clang
+CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES)
 ifneq ($(ML), -1)
 	CFLAGS	+= -D MULTI=$(ML)
