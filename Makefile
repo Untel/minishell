@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/01 16:21:17 by khaase           ###   ########.fr        #
+#    Updated: 2020/04/01 16:24:44 by khaase           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,7 @@ INCLUDES	=	-I ./headers $(LIBFT_INCL)
 
 ### Compiler
 ML			=	-1
-CC			=	gcc
+CC			=	clang
 CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES)
 ifneq ($(ML), -1)
 	CFLAGS	+= -D MULTI=$(ML)
