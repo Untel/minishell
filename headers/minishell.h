@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/26 16:39:49 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/01 16:20:52 by khaase           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,10 @@
 # include <signal.h>
 # include <dirent.h>
 # include <termios.h>
-# include <curses.h>
-# include <term.h>
-# include <ncurses.h>
 # include "list.h"
 # define FALSE 0
 # define SUC 1
+# define ERR -1
 # define MSG_ERROR		"💩  \033[1;31mError\033[0m %s\n"
 # define MSG_SYNTAX_ERR	"💩  \033[1;31mError\033[0m syntax error near token '%c' at position %d\n"
 # define MSG_ERRORN		"💩  \033[1;31mError\033[0m %s"
