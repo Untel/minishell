@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/27 14:08:56 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/01 16:43:01 by khaase           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int	handle_escape(t_line *line, char *prompt, int edit)
 {
 	int		ret;
 
-	ret = 0;
+	ret = -2;
 	if (!g_sigquit && ((ret = read(0, line->buff + 1, 5)) > 0))
 	{
 		if (!strcmp(line->buff, "\x1b[D"))
@@ -110,9 +110,9 @@ static int	handle_escape(t_line *line, char *prompt, int edit)
 		else if (!strcmp(line->buff, "\x1b[3~"))
 			handle_ctrld(line);
 		else
-			ret = -10;
+			ret = -2;
 	}
-	if (!ret)
+	if (ret == -2)
 	{
 		if (!edit)
 			select_mode(line, prompt);
