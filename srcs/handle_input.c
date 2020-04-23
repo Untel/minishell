@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/01 16:43:01 by khaase           ###   ########.fr       */
+/*   Updated: 2020/04/23 15:20:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static int	handle_escape(t_line *line, char *prompt, int edit)
 		else
 			ret = -2;
 	}
-	if (ret == -2)
+	if (!ret || ret == -2)
 	{
 		if (!edit)
 			select_mode(line, prompt);

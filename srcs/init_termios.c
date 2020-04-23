@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/22 12:37:47 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/01 16:40:04 by khaase           ###   ########.fr       */
+/*   Updated: 2020/04/23 15:19:49 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int
 		return (-1);
 	s_termios->c_lflag &= ~(ICANON | ECHO);
 	s_termios->c_cc[VMIN] = 0;
-	s_termios->c_cc[VTIME] = 0.1;
+	s_termios->c_cc[VTIME] = 0;
 	if (tcsetattr(0, 0, s_termios) == -1)
 		return (-1);
 	return (0);
