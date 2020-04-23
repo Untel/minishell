@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/01 16:24:44 by khaase           ###   ########.fr        #
+#    Updated: 2020/04/23 16:25:03 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,9 @@ SRCS_FILES	= \
 	get_next_line.c \
 	get_next_line_utils.c \
 	history.c \
-	history_utils.c
+	history_utils.c \
+	select_mode.c \
+	select_utils.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 

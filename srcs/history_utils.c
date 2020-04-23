@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/22 01:44:57 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/25 14:41:25 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/23 15:31:47 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 
 void	print_history(t_history *history)
 {
-	ft_fprintf(2, "HISTORY:\n");
+	t_list *head;
 
-	t_list *head = history->lst;
+	head = history->lst;
+	ft_fprintf(2, "HISTORY:\n");
 	ft_fprintf(2, "len: %d\n", history->len);
 	while (head)
 	{

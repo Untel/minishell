@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/26 23:53:34 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/23 18:21:56 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,16 @@ struct	s_history
 };
 
 typedef struct	s_history t_history;
+
+struct s_select
+{
+	int		ret;
+	int		sel;
+	char	*str;
+	t_list	*lst;
+};
+
+typedef struct s_select	t_select;
 
 struct	s_line
 {
@@ -90,5 +100,15 @@ void	free_history(t_history *history, int index);
 void	save_cursor_pos(void);
 void	append(char **s1, char *s2);
 void	sigquit(int sig);
+
+void	select_mode(t_line *line, char *prompt);
+int		handle_escape(t_line *line, char *prompt, int edit);
+void	go_right(t_line *line);
+void	handle_ctrlu(t_line *line);
+
+//select_utils
+char	*get_str_by_pos(t_line *line, int del);
+void	past(t_line *line, int before);
+void	handle_select_x(t_select *s_sel, t_line *line, char **yank, int maj);
 
 #endif
