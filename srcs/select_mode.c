@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 15:44:02 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/23 18:35:36 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 11:03:35 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,8 @@ void		select_mode(t_line *line, char *prompt)
 	t_select s_sel;
 
 	init_select(&s_sel, line, prompt);
-	while (!g_sigquit && (s_sel.ret = read(0, line->buff, 1)) >= 0)
+	while ((s_sel.ret = read(0, line->buff, 1)) >= 0)
 	{
-		if (g_sigquit)
-			break ;
 		if (s_sel.ret > 0)
 		{
 			if (!select_handle_fp(&s_sel, line, prompt))

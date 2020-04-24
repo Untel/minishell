@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 10:58:52 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/27 14:08:05 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 11:02:01 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 int			g_termx = 0;
 int			g_termy = 0;
 int			g_resize = 0;
-int			g_sigquit = 0;
 
 void	handle_winch(int sig)
 {
@@ -42,10 +41,3 @@ void	handle_winch(int sig)
 	dup2(stderr_save, 2);
 	close(dev_null);
 }
-
-void	sigquit(int sig)
-{
-	(void)sig;
-	g_sigquit = 1;
-}
-

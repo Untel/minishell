@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/27 14:07:44 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 11:04:19 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,13 +211,12 @@ char		*read_input(char *prompt, int multi, int size_prompt)
 	ft_printf(prompt);
 	refresh_line(&line, prompt, 0);
 	g_history.index = g_history.len ? g_history.len : 1;
-	while (g_sigquit || (ret = read(0, line.buff, 1)) >= 0)
+	while ((ret = read(0, line.buff, 1)) >= 0)
 	{
-		if (g_sigquit && !(g_sigquit = 0) && free_input(&line, 0) == (char *)-1 &&
-				(tcsetattr(0, 0, &(line.s_term_backup)) || 1))
-			return (ft_strdup(""));
 		if (ret > 0)
 		{
+			if (line.buff[0] == 3 && write(1, "\n", 1))
+				return (ft_strdup(""));
 			if (g_resize && !((g_resize = 0)))
 				ft_printf("\r\x1b[0K%s", prompt);
 			line.old_size = line.lst_input->size;
@@ -236,8 +235,6 @@ char		*read_input(char *prompt, int multi, int size_prompt)
 					return (str);
 				}
 			}
-			if (g_sigquit)
-				continue ;
 			refresh_line(&line, prompt, 0);
 			ft_bzero(line.buff, 6);
 		}

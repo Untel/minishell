@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/22 12:37:47 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/23 15:32:17 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 11:01:27 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int
 	char	*term_type;
 
 	signal(SIGTSTP, SIG_IGN);
-	signal(SIGINT, sigquit);
 	term_type = "xterm-256color";
 	if (term_type == NULL)
 		return (-1);
@@ -35,7 +34,8 @@ int
 		return (-1);
 	s_termios->c_lflag &= ~(ICANON | ECHO);
 	s_termios->c_cc[VMIN] = 0;
-	s_termios->c_cc[VTIME] = 0;
+	s_termios->c_cc[VTIME] = 1;
+	s_termios->c_cc[VINTR] = 0;
 	if (tcsetattr(0, 0, s_termios) == -1)
 		return (-1);
 	return (0);
