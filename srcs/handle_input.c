@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 11:02:44 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 18:10:21 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int			handle_input(t_line *line, char *prompt)
 		handle_escape(line, prompt, 0);
 	else if (line->buff[0] == 21)
 		handle_ctrlu(line);
-	else if (line->buff[0] == 10)
+	else if (line->buff[0] == 10 || line->buff[0] == 3)
 		return (1);
 	else if (ft_isprint(line->buff[0]))
 		add_char(line);
