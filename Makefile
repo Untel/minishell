@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/24 21:53:17 by riblanc          ###   ########.fr        #
+#    Updated: 2020/04/24 22:37:35 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,8 @@ SRCS_FILES	= \
 	wildcards.c \
 	winch.c \
 	read_input.c \
+	refresh_single_line.c \
+	refresh_multi_line.c \
 	handle_input.c \
 	handle_input_utils.c \
 	list_utils.c \

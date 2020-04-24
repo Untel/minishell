@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 21:59:43 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 22:49:23 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,24 @@ struct	s_line
 
 typedef struct	s_line t_line;
 
+struct	s_ml
+{
+	int	offset;
+	int	len;
+	int	rows;
+	int	pos;
+	int	rpos;
+	int	rpos2;
+	int	col;
+	int	old_rows;
+	int	i;
+};
+
+typedef struct s_ml	t_ml;
+
 extern t_history	g_history;
 extern int			g_termx;
 extern int			g_termy;
-extern int			g_sigquit;
 
 char	*read_input(char *prompt, int multi, int size_prompt);
 int		init_term(struct termios *s_term, struct termios *s_term_b);
@@ -95,6 +109,8 @@ int		handle_ctrld(t_line *line);
 void	add_char(t_line *line);
 int		get_term_size(char **av, char **env);
 void	refresh_line(t_line *line, char *prompt, int edit);
+void	refresh_single_line(t_line *line, int edit);
+void	refresh_multi_line(t_line *line, char *prompt, int edit);
 void	load_history(const char *filename, t_history *history);
 void	history_pn(t_line *line, int sens, t_history *history);
 int		history_save(const char *filename, char *cmd);
