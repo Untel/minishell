@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/23 19:28:09 by riblanc          ###   ########.fr        #
+#    Updated: 2020/04/24 12:13:26 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,7 @@ INCLUDES	=	-I ./headers $(LIBFT_INCL)
 ### Compiler
 ML			=	-1
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES)
+CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES) -fsanitize=address
 ifneq ($(ML), -1)
 	CFLAGS	+= -D MULTI=$(ML)
 endif

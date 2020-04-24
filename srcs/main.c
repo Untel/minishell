@@ -6,10 +6,11 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/27 17:37:35 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 12:09:50 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <termios.h>
 #include "minishell.h"
 #include "line_edit.h"
 
@@ -85,6 +86,14 @@ int
 }
 
 int
+	is_a_tty(void)
+{
+	struct termios	term;
+
+	return (tcgetattr(0, &term) == 0);
+}
+
+int
 	main(int ac, char **av, char **envp)
 {
 	load_history(g_history.filename, &g_history);
@@ -97,8 +106,10 @@ int
 	initialize_shell(&g_sh);
 	if (ac > 1)
 		inline_mode(&g_sh, *(av + 1));
-	else
+	else if (is_a_tty())
 		run(&g_sh);
+	else
+		inline_mode(&g_sh, NULL);
 	free_env_list(&g_sh.env);
 	free_history(&g_history, 0);
 	return (EXIT_SUCCESS);

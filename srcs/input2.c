@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/12 17:33:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/04/24 12:14:58 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int
 	rd = (t_read) { .buffer = NULL, .index = 0, .add_to = ARGS,
 		.input = NULL, .i = -1, .c = 0, .fd = -1, .ret = 1 };
 	new_command(sh, NONE);
+	printf("INPUT: %s\n", sh->input);
 	while (sh->input[++(rd.i)])
 	{
 		if ((rd.c = sh->input[rd.i]) == '\\' && (++rd.i || 1))
