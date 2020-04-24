@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 22:49:23 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 23:22:24 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,11 @@ void	print_history(t_history *history);
 void	add_history(t_history *history, char *cmd, int save, size_t pos);
 void	free_history(t_history *history, int index);
 void	save_cursor_pos(void);
+
 void	append(char **s1, char *s2);
-void	sigquit(int sig);
+char	*free_input(t_line *line, int free_yank);
+int		init_sline(t_line *line);
+char	*linedit_notty(void);
 
 void	select_mode(t_line *line, char *prompt);
 int		handle_escape(t_line *line, char *prompt, int edit);
