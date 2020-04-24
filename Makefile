@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/24 12:13:26 by riblanc          ###   ########.fr        #
+#    Updated: 2020/04/24 19:55:54 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS_FILES	= \
 	execute.c \
 	change_directory.c \
 	manage_bin.c \
+	manage_bin_utils.c \
 	export.c \
 	process.c \
 	echo.c \

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/01 16:20:52 by khaase           ###   ########.fr       */
+/*   Updated: 2020/04/24 19:57:04 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,7 +295,10 @@ int				builtin_subprocess(t_shell *sh, t_cmd *cmd,
 					int (*fn)(t_shell *sh, t_cmd *cmd));
 int				exec_cmd(t_shell *sh, t_cmd *cmd,
 					int (*fn)(t_shell *sh, t_cmd *cmd));
+int				fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb);
+int				test_dir(char *path, char *cmd);
 int				exec_bin(t_shell *sh, t_cmd *cmd);
+int				fe_init(t_shell *sh, t_cmd *cmd, char **paths);
 
 /*
 **	Redirections / Pipelines
