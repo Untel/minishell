@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/26 14:39:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 22:05:36 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ int
 	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
 	if (sh->inline_fd != ERR)
-		return (bypass ? SUC :
-			!ft_fprintf(STDERR, MSG_ERROR, "syntax error"));
+		return (bypass ? SUC : !ft_fprintf(STDERR, MSG_ERROR, "syntax error"));
 	if (ask_concat(sh, ask, &sh->input, NULL) == ERR)
 		return (ERR);
 	return (sanitize(sh));
