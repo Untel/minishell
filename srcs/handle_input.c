@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 18:12:30 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 21:59:55 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 #include <stdlib.h>
 #include <termios.h>
 
-extern int	g_termx;
-
 static void	handle_backspace(t_line *line)
 {
 	if (line->pos > 1)
@@ -27,45 +25,7 @@ static void	handle_backspace(t_line *line)
 	return ;
 }
 
-void		go_right(t_line *line)
-{ t_lst_in	*elem;
-
-	elem = get_elem_by_pos(line->lst_input, line->pos);
-	while (elem && elem->next && !ft_isalnum(elem->c))
-	{
-		elem = elem->next;
-		++line->pos;
-	}
-	while (elem && ft_isalnum(elem->c))
-	{
-		elem = elem->next;
-		++line->pos;
-	}
-	while (elem && !ft_isalnum(elem->c))
-	{
-		elem = elem->next;
-		++line->pos;
-	}
-}
-
-static void	go_left(t_line *line)
-{
-	t_lst_in	*elem;
-
-	elem = get_elem_by_pos(line->lst_input, line->pos - 1);
-	while (elem && elem->c && !ft_isalnum(elem->c))
-	{
-		elem = elem->prev;
-		--line->pos;
-	}
-	while (elem && elem->c && ft_isalnum(elem->c))
-	{
-		elem = elem->prev;
-		--line->pos;
-	}
-}
-
-static int	handle_ctrld(t_line *line)
+int			handle_ctrld(t_line *line)
 {
 	if (line->lst_input->size == 1)
 		return (-1);
@@ -79,35 +39,10 @@ int			handle_escape(t_line *line, char *prompt, int edit)
 {
 	int		ret;
 
-	ret = -2;
+	ret = -1;
 	if ((ret = read(0, line->buff + 1, 5)) > 0)
-	{
-		if (!strcmp(line->buff, "\x1b[D"))
-			line->pos -= line->pos > 1 ? 1 : 0;
-		else if (!strcmp(line->buff, "\x1b[C"))
-			line->pos += line->pos < line->lst_input->size ? 1 : 0;
-		else if (!strcmp(line->buff, "\x1b[1;5B") && line->multi)
-			line->pos += (line->pos + g_termx < line->lst_input->size + 1) ? g_termx : 0;
-		else if (!strcmp(line->buff, "\x1b[1;5A") && line->multi)
-			line->pos -= (line->pos - g_termx > 0) ? g_termx : 0;
-		else if (!strcmp(line->buff, "\x1b[1;5D"))
-			go_left(line);
-		else if (!strcmp(line->buff, "\x1b[1;5C"))
-			go_right(line);
-		else if (!strcmp(line->buff, "\x1b[A") && !edit)
-			history_pn(line, HPREV, &g_history);
-		else if (!strcmp(line->buff, "\x1b[B") && !edit)
-			history_pn(line, HNEXT, &g_history);
-		else if (!strcmp(line->buff, "\x1b[H"))
-			line->pos = 1;
-		else if (!strcmp(line->buff, "\x1b[F"))
-			line->pos = line->lst_input->size;
-		else if (!strcmp(line->buff, "\x1b[3~"))
-			handle_ctrld(line);
-		else
-			ret = -2;
-	}
-	if (!ret || ret == -2)
+		handle_escape_sp(line, edit, &ret);
+	if (!ret || ret == -1)
 	{
 		if (!edit)
 			select_mode(line, prompt);
@@ -126,19 +61,6 @@ void		handle_ctrlu(t_line *line)
 	}
 	add_empty(line->lst_input, 0);
 	++line->pos;
-}
-
-static void	add_char(t_line *line)
-{
-	add_after(line->lst_input, line->buff[0], line->pos);
-	++line->pos;
-}
-
-static void	handle_ctrll(t_line *line, char *prompt)
-{
-	write(1, "\x1b[H\x1b[2J", 7);
-	write(1, prompt, ft_strlen(prompt));
-	refresh_line(line, prompt, 0);
 }
 
 int			handle_input(t_line *line, char *prompt)

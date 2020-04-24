@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/24 19:55:54 by riblanc          ###   ########.fr        #
+#    Updated: 2020/04/24 21:53:17 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRCS_FILES	= \
 	winch.c \
 	read_input.c \
 	handle_input.c \
+	handle_input_utils.c \
 	list_utils.c \
 	list_utils3.c \
 	list_utils4.c \

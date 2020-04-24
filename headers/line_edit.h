@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/23 18:21:56 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 21:59:43 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ void	append_single_cmd(t_line *line, t_data *lst, int offset, int max);
 void	append_multi_cmd(t_line *line, int max);
 void	handle_winch(int sig);
 int		handle_input(t_line *line, char *prompt);
+void	handle_escape_sp(t_line *line, int edit, int *ret);
+void	handle_ctrll(t_line *line, char *prompt);
+int		handle_ctrld(t_line *line);
+void	add_char(t_line *line);
 int		get_term_size(char **av, char **env);
 void	refresh_line(t_line *line, char *prompt, int edit);
 void	load_history(const char *filename, t_history *history);
