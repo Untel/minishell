@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/24 19:57:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 23:53:09 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,6 @@ typedef struct	s_read
 	int			fd;
 	int			ret;
 }				t_read;
-
-//typedef struct	s_history
-//{
-//	char		*path;
-//	t_bilist	*elements;
-//	t_bilist	*index;
-//	char		*input;
-//}				t_hist;
 
 typedef struct	s_quoter
 {

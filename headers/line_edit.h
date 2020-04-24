@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 23:22:24 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 23:59:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ struct	s_history
 	char	*filename;
 };
 
-typedef struct	s_history t_history;
+typedef struct s_history	t_history;
 
-struct s_select
+struct	s_select
 {
 	int		ret;
 	int		sel;
@@ -57,26 +57,26 @@ typedef struct s_select	t_select;
 
 struct	s_line
 {
-	int			old_size;
-	int			pos;
-	int			old_pos;
-	int			size_prompt;
-	int			offset;
-	int			edit;
-	int			sel[2];
-	int			maxrows;
-	int			multi;
-	char		buff[6];
-	char		*copy_buff;
-	t_data		*lst_input;
-	struct		termios s_term;
-	struct		termios s_term_backup;
-	t_history	edit_history;
-	char		*buf;
-	char		seq[64];
+	int				old_size;
+	int				pos;
+	int				old_pos;
+	int				size_prompt;
+	int				offset;
+	int				edit;
+	int				sel[2];
+	int				maxrows;
+	int				multi;
+	char			buff[6];
+	char			*copy_buff;
+	t_data			*lst_input;
+	struct termios	s_term;
+	struct termios	s_term_backup;
+	t_history		edit_history;
+	char			*buf;
+	char			seq[64];
 };
 
-typedef struct	s_line t_line;
+typedef struct s_line	t_line;
 
 struct	s_ml
 {
@@ -129,7 +129,10 @@ int		handle_escape(t_line *line, char *prompt, int edit);
 void	go_right(t_line *line);
 void	handle_ctrlu(t_line *line);
 
-//select_utils
+/*
+** select_utils
+*/
+
 char	*get_str_by_pos(t_line *line, int del);
 void	past(t_line *line, int before);
 void	handle_select_x(t_select *s_sel, t_line *line, char **yank, int maj);
