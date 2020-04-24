@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 11:04:19 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 11:29:54 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,9 @@ char		*read_input(char *prompt, int multi, int size_prompt)
 	{
 		if (ret > 0)
 		{
-			if (line.buff[0] == 3 && write(1, "\n", 1))
+			//line.s_term_backup.c_cc[VINTR] = 1;
+			if (line.buff[0] == 3 && write(1, "\n", 1)
+					&& tcsetattr(0, 0, &(line.s_term_backup)) != -1)
 				return (ft_strdup(""));
 			if (g_resize && !((g_resize = 0)))
 				ft_printf("\r\x1b[0K%s", prompt);
