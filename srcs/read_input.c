@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 18:09:02 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/24 18:15:39 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,12 +225,20 @@ char		*read_input(char *prompt, int multi, int size_prompt)
 					return (free_input(&line, 1));
 				else
 				{
-					str = convert_to_str(line.lst_input, 1);
-					add_history(&g_history, ft_strdup(str), H_SAVE,
+					if (ret != 2)
+					{
+						str = convert_to_str(line.lst_input, 1);
+						add_history(&g_history, ft_strdup(str), H_SAVE,
 							ft_strlen(str) + 1);
+					}
+					else if (ret == 2)
+					{
+						free_all(line.lst_input);
+						ft_memdel((void **)&(line.lst_input));
+					}
 					write(1, "\n", 1);
 					free_history(&(line.edit_history), 0);
-					return (str);
+					return (ret != 2 ? str : ft_strdup(""));
 				}
 			}
 			refresh_line(&line, prompt, 0);
