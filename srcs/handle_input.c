@@ -3,106 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   handle_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/09 09:07:50 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/11 05:31:19 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
+/*   Updated: 2020/04/24 21:59:55 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include "libft.h"
 #include "list.h"
-#include "minishell.h"
+#include "line_edit.h"
+#include "ft_printf.h"
+#include <stdlib.h>
+#include <termios.h>
 
-void
-	handle_arrows(char buff[6], t_term *term)
+static void	handle_backspace(t_line *line)
 {
-	read(0, buff + 1, 5);
-	if (buff[1] != 91)
-		return ;
-	if (buff[2] == 49)
-		handle_ctrl_keys(buff, term);
-	else if (buff[2] == 'C')
-		handle_right_arrow(buff, term);
-	else if (buff[2] == 'D')
-		handle_left_arrow(buff, term);
-	else if (buff[2] == 'A')
-		print_history(&g_sh, 1);
-	else if (buff[2] == 'B')
-		print_history(&g_sh, 0);
-	else if (buff[2] == 'H')
-		handle_home(&g_sh, buff, term);
-	else if (buff[2] == 'F')
-		handle_end(&g_sh, buff, term);
-	else if (buff[2] == '3')
-		del_right(&g_sh.term);
+	if (line->pos > 1)
+		delone(line->lst_input, line->pos--);
+	return ;
 }
 
-void
-	handle_backspace(char buff[6], t_term *term)
+int			handle_ctrld(t_line *line)
 {
-	if (term->input->size > 1 && term->pos_str < term->input->size)
-		delone(term->input, term->pos_str + 1);
-	if (term->l > 0)
-	{
-		if (term->l_ofst <= 0)
-		{
-			++term->pos_aff;
-			--term->r;
-		}
-		else
-			++term->l;
-	}
-	write(1, "\e[D", 3);
-	write(1, buff, 1);
-	write(1, "\e[D", 3);
-}
-
-int
-	handle_ctrl_d(char buff[6], t_term *term)
-{
-	if (term->input->size == 1)
-	{
-		free_all(term->input);
-		ft_memdel((void **)&term->input);
+	if (line->lst_input->size == 1)
 		return (-1);
+	else if (line->lst_input->size > 1
+			&& line->pos + 1 <= line->lst_input->size)
+		delone(line->lst_input, line->pos + 1);
+	return (0);
+}
+
+int			handle_escape(t_line *line, char *prompt, int edit)
+{
+	int		ret;
+
+	ret = -1;
+	if ((ret = read(0, line->buff + 1, 5)) > 0)
+		handle_escape_sp(line, edit, &ret);
+	if (!ret || ret == -1)
+	{
+		if (!edit)
+			select_mode(line, prompt);
+		else
+			return (1);
 	}
-	del_right(term);
-	write(1, buff, 1);
-	return (1);
+	return (0);
 }
 
-void
-	handle_ctrl_u(t_term term)
+void		handle_ctrlu(t_line *line)
 {
-	int		i;
-	char	del;
-
-	del = 127;
-	i = -1;
-	while (++i <= term.input->size - term.pos_aff)
-		write(1, "\e[D", 3);
-	i = -1;
-	while (++i < term.input->size)
-		write(1, &del, 1);
-	while (term.input->size > 1 && term.pos_str < term.input->size)
-		delone(term.input, term.pos_str + 1);
+	while (line->lst_input->size > 0)
+	{
+		delone(line->lst_input, 1);
+		line->pos -= line->pos > 0 ? 1 : 0;
+	}
+	add_empty(line->lst_input, 0);
+	++line->pos;
 }
 
-void
-	handle_ctrl_c(t_term *term)
+int			handle_input(t_line *line, char *prompt)
 {
-	int		i;
-	char	del;
-
-	del = 127;
-	i = -1;
-	while (++i <= term->input->size - term->pos_aff)
-		write(1, "\e[D", 3);
-	i = -1;
-	while (++i < term->input->size)
-		write(1, &del, 1);
-	free_all(term->input);
-	term->pos_str = 1;
-	term->pos_aff = 1;
-	add_empty(term->input, 0);
+	if (line->buff[0] == 4)
+		return (handle_ctrld(line));
+	else if (line->buff[0] == 12)
+		handle_ctrll(line, prompt);
+	if (line->buff[0] == 127 || line->buff[0] == 8)
+		handle_backspace(line);
+	else if (line->buff[0] == 27)
+		handle_escape(line, prompt, 0);
+	else if (line->buff[0] == 21)
+		handle_ctrlu(line);
+	else if (line->buff[0] == 10 || line->buff[0] == 3)
+		return (1 + (line->buff[0] == 3));
+	else if (ft_isprint(line->buff[0]))
+		add_char(line);
+	return (0);
 }

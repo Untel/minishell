@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/09 09:34:51 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/11 04:26:25 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/03/22 12:37:32 by riblanc           #+#    #+#             */
+/*   Updated: 2020/03/22 12:37:33 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
-#include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>

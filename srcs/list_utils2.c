@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/09 09:11:01 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/25 19:08:17 by riblanc          ###   ########.fr       */
+/*   Created: 2020/03/22 12:36:56 by riblanc           #+#    #+#             */
+/*   Updated: 2020/04/23 19:29:17 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
+#include "line_edit.h"
 #include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>
@@ -45,36 +46,26 @@ void	free_all(t_data *lst)
 		delone(lst, 1);
 }
 
-void	affiche_inv(t_data *lst, int offset, int max)
-{
-	t_lst_in	*tmp;
-
-	tmp = lst->end;
-	while (--offset >= 0 && tmp)
-		tmp = tmp->prev;
-	while (--max >= 0 && tmp != NULL)
-	{
-		write(1, &tmp->c, 1);
-		tmp = tmp->prev;
-	}
-}
-
-char	*convert_to_str(t_data *lst)
+char	*convert_to_str(t_data *lst, int del)
 {
 	t_lst_in	*tmp;
 	char		*new;
 	int			i;
 
-	tmp = lst->end;
-	if (!(new = malloc(sizeof(char) * (lst->size + 1))))
+	tmp = lst->head ? lst->head->next : lst->head;
+	if (!(new = malloc(sizeof(char) * lst->size)))
 		return (NULL);
 	i = 0;
 	while (tmp != NULL)
 	{
 		new[i++] = tmp->c;
-		tmp = tmp->prev;
+		tmp = tmp->next;
 	}
-	free_all(lst);
-	ft_memdel((void **)&lst);
+	new[i] = 0;
+	if (del)
+	{
+		free_all(lst);
+		ft_memdel((void **)&lst);
+	}
 	return (new);
 }

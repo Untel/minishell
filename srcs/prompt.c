@@ -6,29 +6,34 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 22:21:26 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/04/24 17:59:09 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "line_edit.h"
 
 int
 	ft_read(t_shell *sh)
 {
-	sh->term.size_prt = ft_strlen(sh->printed_dir) + 7;
-	sh->input = read_input(sh);
+	char	*prompt;
+	char	tmp[4096];
+
+	prompt = NULL;
+	ft_sprintf(tmp, sh->last_ret == EXIT_SUCCESS ?
+		MSG_PROMPT : MSG_PROMPT_ERR, sh->printed_dir);
+	append(&prompt, ft_strdup(tmp));
+	sh->input = read_input(prompt, MULTI, ft_strlen(sh->printed_dir) + 6 +
+			(sh->last_ret == EXIT_SUCCESS));
+	ft_memdel((void **)&prompt);
 	if (sh->input == ((char *)-1))
 		sh->input = NULL;
-	write(1, "\n", 1);
 	return (!!sh->input);
 }
 
 int
 	prompt_line(t_shell *sh)
 {
-	ft_printf("\e[7m%%\e[0m%*s\r", g_sh.term.pos.x - 1, "");
-	ft_printf(sh->last_ret == EXIT_SUCCESS ?
-		MSG_PROMPT : MSG_PROMPT_ERR, sh->printed_dir);
 	if (!ft_read(sh))
 		sh->stop = 1;
 	if (!sh->stop)
@@ -36,8 +41,7 @@ int
 		if (sanitize(sh))
 		{
 			parse_input(sh);
-			if (!add_to_history(sh))
-				ft_memdel((void **)&sh->input);
+			ft_memdel((void **)&sh->input);
 		}
 	}
 	else

@@ -6,11 +6,12 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/12 17:58:05 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/04/24 22:05:36 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "line_edit.h"
 
 int
 	ask_concat(t_shell *sh, char *ask, char **place, char *stopif)
@@ -18,12 +19,14 @@ int
 	char	*tmp;
 	char	*tmps[2];
 	char	*buffer;
-	int		offset;
+	char	*prompt;
+	char	seq[64];
 
-	offset = ft_printf("%s> ", ask);
-	sh->term.size_prt = ft_strlen(ask) + 2;
-	buffer = read_input(sh);
-	write(1, "\n", 1);
+	prompt = NULL;
+	sh->term.size_prt = ft_sprintf(seq, "%s> ", ask);
+	append(&prompt, ft_strdup(seq));
+	buffer = read_input(prompt, MULTI, sh->term.size_prt);
+	ft_memdel((void **)&prompt);
 	if (buffer == (char *)ERR)
 		return (ERR);
 	if (stopif && ft_strcmp(stopif, buffer) == 0)
@@ -43,8 +46,7 @@ int
 	ft_lstclear(&sh->heredocs, free_heredocs);
 	ft_lstclear(&sh->cmds, free_command);
 	if (sh->inline_fd != ERR)
-		return (bypass ? SUC :
-			!ft_fprintf(STDERR, MSG_ERROR, "syntax error"));
+		return (bypass ? SUC : !ft_fprintf(STDERR, MSG_ERROR, "syntax error"));
 	if (ask_concat(sh, ask, &sh->input, NULL) == ERR)
 		return (ERR);
 	return (sanitize(sh));

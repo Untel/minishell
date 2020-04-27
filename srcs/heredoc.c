@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 18:43:20 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/08 15:13:22 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/04/01 16:23:37 by khaase           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int
 {
 	t_heredoc	*hd;
 	t_list		*lst;
-	int			len;
 	char		asker[BUFFER_SIZE];
 	char		*tmp;
 
@@ -49,7 +48,6 @@ int
 	{
 		hd = (t_heredoc *)lst->content;
 		ft_sprintf(asker, "heredoc(%s)", hd->label);
-		len = 0;
 		while (ask_concat(sh, asker, &tmp, hd->label) == SUC)
 			;
 		hd->buffer = ft_strjoin(tmp, "\n");

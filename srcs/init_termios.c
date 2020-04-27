@@ -3,52 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   init_termios.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 16:44:22 by riblanc           #+#    #+#             */
-/*   Updated: 2020/02/27 17:51:12 by adda-sil         ###   ########.fr       */
+/*   Created: 2020/03/22 12:37:47 by riblanc           #+#    #+#             */
+/*   Updated: 2020/04/24 11:01:27 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/wait.h>
 #include <termios.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <curses.h>
-#include <unistd.h>
 #include "list.h"
-#include "minishell.h"
+#include "libft.h"
+#include <unistd.h>
+#include <signal.h>
+#include "line_edit.h"
 
 int
 	init_term(struct termios *s_termios, struct termios *s_termios_backup)
 {
-	int		ret;
 	char	*term_type;
 
+	signal(SIGTSTP, SIG_IGN);
 	term_type = "xterm-256color";
-	if (term_type == NULL || (ret = tgetent(NULL, term_type)) == -1)
-		return (-1);
-	if (ret == 0)
+	if (term_type == NULL)
 		return (-1);
 	if (tcgetattr(0, s_termios) == -1)
 		return (-1);
 	if (tcgetattr(0, s_termios_backup) == -1)
 		return (-1);
 	s_termios->c_lflag &= ~(ICANON | ECHO);
-	s_termios->c_cc[VMIN] = 1;
+	s_termios->c_cc[VMIN] = 0;
+	s_termios->c_cc[VTIME] = 1;
+	s_termios->c_cc[VINTR] = 0;
 	if (tcsetattr(0, 0, s_termios) == -1)
 		return (-1);
 	return (0);
 }
 
 int
-	get_termx(t_shell *sh, char **av, char **env)
+	snda_toi(char *str)
+{
+	while (ft_isdigit(*str))
+		++str;
+	return (ft_atoi(str));
+}
+
+int
+	get_term_size(char **av, char **env)
 {
 	int		pid;
 	int		p[2];
-	char	str[11];
+	char	str[65];
 	int		ret;
 
-	(void)sh;
 	pipe(p);
 	if ((pid = fork()) == -1)
 		return (-1);
@@ -56,16 +64,23 @@ int
 	{
 		dup2(p[1], 1);
 		close(p[0]);
-		ret = execve("/usr/bin/tput", av, env);
+		ret = execve("/bin/stty", av, env);
 		exit(ret);
 	}
 	else
 	{
 		close(p[1]);
 		wait(0);
-		ret = read(p[0], str, 10);
+		ret = read(p[0], str, 64);
 		str[ret] = 0;
-		return (ft_atoi(str));
+		g_termy = ft_atoi(str);
+		g_termx = snda_toi(str);
 	}
 	return (0);
+}
+
+void
+	save_cursor_pos(void)
+{
+	write(1, "\x1b[s", 3);
 }

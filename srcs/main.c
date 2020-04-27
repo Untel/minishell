@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <termios.h>
 #include "minishell.h"
+#include "line_edit.h"
 
 t_shell	g_sh;
 
@@ -28,7 +30,6 @@ void
 	char	*tmp;
 	int		shlvl;
 
-	signal(SIGINT, sigint_quit);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	tmp = get_value(sh->env, "SHLVL", "0");
@@ -36,6 +37,7 @@ void
 	shlvl = (shlvl < 0 ? 0 : shlvl + 1);
 	if (!(tmp = ft_itoa(shlvl)))
 		err_shutdown(sh, "Cannot upgrade sh_level");
+	tcgetattr(0, &sh->term.term);
 	set_value(&sh->env, "SHLVL", tmp);
 	format_directory(sh);
 	set_value(&sh->env, "PWD", sh->dir);
@@ -43,19 +45,15 @@ void
 	set_value(&sh->env, "GREP_OPTIONS", "--color=auto");
 	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);
-	init_history(sh);
-	ft_memset(&g_sh.term, 0, sizeof(t_term));
 }
 
 void
 	run(t_shell *sh)
 {
-	handle_winch(0);
 	format_directory(sh);
 	while (!sh->stop)
 		prompt_line(sh);
 	ft_printf(MSG_EXIT);
-	tcsetattr(0, 0, &sh->term.old_term);
 }
 
 int
@@ -88,22 +86,31 @@ int
 }
 
 int
+	is_a_tty(void)
+{
+	struct termios	term;
+
+	return (tcgetattr(0, &term) == 0);
+}
+
+int
 	main(int ac, char **av, char **envp)
 {
+	load_history(g_history.filename, &g_history);
 	g_sh = (t_shell) {
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
-		.env = create_env_list(envp), .ctrl_c = 0,
+		.env = create_env_list(envp),
 		.heredocs = NULL, .inline_fd = -1, .sub = 0,
 	};
 	initialize_shell(&g_sh);
 	if (ac > 1)
 		inline_mode(&g_sh, *(av + 1));
-	else if (init_term(&g_sh.term.term, &g_sh.term.old_term) == 0)
+	else if (is_a_tty())
 		run(&g_sh);
 	else
 		inline_mode(&g_sh, NULL);
-	persist_history(&g_sh);
 	free_env_list(&g_sh.env);
+	free_history(&g_history, 0);
 	return (EXIT_SUCCESS);
 }
