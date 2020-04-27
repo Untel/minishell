@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/05 16:15:45 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/04/28 00:11:41 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int
 		{
 			if ((fd = open(redir->filename, O_WRONLY | O_CREAT |
 				(redir->type == OUT_END_REDIR ? O_APPEND : O_TRUNC)
-				, 0644)) != ERR && dup2(fd, redir->fd) != ERR)
+				, 0664)) != ERR && dup2(fd, redir->fd) != ERR)
 				close(fd);
 			lst = lst->next;
 		}
