@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/28 00:24:15 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/28 20:03:21 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,9 @@ int
 		{
 			if (cmd->argc > 0 && !ft_strcmp(cmd->argv[0], "ls"))
 				add_argument_index(cmd, ft_strdup("-G"), 1);
+			unset_key(&sh->env, "_");
+			set_value(&sh->env, "_", cmd->argv[cmd->argc - 1]);
 			exec_line(sh, cmd);
-			//unset_key(&sh->env, "_");
 		}
 		lst = lst->next;
 	}
