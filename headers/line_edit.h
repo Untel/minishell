@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 23:59:45 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/29 13:23:24 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,15 @@ struct	s_select
 };
 
 typedef struct s_select	t_select;
+
+struct	s_alias
+{
+	struct s_alias	*next;
+	char			*key;
+	char			*value;
+};
+
+typedef struct s_alias	t_alias;
 
 struct	s_line
 {
@@ -136,5 +145,14 @@ void	handle_ctrlu(t_line *line);
 char	*get_str_by_pos(t_line *line, int del);
 void	past(t_line *line, int before);
 void	handle_select_x(t_select *s_sel, t_line *line, char **yank, int maj);
+
+char	*check_aliases(char *str);
+
+/*
+** alias_utils
+*/
+
+void	join_alias(char *key, char **alias, char **str);
+void	free_alias_lst(t_alias **alias, char *except, char **str);
 
 #endif

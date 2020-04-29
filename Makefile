@@ -6,7 +6,7 @@
 #    By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/24 23:15:46 by riblanc          ###   ########.fr        #
+#    Updated: 2020/04/29 13:24:11 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,9 @@ SRCS_FILES	= \
 	history_utils.c \
 	select_mode.c \
 	select_utils.c \
-	append_cmd.c
+	append_cmd.c \
+	aliases.c \
+	aliases_utils.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 

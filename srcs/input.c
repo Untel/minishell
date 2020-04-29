@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/24 23:44:22 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/28 00:18:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int
 	len = tmp - (sh->input + *i + 1);
 	sub = ft_substr(sh->input + *i + 1, 0, len);
 	sub = replace_vars(sh, sub);
+	// ft_escape_sequence(sub, '\\', "abdfenrtv", 1);
 	ft_escape_sequence(sub, '\\', "\\\"$", 0);
 	if (rd->buffer)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/21 23:15:52 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/25 11:06:00 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/28 00:11:45 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	load_history(const char *filename, t_history *history)
 	int		ret;
 	char	*cmd;
 
-	if ((fd = open(filename, O_RDWR | O_CREAT, 0644)) == -1)
+	if ((fd = open(filename, O_RDWR | O_CREAT, 0664)) == -1)
 		return ;
 	add_history(history, ft_strdup(""), H_NONE, 1);
 	while ((ret = get_next_line(fd, &cmd)) > 0)
