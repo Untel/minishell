@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 10:58:52 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 11:02:01 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/29 18:47:20 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ void	handle_winch(int sig)
 	av[1] = "size";
 	av[2] = 0;
 	get_term_size(av, NULL);
-	if (sig != -1)
-		write(1, "\r\x1b[0Kresizing...\x1b[0K", 20);
+	(void)sig;
 	signal(SIGWINCH, handle_winch);
 	dup2(stderr_save, 2);
 	close(dev_null);

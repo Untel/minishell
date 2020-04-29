@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/29 11:55:39 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/29 18:47:13 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,18 @@ char	*read_input(char *prompt, int multi, int size_prompt)
 	if ((str = init_read(&line, multi, prompt, size_prompt)) != (char *)-1)
 		return (str);
 	str = 0;
-	while ((ret = read(0, line.buff, 1)) >= 0)
+	while (g_resize || (ret = read(0, line.buff, 1)) >= 0)
 	{
+		if (g_resize)
+			 g_resize = 0;
 		if (ret > 0)
 		{
-			if (g_resize && !((g_resize = 0)))
-				ft_printf("\r\x1b[0K%s", prompt);
 			line.old_size = line.lst_input->size;
 			if ((str = check_handle(&line, prompt, str, ret)) != (char *)-2)
 				return (check_aliases(str));
-			refresh_line(&line, prompt, 0);
-			ft_bzero(line.buff, 6);
 		}
+		refresh_line(&line, prompt, 0);
+		ft_bzero(line.buff, 6);
 	}
 	tcsetattr(0, 0, &(line.s_term_backup));
 	return (NULL);
