@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/29 13:23:24 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/29 17:03:55 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,9 @@ char	*check_aliases(char *str);
 ** alias_utils
 */
 
-void	join_alias(char *key, char **alias, char **str);
+void	join_alias(char *alias, char **str, int i[3]);
 void	free_alias_lst(t_alias **alias, char *except, char **str);
+char	*ft_strsjoin(int size, char **strs, char *sep);
+char	**ft_split_chst(char *str, char *charset);
 
 #endif
