@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/28 20:06:31 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/29 20:11:38 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void
 	set_value(&sh->env, "PWD", sh->dir);
 	if (!get_value(sh->env, "OLDPWD", NULL))
 		set_value(&sh->env, "OLDPWD", NULL);
-	set_value(&sh->env, "GREP_OPTIONS", "--color=auto");
 	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);
 }
