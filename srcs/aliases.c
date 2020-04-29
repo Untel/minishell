@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:11:55 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/29 17:32:53 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/29 19:04:06 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ char			*check_aliases(char *str)
 	int		i;
 	char	c[2];
 
-	if (!str || str >= (char *)-2)
+	if (!str || str >= (char *)-3)
 		return (str);
 	head = load_alias();
 	i = -1;

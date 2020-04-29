@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/29 18:47:13 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/29 19:03:07 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*check_handle(t_line *line, char *prompt, char *str, int ret)
 			}
 			write(1, "\n", 1);
 			free_history(&(line->edit_history), 0);
-			return (ret != 2 ? str : ft_strdup(""));
+			return (ret != 2 ? str : (char *)-3);
 		}
 	}
 	return ((char *)-2);

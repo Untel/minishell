@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/24 17:59:09 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/29 19:05:08 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ int
 	sh->input = read_input(prompt, MULTI, ft_strlen(sh->printed_dir) + 6 +
 			(sh->last_ret == EXIT_SUCCESS));
 	ft_memdel((void **)&prompt);
+	if (sh->input == (char*)-3)
+	{
+		sh->input = ft_strdup("");
+		sh->last_ret = 130;
+	}
 	if (sh->input == ((char *)-1))
 		sh->input = NULL;
 	return (!!sh->input);
