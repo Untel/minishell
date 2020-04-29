@@ -1,2 +1,5 @@
+# the alias name must finish with a space
+# the key and the value must be separated by a colon-space
+
 ls : ls --color=auto
 grep : grep --color=auto
