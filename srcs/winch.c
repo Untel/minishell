@@ -6,19 +6,15 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 10:58:52 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/29 20:12:11 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 17:17:08 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <signal.h>
 #include "line_edit.h"
-#include "ft_printf.h"
 #include <fcntl.h>
-
-int			g_termx = 0;
-int			g_termy = 0;
-int			g_resize = 0;
+#include "minishell.h"
 
 void	handle_winch(int sig)
 {

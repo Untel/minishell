@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/29 20:11:06 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 17:18:15 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	*read_input(char *prompt, int multi, int size_prompt)
 	int		ret;
 	char	*str;
 
+	ret = 0;
 	if ((str = init_read(&line, multi, prompt, size_prompt)) != (char *)-1)
 		return (str);
 	str = 0;

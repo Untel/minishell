@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/29 20:11:38 by user42           ###   ########.fr       */
+/*   Updated: 2020/04/30 17:27:37 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 #include "minishell.h"
 #include "line_edit.h"
 
-t_shell	g_sh;
-
+t_shell		g_sh;
+int			g_termx = 0;
+int			g_termy = 0;
+int			g_resize = 0;
 /*
 ** __attribute__((destructor)) void lul(void)
 ** {
@@ -100,7 +102,7 @@ int
 	g_sh = (t_shell) {
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
-		.env = create_env_list(envp),
+		.env = create_env_list(envp), .exit_val = EXIT_SUCCESS,
 		.heredocs = NULL, .inline_fd = -1, .sub = 0,
 	};
 	initialize_shell(&g_sh);
@@ -112,5 +114,5 @@ int
 		inline_mode(&g_sh, NULL);
 	free_env_list(&g_sh.env);
 	free_history(&g_history, 0);
-	return (EXIT_SUCCESS);
+	return (g_sh.exit_val);
 }

@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/29 19:52:23 by user42           ###   ########.fr        #
+#    Updated: 2020/04/30 17:10:18 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ INCLUDES	=	-I ./headers $(LIBFT_INCL)
 ### Compiler
 ML			=	-1
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES) -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror $(INCLUDES) -g
 ifneq ($(ML), -1)
 	CFLAGS	+= -D MULTI=$(ML)
 endif

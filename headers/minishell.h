@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/24 23:53:09 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/04/30 17:23:01 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ typedef struct	s_shell
 {
 	char	*input;
 	int		stop;
+	int		exit_val;
 	char	dir[BUFFER_SIZE];
 	char	printed_dir[BUFFER_SIZE];
 	int		last_ret;
@@ -159,8 +160,6 @@ typedef struct	s_wildcards_checker
 	int			ret;
 	t_list		*matchs;
 }				t_wildcards_checker;
-
-extern t_shell	g_sh;
 
 /*
 ** Built ins
@@ -308,4 +307,14 @@ void			sigint_quit (int sig);
 void			sigint_void(int sig);
 void			handle_winch(int sig);
 void			init_child_signals(pid_t child);
+
+/*
+**	Global vars
+*/
+
+extern t_shell	g_sh;
+extern int 		g_termx;
+extern int 		g_termy;
+extern int 		g_resize;
+
 #endif
