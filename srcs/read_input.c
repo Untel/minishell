@@ -83,7 +83,7 @@ char	*read_input(char *prompt, int multi, int size_prompt)
 		{
 			line.old_size = line.lst_input->size;
 			if ((str = check_handle(&line, prompt, str, ret)) != (char *)-2)
-				return (check_aliases(str));
+				return (str);
 		}
 		refresh_line(&line, prompt, 0);
 		ft_bzero(line.buff, 6);

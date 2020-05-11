@@ -58,10 +58,10 @@ SRCS_FILES	= \
 	history_utils.c \
 	select_mode.c \
 	select_utils.c \
-	append_cmd.c \
-	aliases.c \
-	aliases_utils.c \
-	aliases_utils_2.c
+	append_cmd.c
+	# aliases.c \
+	# aliases_utils.c \
+	# aliases_utils_2.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
@@ -79,7 +79,7 @@ INCLUDES	=	-I ./headers $(LIBFT_INCL)
 ML			=	-1
 CC			=	clang
 CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES) -fsanitize=address
-ifneq ($(ML), -1)
+ifneq ($(filter $(ML),0 1),)
 	CFLAGS	+= -D MULTI=$(ML)
 endif
 
