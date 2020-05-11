@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/04/30 17:10:18 by user42           ###   ########.fr        #
+#    Updated: 2020/05/11 13:17:18 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,10 +58,10 @@ SRCS_FILES	= \
 	history_utils.c \
 	select_mode.c \
 	select_utils.c \
-	append_cmd.c \
-	aliases.c \
-	aliases_utils.c \
-	aliases_utils_2.c
+	append_cmd.c
+	# aliases.c \
+	# aliases_utils.c \
+	# aliases_utils_2.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
@@ -78,8 +78,8 @@ INCLUDES	=	-I ./headers $(LIBFT_INCL)
 ### Compiler
 ML			=	-1
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror $(INCLUDES) -g
-ifneq ($(ML), -1)
+CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES) -fsanitize=address
+ifneq ($(filter $(ML),0 1),)
 	CFLAGS	+= -D MULTI=$(ML)
 endif
 
