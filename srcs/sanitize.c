@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sanitize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/24 22:05:36 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/11 13:04:04 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,24 @@ int
 }
 
 int
+	check_input2(t_shell *sh, t_quoter *q, int i)
+{
+	q->cc = q->c;
+	q->c = sh->input[i];
+	if (q->c == '\\' && !q->s && q->bslash != i)
+		(q->bslash = i + 1);
+	else if (q->c == '\'' && !q->d && q->bslash != i)
+		(q->s = !q->s);
+	else if (q->c == '"' && !q->s && q->bslash != i)
+		(q->d = !q->d);
+	else if (q->c == '<' && sh->input[i + 1] == '<'
+		&& !q->s && q->bslash != i++)
+		if (!add_heredoc(sh, &i))
+			return (SUC);
+	return (FALSE);
+}
+
+int
 	check_input(t_shell *sh, t_quoter *q)
 {
 	int i;
@@ -60,20 +78,16 @@ int
 	i = -1;
 	while (sh->input[++i])
 	{
-		if (sh->input[i] == ' ' || sh->input[i] == ';')
+		if (sh->input[i] == ' ')
 			continue;
-		q->cc = q->c;
-		q->c = sh->input[i];
-		if (q->c == '\\' && !q->s && q->bslash != i)
-			q->bslash = i + 1;
-		else if (q->c == '\'' && !q->d && q->bslash != i)
-			q->s = !q->s;
-		else if (q->c == '"' && !q->s && q->bslash != i)
-			q->d = !q->d;
-		else if (q->c == '<' && sh->input[i + 1] == '<'
-			&& !q->s && q->bslash != i++)
-			if (!add_heredoc(sh, &i))
-				return (FALSE);
+		else if (sh->input[i] == ';')
+		{
+			if (i && sh->input[i - 1] == ';')
+				return (!ft_fprintf(STDERR, MSG_SYNTAX_ERR, sh->input[i], i));
+			continue ;
+		}
+		else if (check_input2(sh, q, i))
+			return (FALSE);
 	}
 	q->i = i;
 	return (SUC);

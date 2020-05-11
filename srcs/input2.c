@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/12 17:33:27 by adda-sil         ###   ########.fr       */
+/*   Updated: 2020/05/11 13:12:34 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ int
 		if (!rd.ret)
 			return (rd.ret);
 	}
-	rd.ret = rd.c ? handle_separator(sh, &rd, &rd.i) : 0;
+	rd.ret = rd.c && rd.c != ';' ? handle_separator(sh, &rd, &rd.i) : 0;
 	return (rd.ret);
 }

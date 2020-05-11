@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/30 17:18:15 by user42           ###   ########.fr       */
+/*   Updated: 2020/05/11 12:54:15 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,13 @@ char	*read_input(char *prompt, int multi, int size_prompt)
 	while (g_resize || (ret = read(0, line.buff, 1)) >= 0)
 	{
 		if (g_resize)
-			 g_resize = 0;
+			g_resize = 0;
 		if (ret > 0)
 		{
 			line.old_size = line.lst_input->size;
 			if ((str = check_handle(&line, prompt, str, ret)) != (char *)-2)
-				return (check_aliases(str));
+				//return (check_aliases(str));
+				return (str);
 		}
 		refresh_line(&line, prompt, 0);
 		ft_bzero(line.buff, 6);

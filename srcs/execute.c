@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/30 17:26:39 by user42           ###   ########.fr       */
+/*   Updated: 2020/05/11 13:13:45 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ int
 	while (lst)
 	{
 		cmd = (t_cmd *)lst->content;
-		if (!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
+		if (cmd->argc > 0 && ft_strlen(cmd->argv[0]) > 0 &&
+			!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
 		{
 			if (cmd->argc > 0 && !ft_strcmp(cmd->argv[0], "ls"))
