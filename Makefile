@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/05/11 13:17:18 by user42           ###   ########.fr        #
+#    Updated: 2020/05/11 14:36:27 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,12 +98,16 @@ all:		makelib
 			@$(MAKE) $(NAME) --no-print-directory
 
 -include $(DEP)
-$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c
+$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c .ML.$(ML)
 			@mkdir -p $(OBJ_DIR)
 			$(CC) $(CFLAGS) -MMD -o $@ -c $<
 
 $(NAME):	$(OBJ)
 			$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
+
+.ML.$(ML) : 
+	@rm -f .ML.*
+	@touch $@
 
 makelib:	
 			$(LIBFT_MAKE)
