@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/05/11 14:36:27 by riblanc          ###   ########.fr        #
+#    Updated: 2020/05/11 14:50:02 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,11 +76,14 @@ LIBS		=	$(LIBFT_LINK)
 INCLUDES	=	-I ./headers $(LIBFT_INCL)
 
 ### Compiler
-ML			=	-1
+ML			=	0
 CC			=	clang
 CFLAGS		=	-Wall -Wextra -Werror -g3 $(INCLUDES) -fsanitize=address
 ifneq ($(filter $(ML),0 1),)
 	CFLAGS	+= -D MULTI=$(ML)
+	MULTI := $(ML)
+else
+	MULTI := 1
 endif
 
 ### Objects
@@ -98,14 +101,14 @@ all:		makelib
 			@$(MAKE) $(NAME) --no-print-directory
 
 -include $(DEP)
-$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c .ML.$(ML)
+$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c .ML.$(MULTI)
 			@mkdir -p $(OBJ_DIR)
 			$(CC) $(CFLAGS) -MMD -o $@ -c $<
 
 $(NAME):	$(OBJ)
 			$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
-.ML.$(ML) : 
+.ML.$(MULTI): 
 	@rm -f .ML.*
 	@touch $@
 
