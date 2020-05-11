@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/11 13:03:01 by user42           ###   ########.fr       */
+/*   Updated: 2020/05/11 13:19:29 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@
 # define FALSE 0
 # define SUC 1
 # define ERR -1
-# define MSG_ERROR		"💩  \033[1;31mError\033[0m %s\n"
-# define MSG_SYNTAX_ERR	"💩  \033[1;31mError\033[0m syntax error near token '%c' at position %d\n"
-# define MSG_ERRORN		"💩  \033[1;31mError\033[0m %s"
-# define MSG_CMDARG_ERR	"💩  \033[1;31mError\033[0m command previous token '%c' at position %d has no arguments"
-# define MSG_404_REDIR	"💩  \033[1;31mError\033[0m redirection argument missing\n"
-# define MSG_404_CMD	"🤔  \033[1;33m%s\033[0m: command not found\n"
-# define MSG_ERR_REG	"😵  \033[1;33m%s\033[0m: no match found for this pattern\n"
-# define MSG_GEN_ERR	"😭  \033[1;33m%s\033[0m: %s\n"
-# define MSG_PROMPT		"🔥  \033[1;32m%s\033[0m » "
-# define MSG_PROMPT_ERR	"🧨  \033[1;31m%s\033[0m » "
-# define MSG_EXIT		"🖐  \033[1;31mGood bye!\033[0m\n"
+# define MSG_ERROR		"\033[1;31mError\033[0m %s\n"
+# define MSG_SYNTAX_ERR	"\033[1;31mError\033[0m syntax error near token '%c' at position %d\n"
+# define MSG_ERRORN		"\033[1;31mError\033[0m %s"
+# define MSG_CMDARG_ERR	"\033[1;31mError\033[0m command previous token '%c' at position %d has no arguments"
+# define MSG_404_REDIR	"\033[1;31mError\033[0m redirection argument missing\n"
+# define MSG_404_CMD	"\033[1;33m%s\033[0m: command not found\n"
+# define MSG_ERR_REG	"\033[1;33m%s\033[0m: no match found for this pattern\n"
+# define MSG_GEN_ERR	"\033[1;33m%s\033[0m: %s\n"
+# define MSG_PROMPT		"\033[1;32m%s\033[0m » "
+# define MSG_PROMPT_ERR	"\033[1;31m%s\033[0m » "
+# define MSG_EXIT		"\033[1;31mGood bye!\033[0m\n"
 # define PIPE_OUT		0
 # define PIPE_IN		1
 # define STDERR			2
