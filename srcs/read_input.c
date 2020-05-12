@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/11 13:17:24 by user42           ###   ########.fr       */
+/*   Updated: 2020/05/12 23:39:20 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-extern int	g_termx;
-extern int	g_resize;
+int			g_termx = 0;
+int			g_termy = 0;
+int			g_resize = 0;
 
 char	*init_read(t_line *line, int multi, char *prompt, int size_prompt)
 {

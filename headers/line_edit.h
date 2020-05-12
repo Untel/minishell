@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/29 19:52:49 by user42           ###   ########.fr       */
+/*   Updated: 2020/05/13 00:39:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,16 +105,12 @@ typedef struct s_ml	t_ml;
 extern t_history	g_history;
 extern int			g_termx;
 extern int			g_termy;
+extern int			g_resize;
 
 char	*read_input(char *prompt, int multi, int size_prompt);
 int		init_term(struct termios *s_term, struct termios *s_term_b);
 void	append_single_cmd(t_line *line, t_data *lst, int offset, int max);
 void	append_multi_cmd(t_line *line, int max);
-void	handle_winch(int sig);
-int		handle_input(t_line *line, char *prompt);
-void	handle_escape_sp(t_line *line, int edit, int *ret);
-void	handle_ctrll(t_line *line, char *prompt);
-int		handle_ctrld(t_line *line);
 void	add_char(t_line *line);
 int		get_term_size(char **av, char **env);
 void	refresh_line(t_line *line, char *prompt, int edit);
@@ -137,6 +133,20 @@ void	select_mode(t_line *line, char *prompt);
 int		handle_escape(t_line *line, char *prompt, int edit);
 void	go_right(t_line *line);
 void	handle_ctrlu(t_line *line);
+
+/*
+** handle functions
+*/
+
+void	handle_winch(int sig);
+int		handle_input(t_line *line, char *prompt);
+void	handle_escape_sp(t_line *line, int edit, int *ret);
+void	handle_ctrll(t_line *line, char *prompt);
+int		handle_ctrld(t_line *line);
+void	handle_uarrow(t_line *line, int edit);
+void	handle_darrow(t_line *line, int edit);
+void	handle_ctrl_uarrow(t_line *line);
+void	handle_ctrl_darrow(t_line *line, int edit);
 
 /*
 ** select_utils

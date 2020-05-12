@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 10:58:52 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/30 17:17:08 by user42           ###   ########.fr       */
+/*   Updated: 2020/05/12 23:24:48 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <signal.h>
 #include "line_edit.h"
 #include <fcntl.h>
-#include "minishell.h"
 
 void	handle_winch(int sig)
 {

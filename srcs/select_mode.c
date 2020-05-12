@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 15:44:02 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 11:03:35 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 00:47:55 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,9 @@ static	int	select_handle_fp(t_select *s_sel, t_line *line, char *prompt)
 	else if (*line->buff == 'h')
 		line->pos -= line->pos > 1 ? 1 : 0;
 	else if (*line->buff == 'j' && line->multi)
-		line->pos += (line->pos + g_termx < line->lst_input->size) ?
-			g_termx : 0;
+		handle_ctrl_darrow(line, 1);
 	else if (*line->buff == 'k' && line->multi)
-		line->pos -= (line->pos - g_termx > 0) ? g_termx : 0;
+		handle_ctrl_uarrow(line);
 	else if (*line->buff == 'l')
 		line->pos += line->pos < line->lst_input->size ? 1 : 0;
 	else if (*line->buff == 'v' && (s_sel->sel = 1))

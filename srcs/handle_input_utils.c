@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 21:44:17 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 22:01:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 00:39:47 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,17 @@ void		handle_escape_sp(t_line *line, int edit, int *ret)
 	else if (!strcmp(line->buff, "\x1b[C"))
 		line->pos += line->pos < line->lst_input->size ? 1 : 0;
 	else if (!strcmp(line->buff, "\x1b[1;5B") && line->multi)
-		line->pos += (line->pos + g_termx < line->lst_input->size + 1) ?
-			g_termx : 0;
+		handle_ctrl_darrow(line, edit);
 	else if (!strcmp(line->buff, "\x1b[1;5A") && line->multi)
-		line->pos -= (line->pos - g_termx > 0) ? g_termx : 0;
+		handle_ctrl_uarrow(line);
 	else if (!strcmp(line->buff, "\x1b[1;5D"))
 		go_left(line);
 	else if (!strcmp(line->buff, "\x1b[1;5C"))
 		go_right(line);
-	else if (!strcmp(line->buff, "\x1b[A") && !edit)
-		history_pn(line, HPREV, &g_history);
-	else if (!strcmp(line->buff, "\x1b[B") && !edit)
-		history_pn(line, HNEXT, &g_history);
+	else if (!strcmp(line->buff, "\x1b[A"))
+		handle_uarrow(line, edit);
+	else if (!strcmp(line->buff, "\x1b[B"))
+		handle_darrow(line, edit);
 	else if (!strcmp(line->buff, "\x1b[H"))
 		line->pos = 1;
 	else if (!strcmp(line->buff, "\x1b[F"))

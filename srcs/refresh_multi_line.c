@@ -6,13 +6,14 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 22:36:12 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 23:10:46 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/12 23:34:20 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
 #include "line_edit.h"
+#include "ft_printf.h"
+#include <unistd.h>
 
 static void	refresh_edit(t_ml *ml, t_line *line, int edit)
 {

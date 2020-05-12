@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/30 17:27:37 by user42           ###   ########.fr       */
+/*   Updated: 2020/05/13 00:51:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 #include "line_edit.h"
 
 t_shell		g_sh;
-int			g_termx = 0;
-int			g_termy = 0;
-int			g_resize = 0;
+
 /*
 ** __attribute__((destructor)) void lul(void)
 ** {

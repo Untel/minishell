@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/05/12 23:21:23 by riblanc          ###   ########.fr        #
+#    Updated: 2020/05/13 00:51:21 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS_FILES	= \
 	refresh_multi_line.c \
 	handle_input.c \
 	handle_input_utils.c \
+	handle_input_utils_2.c \
 	list_utils.c \
 	list_utils3.c \
 	list_utils4.c \
