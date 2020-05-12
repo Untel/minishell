@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 00:38:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 00:41:51 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 01:17:14 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	handle_darrow(t_line *line, int edit)
 {
 	if (!edit)
 		history_pn(line, HNEXT, &g_history);
-	else
+	else if (line->multi)
 		handle_ctrl_darrow(line, edit);
 }
 
@@ -40,6 +40,6 @@ void	handle_uarrow(t_line *line, int edit)
 {
 	if (!edit)
 		history_pn(line, HPREV, &g_history);
-	else
+	else if (line->multi)
 		handle_ctrl_uarrow(line);
 }
