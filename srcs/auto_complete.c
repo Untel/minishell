@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 01:27:24 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 18:50:19 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 19:39:37 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,13 @@ char	**get_nmatch(char *path, char *file)
 	if (dp != NULL)
 	{
 		while ((ep = readdir(dp)))
-			if (match(ep->d_name, file) && strcmp(".", ep->d_name) &&
-					strcmp("..", ep->d_name))
+			if (match(ep->d_name, file))
+			{
+				if (!ft_strncmp(ep->d_name, ".", 1))
+					if (file[0] != '.')
+						continue ;
 				++ret;
+			}
 		closedir(dp);
 	}
 	if (!(lst = malloc(sizeof(char *) * (ret + 2))))
@@ -110,9 +114,11 @@ char	**get_nmatch(char *path, char *file)
 	if (dp != NULL)
 	{
 		while ((ep = readdir(dp)))
-			if (match(ep->d_name, file) && strcmp(".", ep->d_name) &&
-					strcmp("..", ep->d_name))
+			if (match(ep->d_name, file))
 			{
+				if (!ft_strncmp(ep->d_name, ".", 1))
+					if (file[0] != '.')
+						continue ;
 				if (ep->d_type == DT_DIR)
 					lst[i] = ft_strjoin(ep->d_name, "/");
 				else
@@ -218,6 +224,9 @@ void	auto_complete(t_line *line)
 	i = 0;
 	while (lstmp && lstmp->c == paths[0][i])
 	{
+		if (i == 0 && lstmp->c == '.' && paths[1][i] == '.'
+				&& lstmp->next && lstmp->next->c != '/')
+			break ;
 		++line->pos;
 		++i;
 		lstmp = lstmp->next;
