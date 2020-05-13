@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 22:15:26 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/12 23:34:53 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 17:56:10 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ void		refresh_single_line(t_line *line, int edit)
 {
 	int		pos;
 	int		len;
+	int		input_len;
 	int		buf;
 	int		offset;
 
 	pos = line->pos;
-	len = line->lst_input->size;
+	len = line->lst_input->size +
+		(line->complete.str ? ft_strlen(line->complete.str) : 0);
+	input_len = len;
 	buf = 0;
 	offset = line->size_prompt % g_termx;
 	line->buf = NULL;
@@ -52,7 +55,7 @@ void		refresh_single_line(t_line *line, int edit)
 	ft_sprintf(line->seq, "\r\x1b[0m\x1b[%dC", offset);
 	append(&line->buf, ft_strdup(line->seq));
 	append_single_cmd(line, line->lst_input, buf, len -
-			(buf > 0 && line->pos != line->lst_input->size));
+			(buf > 0 && line->pos != input_len));
 	append(&line->buf, ft_strdup("\x1b[0K"));
 	ft_sprintf(line->seq, "\r\x1b[%dC", pos + offset - (buf == 0));
 	append(&line->buf, ft_strdup(line->seq));

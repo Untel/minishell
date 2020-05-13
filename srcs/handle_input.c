@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 00:10:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 16:33:47 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void		handle_ctrlu(t_line *line)
 
 int			handle_input(t_line *line, char *prompt)
 {
+	if (line->buff[0] == 9)
+		auto_complete(line);
 	if (line->buff[0] == 4)
 		return (handle_ctrld(line));
 	else if (line->buff[0] == 12)

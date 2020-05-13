@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 00:39:45 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 16:33:39 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,17 @@ struct	s_alias
 
 typedef struct s_alias	t_alias;
 
+struct	s_complete
+{
+	char	*str;
+	int		pos;
+};
+
+typedef struct s_complete	t_complete;
+
 struct	s_line
 {
+	char			*prompt;
 	int				old_size;
 	int				pos;
 	int				old_pos;
@@ -83,6 +92,7 @@ struct	s_line
 	t_history		edit_history;
 	char			*buf;
 	char			seq[64];
+	t_complete		complete;
 };
 
 typedef struct s_line	t_line;
@@ -165,5 +175,7 @@ void	join_alias(char *alias, char **str, int i[3]);
 void	free_alias_lst(t_alias **alias, char *except, char **str);
 char	*ft_strsjoin(int size, char **strs, char *sep);
 char	**ft_split_chst(char *str, char *charset);
+
+void	auto_complete(t_line *line);
 
 #endif

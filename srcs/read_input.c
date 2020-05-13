@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/12 23:39:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 16:32:02 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ char	*init_read(t_line *line, int multi, char *prompt, int size_prompt)
 	init_sline(line);
 	init_term(&(line->s_term), &(line->s_term_backup));
 	line->multi = multi;
+	line->prompt = prompt;
 	line->size_prompt = size_prompt;
-	ft_printf("\x1b[0m\x1b[7m%%\x1b[27m%*s\r", g_termx - 1, "");
 	ft_printf(prompt);
+	line->complete.pos = -1;
+	line->complete.str = 0;
 	refresh_line(line, prompt, 0);
 	g_history.index = g_history.len ? g_history.len : 1;
 	return ((char *)-1);

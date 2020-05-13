@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 22:36:12 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/12 23:34:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 15:59:03 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static void	refresh_edit(t_ml *ml, t_line *line, int edit)
 static void	init_phase(t_ml *ml, t_line *line)
 {
 	ml->offset = line->size_prompt;
-	ml->len = line->lst_input->size - 1;
+	ml->len = line->lst_input->size - 1 +
+		(line->complete.str ? ft_strlen(line->complete.str) : 0);
 	ml->rows = (ml->offset + ml->len + g_termx - 1) / g_termx;
 	ml->pos = line->pos - 1;
 	ml->rpos = (ml->offset + line->old_pos + g_termx) / g_termx;
