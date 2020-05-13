@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 01:27:24 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 18:39:22 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 18:50:19 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,8 @@ void	auto_complete(t_line *line)
 		if (!ft_isalnum(line->buff[0]) && line->buff[0] != 8 &&
 				line->buff[0] != 127)
 			append_completion(line);
+		if (line->buff[0] == 127 || line->buff[0] == 8)
+			line->buff[0] = 0;
 		i = -1;
 		while (lst[++i])
 			free(lst[i]);
