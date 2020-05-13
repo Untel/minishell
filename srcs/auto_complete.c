@@ -6,12 +6,11 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 01:27:24 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 18:01:57 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 18:39:22 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "line_edit.h"
-#include "ft_printf.h"
 #include "minishell.h"
 #include <stdlib.h>
 #include <dirent.h>
@@ -227,15 +226,20 @@ void	auto_complete(t_line *line)
 	{
 		nb_elem = ft_strslen(lst);
 		i = 0;
-		while (line->buff[0] == 9)
+		if (nb_elem > 2)
 		{
-			if (ret)
+			while (line->buff[0] == 9)
 			{
-				refresh_completion(line, paths, lst[i % nb_elem]);
-				++i;
+				if (ret)
+				{
+					refresh_completion(line, paths, lst[i % nb_elem]);
+					++i;
+				}
+				ret = read(0, line->buff, 1);
 			}
-			ret = read(0, line->buff, 1);
 		}
+		else
+			refresh_completion(line, paths, lst[0]);
 		if (!ft_isalnum(line->buff[0]) && line->buff[0] != 8 &&
 				line->buff[0] != 127)
 			append_completion(line);

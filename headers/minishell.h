@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/13 18:02:37 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/13 18:26:04 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,14 +266,11 @@ int				exec_lines(t_shell *sh);
 int				match(char *s1, char *s2);
 void			print_line(t_shell *sh);
 void			print_list(t_shell *sh);
-
-//char			*get_current_word(t_shell *sh);
 int				get_size_current_word(t_shell *sh, t_lst_in **tmp);
 void			add_str_to_lst(t_shell *sh, char *str, char *filename);
 int				is_first_word(t_shell *sh);
 t_list			*get_nmatch_bin(t_shell *sh, char **paths, char *str);
 int				match_bin(t_shell *sh, int i, t_list *occur, int nb_elem);
-//int				get_nmatch(t_shell *sh, char *str);
 int				init_term(struct termios *s_termios,
 					struct termios *s_termios_backup);
 int				get_termx(t_shell *sh, char **av, char **env);
