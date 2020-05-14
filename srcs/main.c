@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/13 00:51:45 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/14 16:09:14 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void
 
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	tmp = get_value(sh->env, "SHLVL", "0");
 	shlvl = ft_str_isnumeric(tmp) ? ft_atoi((char *)tmp) : 0;
 	shlvl = (shlvl < 0 ? 0 : shlvl + 1);
