@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:24:06 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/11 13:13:45 by user42           ###   ########.fr       */
+/*   Updated: 2020/05/15 18:20:11 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,9 @@ int
 			!(cmd->op == OR && sh->last_ret == EXIT_SUCCESS)
 			&& !(cmd->op == AND && sh->last_ret != EXIT_SUCCESS))
 		{
-			if (cmd->argc > 0 && !ft_strcmp(cmd->argv[0], "ls"))
-				add_argument_index(cmd, ft_strdup("-G"), 1);
+			if (cmd->argc > 0 && (!ft_strcmp(cmd->argv[0], "ls")
+						|| !ft_strcmp(cmd->argv[0], "grep")))
+				add_argument_index(cmd, ft_strdup("--color=auto"), 1);
 			unset_key(&sh->env, "_");
 			set_value(&sh->env, "_", cmd->argv[cmd->argc - 1]);
 			exec_line(sh, cmd);
