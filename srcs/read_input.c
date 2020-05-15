@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 16:32:02 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 22:47:25 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,11 @@ char	*init_read(t_line *line, int multi, char *prompt, int size_prompt)
 	return ((char *)-1);
 }
 
-char	*check_handle(t_line *line, char *prompt, char *str, int ret)
+#include "minishell.h"
+
+char	*check_handle(t_shell *sh, t_line *line, char *prompt, char *str, int ret)
 {
-	if ((ret = handle_input(line, prompt)))
+	if ((ret = handle_input(sh, line, prompt)))
 	{
 		tcsetattr(0, 0, &(line->s_term_backup));
 		if (ret == -1)
@@ -69,7 +71,7 @@ char	*check_handle(t_line *line, char *prompt, char *str, int ret)
 	return ((char *)-2);
 }
 
-char	*read_input(char *prompt, int multi, int size_prompt)
+char	*read_input(t_shell *sh, char *prompt, int multi, int size_prompt)
 {
 	t_line	line;
 	int		ret;
@@ -86,7 +88,7 @@ char	*read_input(char *prompt, int multi, int size_prompt)
 		if (ret > 0)
 		{
 			line.old_size = line.lst_input->size;
-			if ((str = check_handle(&line, prompt, str, ret)) != (char *)-2)
+			if ((str = check_handle(sh, &line, prompt, str, ret)) != (char *)-2)
 				return (str);
 		}
 		refresh_line(&line, prompt, 0);

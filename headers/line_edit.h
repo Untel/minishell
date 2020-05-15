@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/15 21:23:44 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 22:50:50 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <termios.h>
 # include "list.h"
 # include "libft.h"
+# include "minishell.h"
 
 /*
 ** History defines
@@ -108,7 +109,7 @@ extern int			g_termx;
 extern int			g_termy;
 extern int			g_resize;
 
-char	*read_input(char *prompt, int multi, int size_prompt);
+char	*read_input(t_shell *sh, char *prompt, int multi, int size_prompt);
 int		init_term(struct termios *s_term, struct termios *s_term_b);
 void	append_single_cmd(t_line *line, t_data *lst, int offset, int max);
 void	append_multi_cmd(t_line *line, int max);
@@ -140,7 +141,7 @@ void	handle_ctrlu(t_line *line);
 */
 
 void	handle_winch(int sig);
-int		handle_input(t_line *line, char *prompt);
+int		handle_input(t_shell *sh, t_line *line, char *prompt);
 void	handle_escape_sp(t_line *line, int edit, int *ret);
 void	handle_ctrll(t_line *line, char *prompt);
 int		handle_ctrld(t_line *line);
@@ -157,6 +158,6 @@ char	*get_str_by_pos(t_line *line, int del);
 void	past(t_line *line, int before);
 void	handle_select_x(t_select *s_sel, t_line *line, char **yank, int maj);
 
-void	auto_complete(t_line *line);
+void	auto_complete(t_shell *sh, t_line *line);
 
 #endif

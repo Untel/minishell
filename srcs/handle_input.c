@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 16:33:47 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 22:50:39 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "ft_printf.h"
 #include <stdlib.h>
 #include <termios.h>
+#include "minishell.h"
 
 static void	handle_backspace(t_line *line)
 {
@@ -63,10 +64,10 @@ void		handle_ctrlu(t_line *line)
 	++line->pos;
 }
 
-int			handle_input(t_line *line, char *prompt)
+int			handle_input(t_shell *sh, t_line *line, char *prompt)
 {
 	if (line->buff[0] == 9)
-		auto_complete(line);
+		auto_complete(sh, line);
 	if (line->buff[0] == 4)
 		return (handle_ctrld(line));
 	else if (line->buff[0] == 12)

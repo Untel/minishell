@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 01:27:24 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 19:39:37 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 23:13:24 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	**split_path(char *str)
 	return (strs);
 }
 
-char	**get_nmatch(char *path, char *file)
+char	**get_nmatch(t_shell *sh, char **path, char *file)
 {
 	struct dirent	*ep;
 	char			**lst;
@@ -92,7 +92,9 @@ char	**get_nmatch(char *path, char *file)
 	int				i;
 
 	ret = 0;
-	dp = opendir(path);
+	*path = replace_tilde(sh, *path);
+	*path = replace_vars(sh, *path);
+	dp = opendir(*path);
 	if (dp != NULL)
 	{
 		while ((ep = readdir(dp)))
@@ -109,7 +111,7 @@ char	**get_nmatch(char *path, char *file)
 		return (NULL);
 	lst[ret] = ft_strndup(file, ft_strlen(file) - 1);
 	lst[ret + 1] = 0;
-	dp = opendir(path);
+	dp = opendir(*path);
 	i = 0;
 	if (dp != NULL)
 	{
@@ -201,7 +203,7 @@ void	append_completion(t_line *line)
 	}
 }
 
-void	auto_complete(t_line *line)
+void	auto_complete(t_shell *sh, t_line *line)
 {
 	t_lst_in	*lstmp;
 	char		**paths;
@@ -231,7 +233,7 @@ void	auto_complete(t_line *line)
 		++i;
 		lstmp = lstmp->next;
 	}
-	if ((lst = get_nmatch(paths[0], paths[1])))
+	if ((lst = get_nmatch(sh, &paths[0], paths[1])))
 	{
 		nb_elem = ft_strslen(lst);
 		i = 0;

@@ -34,8 +34,8 @@ PRINTF			= $(addprefix $(PRINTF_DIR)/, $(_PRINTF))
 SRCS			= $(STR) $(CHAR) $(PRINT) $(MEM) $(MATH) $(LIST) $(WCHAR) $(FILES) $(PRINTF)
 OBJSC			= $(SRCS:.c=.o)
 OBJSS			= $(_ASM:.s=.o)
-CFLAGS			= -Wall -Wextra -Werror -w -I$(INCLUDES_DIR)
-CC				= gcc
+CFLAGS			= -Wall -Wextra -Werror -w -I$(INCLUDES_DIR) -g3 -fsanitize=address
+CC				= clang
 AR				= ar rc
 AS				= nasm
 ASFLAGS			= -fmacho64

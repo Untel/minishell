@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/15 22:19:47 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 23:14:50 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,22 +227,6 @@ int				check_matchs(t_wildcards_checker *wc, char *path,
 */
 int				add_heredoc(t_shell *sh, int *i);
 int				ask_heredocs(t_shell *sh);
-
-/*
-**	Input handling
-*/
-void			handle_arrows(char buff[6], t_term *term);
-void			handle_right_arrow(char buff[6], t_term *term);
-void			handle_left_arrow(char buff[6], t_term *term);
-void			handle_backspace(char buff[6], t_term *term);
-int				handle_ctrl_d(char buff[6], t_term *term);
-void			handle_ctrl_u(t_term term);
-void			handle_ctrl_c(t_term *term);
-void			handle_home(t_shell *sh, char buff[6], t_term *term);
-void			handle_end(t_shell *sh, char buff[6], t_term *term);
-void			handle_ctrl_keys(char buff[6], t_term *term);
-int				del_right(t_term *term);
-void			handle_option_cases(t_shell *sh, char buff[6]);
 
 /*
 **	Input sanitizing
