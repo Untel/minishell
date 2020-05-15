@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/15 21:40:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/15 22:19:34 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/16 00:13:37 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,20 @@ t_alias			*load_alias(t_shell *sh)
 			break ;
 	}
 	return (tmp);
+}
+
+void			free_alias(t_shell *sh)
+{
+	t_alias *tmp;
+
+	while (sh->alias)
+	{
+		tmp = sh->alias->next;
+		free(sh->alias->key);
+		sh->alias->key = NULL;
+		free(sh->alias->value);
+		sh->alias->value = NULL;
+		free(sh->alias);
+		sh->alias = tmp;
+	}
 }

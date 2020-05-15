@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/15 22:20:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/16 00:10:52 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,6 @@ int
 		inline_mode(&g_sh, NULL);
 	free_env_list(&g_sh.env);
 	free_history(&g_history, 0);
+	free_alias(&g_sh);
 	return (g_sh.exit_val);
 }
