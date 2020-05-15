@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/15 21:23:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 22:19:47 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,7 +318,7 @@ extern int		g_resize;
 ** Alias utils
 */
 void			check_aliases(t_shell *sh, t_cmd *cmd);
-t_alias			*load_alias(void);
+t_alias			*load_alias(t_shell *sh);
 char			**ft_split_chst(char *str, char *charset);
 
 #endif

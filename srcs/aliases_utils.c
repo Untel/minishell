@@ -6,20 +6,22 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/15 21:40:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/15 21:42:09 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 22:19:34 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		add_alias_lst(t_alias **alias, char *key, char *value)
+static void		add_alias_lst(t_shell *sh,
+		t_alias **alias, char *key, char *value)
 {
 	while (*alias)
 		alias = &((*alias)->next);
 	if (!(*alias = malloc(sizeof(t_alias))))
 		return ;
 	(*alias)->key = key;
-	(*alias)->value = value;
+	(*alias)->value = replace_tilde(sh, value);
+	(*alias)->value = replace_vars(sh, (*alias)->value);
 	(*alias)->next = NULL;
 }
 
@@ -47,7 +49,7 @@ static void		ignore_space(char *str, int end)
 	}
 }
 
-static void		parse_line(char **line, t_alias **alias)
+static void		parse_line(t_shell *sh, char **line, t_alias **alias)
 {
 	char	**strs;
 	int		size;
@@ -70,11 +72,11 @@ static void		parse_line(char **line, t_alias **alias)
 		free(strs);
 		return ;
 	}
-	add_alias_lst(alias, strs[0], strs[1]);
+	add_alias_lst(sh, alias, strs[0], strs[1]);
 	free(strs);
 }
 
-t_alias			*load_alias(void)
+t_alias			*load_alias(t_shell *sh)
 {
 	char	*filename;
 	int		fd;
@@ -89,7 +91,7 @@ t_alias			*load_alias(void)
 	while (1)
 	{
 		ret = get_next_line(fd, &line);
-		parse_line(&line, &tmp);
+		parse_line(sh, &line, &tmp);
 		if (ret >= 0)
 			free(line);
 		line = NULL;
