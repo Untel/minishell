@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/15 23:14:50 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 23:22:39 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,9 @@ typedef struct	s_term
 
 typedef struct	s_alias
 {
-	 struct s_alias	*next;
-	 char			*key;
-	 char			*value;
+	struct s_alias	*next;
+	char			*key;
+	char			*value;
 }				t_alias;
 
 typedef struct	s_shell
