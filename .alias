@@ -1,0 +1,4 @@
+ls : ls --color=auto
+grep : grep --color=auto 
+la : ls --color=auto -lAh
+norminette : /home/riblanc/.norminette/norminette.rb

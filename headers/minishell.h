@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/13 18:26:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 21:23:04 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,13 @@ typedef struct	s_term
 	t_termios	term;
 }				t_term;
 
+typedef struct	s_alias
+{
+	 struct s_alias	*next;
+	 char			*key;
+	 char			*value;
+}				t_alias;
+
 typedef struct	s_shell
 {
 	char	*input;
@@ -132,6 +139,7 @@ typedef struct	s_shell
 	t_list	*cmds;
 	t_list	*env;
 	t_list	*heredocs;
+	t_alias	*alias;
 	int		hd_index;
 	t_term	term;
 	int		sub;
@@ -263,18 +271,9 @@ int				exec_lines(t_shell *sh);
 /*
 **	Autocomplete utils
 */
+
 int				match(char *s1, char *s2);
-void			print_line(t_shell *sh);
-void			print_list(t_shell *sh);
-int				get_size_current_word(t_shell *sh, t_lst_in **tmp);
-void			add_str_to_lst(t_shell *sh, char *str, char *filename);
-int				is_first_word(t_shell *sh);
-t_list			*get_nmatch_bin(t_shell *sh, char **paths, char *str);
-int				match_bin(t_shell *sh, int i, t_list *occur, int nb_elem);
-int				init_term(struct termios *s_termios,
-					struct termios *s_termios_backup);
-int				get_termx(t_shell *sh, char **av, char **env);
-int				print_match(t_shell *sh, char buff[6]);
+int				ft_strslen(char **strs);
 
 /*
 **	Processus
@@ -311,8 +310,15 @@ void			init_child_signals(pid_t child);
 */
 
 extern t_shell	g_sh;
-extern int 		g_termx;
-extern int 		g_termy;
-extern int 		g_resize;
+extern int		g_termx;
+extern int		g_termy;
+extern int		g_resize;
+
+/*
+** Alias utils
+*/
+void			check_aliases(t_shell *sh, t_cmd *cmd);
+t_alias			*load_alias(void);
+char			**ft_split_chst(char *str, char *charset);
 
 #endif

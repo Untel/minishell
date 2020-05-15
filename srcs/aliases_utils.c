@@ -5,100 +5,96 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/29 13:21:47 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/29 17:27:58 by riblanc          ###   ########.fr       */
+/*   Created: 2020/05/15 21:40:31 by riblanc           #+#    #+#             */
+/*   Updated: 2020/05/15 21:42:09 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf.h"
-#include "line_edit.h"
-#include <stdlib.h>
+#include "minishell.h"
 
-static int		ft_strslen(int size, char **strs, char *sep)
+static void		add_alias_lst(t_alias **alias, char *key, char *value)
+{
+	while (*alias)
+		alias = &((*alias)->next);
+	if (!(*alias = malloc(sizeof(t_alias))))
+		return ;
+	(*alias)->key = key;
+	(*alias)->value = value;
+	(*alias)->next = NULL;
+}
+
+static void		ignore_space(char *str, int end)
 {
 	int		i;
-	int		j;
-	int		k;
 
-	if (!size)
-		return (0);
-	i = -1;
-	k = 0;
-	while (sep[++k])
-		;
-	k *= size - 1;
-	i = -1;
-	while (++i < size)
+	i = 0;
+	while (*(str + i) && ft_isspace(*(str + i)))
+		++i;
+	if (i > 0 && *(str + i))
+		ft_strcpy(str, str + i);
+	if (!end)
 	{
-		j = -1;
-		while (strs[i][++j])
-			++k;
-	}
-	return (k);
-}
-
-char	*ft_strsjoin(int size, char **strs, char *sep)
-{
-	char	*str;
-	int		i[3];
-	int		size_str;
-
-	size_str = ft_strslen(size, strs, sep);
-	if (!(str = malloc(sizeof(*str) * (size_str + 1))))
-		return (NULL);
-	i[0] = -1;
-	i[1] = -1;
-	while (++i[0] < size)
-	{
-		i[2] = -1;
-		while (strs[i[0]][++i[2]])
-			str[++i[1]] = strs[i[0]][i[2]];
-		if (i[0] < size - 1)
-		{
-			i[2] = -1;
-			while (sep[++i[2]])
-				str[++i[1]] = sep[i[2]];
-		}
-	}
-	str[size_str] = 0;
-	return (str);
-}
-
-void		join_alias(char *alias, char **str, int i[3])
-{
-	char	*tmp;
-
-	if ((tmp = ft_strjoin(alias, " ")))
-	{
-		free(alias);
-		alias = tmp;
-		if ((tmp = ft_strjoin(alias, (*str) + i[2] + i[1])))
-		{
-			free(alias);
-			alias = NULL;
-			free(*str);
-			*str = tmp;
-		}
+		i = 0;
+		while (*(str + i) && !ft_isspace(*(str + i)))
+			++i;
+		*(str + i) = 0;
 	}
 	else
-		*str = alias;
+	{
+		i = ft_strlen(str);
+		while (--i >= 0 && ft_isspace(*(str + i)))
+			*(str + i) = 0;
+	}
 }
 
-void		free_alias_lst(t_alias **alias, char *except, char **str)
+static void		parse_line(char **line, t_alias **alias)
 {
-	t_alias *tmp;
+	char	**strs;
+	int		size;
+	int		i;
 
-	(void)except;
-	(void)str;
-	while (*alias)
+	strs = ft_split((const char *)*line, ':');
+	size = 0;
+	while (strs && strs[size])
+		++size;
+	if (size == 2)
 	{
-		tmp = (*alias)->next;
-		free((*alias)->value);
-		(*alias)->value = NULL;
-		free((*alias)->key);
-		(*alias)->key = NULL;
-		free(*alias);
-		*alias = tmp;
+		ignore_space(strs[0], 0);
+		ignore_space(strs[1], 1);
 	}
+	if (size != 2 || !ft_strlen(strs[0]) || !ft_strlen(strs[1]))
+	{
+		i = 0;
+		while (*(strs + i))
+			free(*(strs + i++));
+		free(strs);
+		return ;
+	}
+	add_alias_lst(alias, strs[0], strs[1]);
+	free(strs);
+}
+
+t_alias			*load_alias(void)
+{
+	char	*filename;
+	int		fd;
+	char	*line;
+	int		ret;
+	t_alias	*tmp;
+
+	filename = ".alias";
+	tmp = NULL;
+	if ((fd = open(filename, O_RDONLY)) == -1)
+		return (NULL);
+	while (1)
+	{
+		ret = get_next_line(fd, &line);
+		parse_line(&line, &tmp);
+		if (ret >= 0)
+			free(line);
+		line = NULL;
+		if (!(ret > 0))
+			break ;
+	}
+	return (tmp);
 }

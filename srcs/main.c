@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/14 16:09:14 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/15 18:53:40 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void
 		set_value(&sh->env, "OLDPWD", NULL);
 	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
 	ft_memdel((void **)&tmp);
+	sh->alias = load_alias();
 }
 
 void
