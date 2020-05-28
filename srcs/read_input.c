@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/15 22:47:25 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/28 18:03:55 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "minishell.h"
 
 int			g_termx = 0;
 int			g_termy = 0;
 int			g_resize = 0;
 
-char	*init_read(t_line *line, int multi, char *prompt, int size_prompt)
+char
+	*init_read(t_line *line, int multi, char *prompt, int size_prompt)
 {
 	handle_winch(-1);
 	if (!g_termx)
@@ -41,9 +43,8 @@ char	*init_read(t_line *line, int multi, char *prompt, int size_prompt)
 	return ((char *)-1);
 }
 
-#include "minishell.h"
-
-char	*check_handle(t_shell *sh, t_line *line, char *prompt, char *str, int ret)
+char
+	*check_handle(t_shell *sh, t_line *line, char *prompt, char *str, int ret)
 {
 	if ((ret = handle_input(sh, line, prompt)))
 	{
@@ -71,28 +72,51 @@ char	*check_handle(t_shell *sh, t_line *line, char *prompt, char *str, int ret)
 	return ((char *)-2);
 }
 
-char	*read_input(t_shell *sh, char *prompt, int multi, int size_prompt)
+static int
+	manage_resize(int nb_res, t_line *line, char *prompt)
+{
+	if (g_resize && !(g_resize = 0))
+	{
+		if (!MULTI)
+		{
+			ft_printf("\r\x1b[0K");
+			write(1, prompt, ft_strlen(prompt));
+			if (nb_res != 0)
+			{
+				refresh_line(line, prompt, 0);
+				ft_bzero(line->buff, 6);
+			}
+		}
+		return (1);
+	}
+	return (0);
+}
+
+char
+	*read_input(t_shell *sh, char *prompt, int multi, int size_prompt)
 {
 	t_line	line;
 	int		ret;
 	char	*str;
+	int		nb_res;
 
 	ret = 0;
 	if ((str = init_read(&line, multi, prompt, size_prompt)) != (char *)-1)
 		return (str);
 	str = 0;
-	while (g_resize || (ret = read(0, line.buff, 1)) >= 0)
+	nb_res = 0;
+	while ((ret = read(0, line.buff, 1)) >= 0)
 	{
-		if (g_resize)
-			g_resize = 0;
 		if (ret > 0)
 		{
+			if (manage_resize(nb_res, &line, prompt))
+				++nb_res;
 			line.old_size = line.lst_input->size;
 			if ((str = check_handle(sh, &line, prompt, str, ret)) != (char *)-2)
 				return (str);
+			refresh_line(&line, prompt, 0);
+			ft_bzero(line.buff, 6);
 		}
-		refresh_line(&line, prompt, 0);
-		ft_bzero(line.buff, 6);
 	}
 	tcsetattr(0, 0, &(line.s_term_backup));
 	return (NULL);

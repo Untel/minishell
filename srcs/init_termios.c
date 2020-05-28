@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/22 12:37:47 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 11:01:27 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/28 17:50:43 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,15 @@ int
 	char	str[65];
 	int		ret;
 
-	pipe(p);
-	if ((pid = fork()) == -1)
+	ret = pipe(p);
+	if (ret == -1 || (pid = fork()) == -1)
 		return (-1);
 	else if (pid == 0)
 	{
 		dup2(p[1], 1);
 		close(p[0]);
 		ret = execve("/bin/stty", av, env);
+		close(p[1]);
 		exit(ret);
 	}
 	else
@@ -75,12 +76,7 @@ int
 		str[ret] = 0;
 		g_termy = ft_atoi(str);
 		g_termx = snda_toi(str);
+		close(p[0]);
 	}
-	return (0);
-}
-
-void
-	save_cursor_pos(void)
-{
-	write(1, "\x1b[s", 3);
+	return (ret == 0 ? -1 : ret);
 }
