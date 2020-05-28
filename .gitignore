@@ -12,3 +12,4 @@ minishell
 .DS_Store
 tags
 .ML.*
+.DBG.*

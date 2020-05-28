@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/05/28 16:13:45 by riblanc          ###   ########.fr        #
+#    Updated: 2020/05/29 00:57:53 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,16 @@ INCLUDES	=	-I ./headers $(LIBFT_INCL)
 ### Compiler
 ML			=	1
 CC			=	clang
-CFLAGS		=	-Wall -Wextra -Werror $(INCLUDES) -g3 -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror $(INCLUDES)
+DBG			=	0
+
+ifeq ($(DBG), 1)
+	CFLAGS += -g3 -fsanitize=address
+	DEBUG = $(DBG)
+else
+	DEBUG = 0
+endif
+
 ifneq ($(filter $(ML),0 1),)
 	CFLAGS	+= -D MULTI=$(ML)
 	MULTI := $(ML)
@@ -103,7 +112,7 @@ all:		makelib
 			@$(MAKE) $(NAME) --no-print-directory
 
 -include $(DEP)
-$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c .ML.$(MULTI)
+$(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c .ML.$(MULTI) .DBG.$(DEBUG)
 			@mkdir -p $(OBJ_DIR)
 			$(CC) $(CFLAGS) -MMD -o $@ -c $<
 
@@ -112,6 +121,10 @@ $(NAME):	$(OBJ)
 
 .ML.$(MULTI): 
 	@rm -f .ML.*
+	@touch $@
+
+.DBG.$(DEBUG): 
+	@rm -f .DBG.*
 	@touch $@
 
 makelib:	
