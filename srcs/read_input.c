@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/28 18:03:55 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/31 01:00:32 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,10 @@ char
 				++nb_res;
 			line.old_size = line.lst_input->size;
 			if ((str = check_handle(sh, &line, prompt, str, ret)) != (char *)-2)
+			{
+				tcsetattr(0, 0, &(line.s_term_backup));
 				return (str);
+			}
 			refresh_line(&line, prompt, 0);
 			ft_bzero(line.buff, 6);
 		}
