@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/31 01:00:32 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/05/31 14:22:58 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char
 	line->multi = multi;
 	line->prompt = prompt;
 	line->size_prompt = size_prompt;
-	ft_printf(prompt);
+	write(1, prompt, ft_strlen(prompt));
 	line->complete.pos = -1;
 	line->complete.str = 0;
 	refresh_line(line, prompt, 0);
