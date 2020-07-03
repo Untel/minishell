@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/15 22:14:45 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/07/03 14:51:29 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,13 @@ int
 	new_command(sh, NONE);
 	while (sh->input[++(rd.i)])
 	{
-		if ((rd.c = sh->input[rd.i]) == '\\' && (++rd.i || 1))
-			continue ;
+		if ((rd.c = sh->input[rd.i]) == '\\')
+		{
+			if (sh->input[rd.i + 1] && (++rd.i || 1))
+				continue ;
+			else
+				break ;
+		}
 		else if (rd.c == '\'')
 			handle_simple_quote(sh, &rd, &rd.i);
 		else if (rd.c == '"')
