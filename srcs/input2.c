@@ -56,6 +56,21 @@ t_operator
 		return (NONE);
 }
 
+void
+	choose_handler(t_shell *sh, t_read *rd)
+{
+	if (rd->c == '\'')
+		handle_simple_quote(sh, rd, &(rd->i));
+	else if (rd->c == '"')
+		handle_double_quote(sh, rd, &(rd->i));
+	else if (rd->c == ' ')
+		rd->ret = handle_space(sh, rd, &(rd->i));
+	else if (is_cmd_separator(rd->c))
+		rd->ret = handle_separator(sh, rd, &(rd->i));
+	else if (rd->c == '<' || rd->c == '>')
+		rd->ret = handle_redirections(sh, rd, &(rd->i));
+}
+
 int
 	parse_input(t_shell *sh)
 {
@@ -72,16 +87,8 @@ int
 				continue ;
 			break ;
 		}
-		else if (rd.c == '\'')
-			handle_simple_quote(sh, &rd, &rd.i);
-		else if (rd.c == '"')
-			handle_double_quote(sh, &rd, &rd.i);
-		else if (rd.c == ' ')
-			rd.ret = handle_space(sh, &rd, &rd.i);
-		else if (is_cmd_separator(rd.c))
-			rd.ret = handle_separator(sh, &rd, &rd.i);
-		else if (rd.c == '<' || rd.c == '>')
-			rd.ret = handle_redirections(sh, &rd, &rd.i);
+		else
+			choose_handler(sh, &rd);
 		if (!rd.ret)
 			return (rd.ret);
 	}
