@@ -12,14 +12,35 @@
 
 #include "line_edit.h"
 
-static void	ft_swap(int *a, int *b)
+static void
+	ft_swap(int *a, int *b)
 {
 	*a ^= *b;
 	*b ^= *a;
 	*a ^= *b;
 }
 
-void		append_multi_cmd(t_line *line, int max)
+void
+	append_multi_cmd_2(t_line *line, char *s[4])
+{
+	if (line->complete.pos != -1 && line->complete.str &&
+			*line->complete.str)
+	{
+		s[0] = ft_substr(s[3], 0, line->complete.pos - 1);
+		s[1] = ft_substr(s[3], line->complete.pos - 1, ft_strlen(s[3]) -
+				line->complete.pos + 1);
+		append(&line->buf, s[0]);
+		append(&line->buf, ft_strdup("\x1b[33m"));
+		append(&line->buf, ft_strdup(line->complete.str));
+		append(&line->buf, ft_strdup("\x1b[0m"));
+		append(&line->buf, s[1]);
+	}
+	else
+		append(&line->buf, ft_strdup(s[3]));
+}
+
+void
+	append_multi_cmd(t_line *line, int max)
 {
 	int		sel[2];
 	char	*s[4];
@@ -43,27 +64,32 @@ void		append_multi_cmd(t_line *line, int max)
 		append(&line->buf, s[2]);
 	}
 	else
-	{
-		if (line->complete.pos != -1 && line->complete.str &&
-				*line->complete.str)
-		{
-			s[0] = ft_substr(s[3], 0, line->complete.pos - 1);
-			s[1] = ft_substr(s[3], line->complete.pos - 1, ft_strlen(s[3]) -
-					line->complete.pos + 1);
-			append(&line->buf, s[0]);
-			append(&line->buf, ft_strdup("\x1b[33m"));
-			append(&line->buf, ft_strdup(line->complete.str));
-			append(&line->buf, ft_strdup("\x1b[0m"));
-			append(&line->buf, s[1]);
-		}
-		else
-			append(&line->buf, ft_strdup(s[3]));
-	}
+		append_multi_cmd_2(line, s);
 	append(&line->buf, ft_strdup("\x1b[0K"));
 	ft_memdel((void **)&s[3]);
 }
 
-void		append_single_cmd(t_line *line, t_data *lst, int offset, int max)
+void
+	append_single_cmd_2(t_line *line, int *max, int i[5])
+{
+	append(&line->buf, ft_strdup(line->seq));
+	if (++i[3] == line->complete.pos)
+	{
+		append(&line->buf, ft_strdup("\x1b[33m"));
+		i[4] = -1;
+		while (line->complete.str[++i[4]])
+		{
+			line->seq[0] = line->complete.str[i[4]];
+			line->seq[1] = 0;
+			append(&line->buf, ft_strdup(line->seq));
+			*max -= 1;
+		}
+		append(&line->buf, ft_strdup("\x1b[0m"));
+	}
+}
+
+void
+	append_single_cmd(t_line *line, t_data *lst, int offset, int max)
 {
 	t_lst_in	*tmp;
 	int			i[5];
@@ -87,20 +113,7 @@ void		append_single_cmd(t_line *line, t_data *lst, int offset, int max)
 			append(&line->buf, ft_strdup("\x1b[0m"));
 		line->seq[0] = tmp->c;
 		line->seq[1] = 0;
-		append(&line->buf, ft_strdup(line->seq));
-		if (++i[3] == line->complete.pos)
-		{
-			append(&line->buf, ft_strdup("\x1b[33m"));
-			i[4] = -1;
-			while (line->complete.str[++i[4]])
-			{
-				line->seq[0] = line->complete.str[i[4]];
-				line->seq[1] = 0;
-				append(&line->buf, ft_strdup(line->seq));
-				--max;
-			}
-			append(&line->buf, ft_strdup("\x1b[0m"));
-		}
+		append_single_cmd_2(line, &max, i);
 		tmp = tmp->next;
 	}
 }
