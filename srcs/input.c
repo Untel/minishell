@@ -6,11 +6,15 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/09/29 15:41:27 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/09/29 15:42:22 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** ft_escape_sequence(sub, '\\', "abdfenrtv", 1);
+*/
 
 int
 	handle_double_quote(t_shell *sh, t_read *rd, int *i)
@@ -25,7 +29,6 @@ int
 	len = tmp - (sh->input + *i + 1);
 	sub = ft_substr(sh->input + *i + 1, 0, len);
 	sub = replace_vars(sh, sub);
-	// ft_escape_sequence(sub, '\\', "abdfenrtv", 1);
 	ft_escape_sequence(sub, '\\', "\\\"$", 0);
 	if (rd->buffer)
 	{

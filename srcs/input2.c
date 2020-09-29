@@ -70,8 +70,7 @@ int
 		{
 			if (sh->input[rd.i + 1] && (++rd.i || 1))
 				continue ;
-			else
-				break ;
+			break ;
 		}
 		else if (rd.c == '\'')
 			handle_simple_quote(sh, &rd, &rd.i);
