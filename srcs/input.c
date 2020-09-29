@@ -89,7 +89,7 @@ int
 	if (!copy_to_cmd(sh, rd, i))
 		return (FALSE);
 	if (rd->add_to != ARGS)
-		return (!ft_fprintf(STDERR, MSG_404_REDIR));	
+		return (!ft_fprintf(STDERR, MSG_404_REDIR));
 	if (op == AND || op == OR)
 		*i = *i + 1;
 	while (sh->input[*i] && sh->input[*i + 1] == ' ')
