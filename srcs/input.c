@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:35:51 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/15 22:13:41 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/09/29 15:41:27 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,13 @@ int
 		return (FALSE);
 	if (rd->add_to != ARGS)
 		return (!ft_fprintf(STDERR, MSG_404_REDIR));
-	//if (((t_cmd *)ft_lstlast(sh->cmds)->content)->argc == 0)
-	//	return (!ft_fprintf(STDERR, MSG_CMDARG_ERR, sh->input[*i], *i));
 	if (op == AND || op == OR)
 		*i = *i + 1;
 	while (sh->input[*i] && sh->input[*i + 1] == ' ')
 		*i = *i + 1;
 	if (sh->input[*i] && sh->input[*i + 1] &&
 		is_cmd_separator(sh->input[*i + 1]) == 2)
-		return (!ft_fprintf(STDERR, MSG_SYNTAX_ERR, sh->input[*i + 1], *i + 1));
+		return (!ft_fprintf(STDERR, SYN_ERR, sh->input[*i + 1], *i + 1));
 	rd->buffer = NULL;
 	rd->index = *i + 1;
 	if (op >= NONE)
