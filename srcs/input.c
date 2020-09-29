@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/*
+** ft_escape_sequence(sub, '\\', "abdfenrtv", 1);
+*/
+
 int
 	handle_double_quote(t_shell *sh, t_read *rd, int *i)
 {
@@ -25,7 +29,6 @@ int
 	len = tmp - (sh->input + *i + 1);
 	sub = ft_substr(sh->input + *i + 1, 0, len);
 	sub = replace_vars(sh, sub);
-	// ft_escape_sequence(sub, '\\', "abdfenrtv", 1);
 	ft_escape_sequence(sub, '\\', "\\\"$", 0);
 	if (rd->buffer)
 	{
@@ -86,9 +89,7 @@ int
 	if (!copy_to_cmd(sh, rd, i))
 		return (FALSE);
 	if (rd->add_to != ARGS)
-		return (!ft_fprintf(STDERR, MSG_404_REDIR));
-	//if (((t_cmd *)ft_lstlast(sh->cmds)->content)->argc == 0)
-	//	return (!ft_fprintf(STDERR, MSG_CMDARG_ERR, sh->input[*i], *i));
+		return (!ft_fprintf(STDERR, MSG_404_REDIR));	
 	if (op == AND || op == OR)
 		*i = *i + 1;
 	while (sh->input[*i] && sh->input[*i + 1] == ' ')
