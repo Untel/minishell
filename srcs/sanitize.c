@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/05/15 22:49:03 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/09/29 15:40:29 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int
 		else if (sh->input[i] == ';')
 		{
 			if (i && sh->input[i - 1] == ';')
-				return (!ft_fprintf(STDERR, MSG_SYNTAX_ERR, sh->input[i], i));
+				return (!ft_fprintf(STDERR, SYN_ERR, sh->input[i], i));
 			continue ;
 		}
 		else if (check_input2(sh, q, i))
