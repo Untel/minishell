@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/22 12:37:47 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/28 17:50:43 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/09/29 16:39:20 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,16 @@ int
 	return (ft_atoi(str));
 }
 
+void
+	get_size_child(int p[2], int *ret, char **av, char **env)
+{
+	dup2(p[1], 1);
+	close(p[0]);
+	*ret = execve("/bin/stty", av, env);
+	close(p[1]);
+	exit(*ret);
+}
+
 int
 	get_term_size(char **av, char **env)
 {
@@ -61,13 +71,7 @@ int
 	if (ret == -1 || (pid = fork()) == -1)
 		return (-1);
 	else if (pid == 0)
-	{
-		dup2(p[1], 1);
-		close(p[0]);
-		ret = execve("/bin/stty", av, env);
-		close(p[1]);
-		exit(ret);
-	}
+		get_size_child(p, &ret, av, env);
 	else
 	{
 		close(p[1]);
