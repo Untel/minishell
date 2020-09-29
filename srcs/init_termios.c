@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/22 12:37:47 by riblanc           #+#    #+#             */
-/*   Updated: 2020/09/29 16:33:04 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/09/29 16:39:20 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int
 }
 
 void
-	child(int p[2], int *ret, char **av, char **env)
+	get_size_child(int p[2], int *ret, char **av, char **env)
 {
 	dup2(p[1], 1);
 	close(p[0]);
@@ -71,7 +71,7 @@ int
 	if (ret == -1 || (pid = fork()) == -1)
 		return (-1);
 	else if (pid == 0)
-		child(p, &ret, av, env);
+		get_size_child(p, &ret, av, env);
 	else
 	{
 		close(p[1]);
