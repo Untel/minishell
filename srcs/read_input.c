@@ -32,6 +32,8 @@ char
 		return (linedit_notty());
 	init_sline(line);
 	init_term(&(line->s_term), &(line->s_term_backup));
+	line->ret = 0;
+	line->nb_res = 0;
 	line->multi = multi;
 	line->prompt = prompt;
 	line->size_prompt = size_prompt;
@@ -44,20 +46,21 @@ char
 }
 
 char
-	*check_handle(t_shell *sh, t_line *line, char *prompt, char *str, int ret)
+	*check_handle(t_shell *sh, t_line *line, char *prompt)
 {
+	int		ret;
+
 	if ((ret = handle_input(sh, line, prompt)))
 	{
-		tcsetattr(0, 0, &(line->s_term_backup));
-		if (ret == -1)
+		if ((tcsetattr(0, 0, &(line->s_term_backup)) || 1) && ret == -1)
 			return (free_input(line, 1));
 		else
 		{
 			if (ret != 2)
 			{
-				str = convert_to_str(line->lst_input, 1);
-				add_history(&g_history, ft_strdup(str), H_SAVE,
-					ft_strlen(str) + 1);
+				line->str = convert_to_str(line->lst_input, 1);
+				add_history(&g_history, ft_strdup(line->str), H_SAVE,
+					ft_strlen(line->str) + 1);
 			}
 			else if (ret == 2)
 			{
@@ -66,7 +69,7 @@ char
 			}
 			write(1, "\n", 1);
 			free_history(&(line->edit_history), 0);
-			return (ret != 2 ? str : (char *)-3);
+			return (ret != 2 ? line->str : (char *)-3);
 		}
 	}
 	return ((char *)-2);
@@ -96,26 +99,20 @@ char
 	*read_input(t_shell *sh, char *prompt, int multi, int size_prompt)
 {
 	t_line	line;
-	int		ret;
-	char	*str;
-	int		nb_res;
 
-	ret = 0;
-	if ((str = init_read(&line, multi, prompt, size_prompt)) != (char *)-1)
-		return (str);
-	str = 0;
-	nb_res = 0;
-	while ((ret = read(0, line.buff, 1)) >= 0)
+	if ((line.str = init_read(&line, multi, prompt, size_prompt)) != (char *)-1)
+		return (line.str);
+	while ((line.ret = read(0, line.buff, 1)) >= 0)
 	{
-		if (ret > 0)
+		if (line.ret > 0)
 		{
-			if (manage_resize(nb_res, &line, prompt))
-				++nb_res;
+			if (manage_resize(line.nb_res, &line, prompt))
+				++line.nb_res;
 			line.old_size = line.lst_input->size;
-			if ((str = check_handle(sh, &line, prompt, str, ret)) != (char *)-2)
+			if ((line.str = check_handle(sh, &line, prompt)) != (char *)-2)
 			{
 				tcsetattr(0, 0, &(line.s_term_backup));
-				return (str);
+				return (line.str);
 			}
 			refresh_line(&line, prompt, 0);
 			ft_bzero(line.buff, 6);

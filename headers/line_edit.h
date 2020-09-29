@@ -85,6 +85,10 @@ struct	s_line
 	char			*buf;
 	char			seq[64];
 	t_complete		complete;
+	int				ret;
+	char			*str;
+	int				nb_res;
+
 };
 
 typedef struct s_line	t_line;
