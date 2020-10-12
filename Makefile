@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/05/31 14:21:03 by riblanc          ###   ########.fr        #
+#    Updated: 2020/10/13 01:30:40 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,7 @@ SRCS_FILES	= \
 	select_utils.c \
 	append_cmd.c \
 	auto_complete.c \
+	auto_complete_utils.c \
 	aliases.c \
 	aliases_utils.c \
 	aliases_utils_2.c

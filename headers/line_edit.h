@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/15 22:50:50 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/10/13 01:31:39 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,31 @@ struct	s_complete
 };
 
 typedef struct s_complete	t_complete;
+
+struct	s_nmatch
+{
+	struct dirent	*ep;
+	DIR				*dp;
+	int				ret;
+	int				i;
+
+};
+
+typedef struct s_nmatch	t_nmatch;
+
+struct	s_cplutils
+{
+	t_lst_in	*lstmp;
+	char		**paths;
+	char		**lst;
+	char		*current_word;
+	char		*tmp;
+	int			nb_elem;
+	int			i;
+	int			ret;
+};
+
+typedef struct s_cplutils	t_cplutils;
 
 struct	s_line
 {
@@ -162,6 +187,17 @@ char	*get_str_by_pos(t_line *line, int del);
 void	past(t_line *line, int before);
 void	handle_select_x(t_select *s_sel, t_line *line, char **yank, int maj);
 
+/*
+** auto_complete utils
+*/
+
 void	auto_complete(t_shell *sh, t_line *line);
+char	**get_matchlist(t_nmatch utils, char **path, char *file);
+char	**get_nmatch(t_shell *sh, char **path, char *file);
+void	get_rest_word(t_line *line, char *match, char *elem);
+int		ft_strslen(char **strs);
+char	**split_path(char *str);
+char	*get_current_word(t_line *line);
+int		get_size_cword(t_lst_in *tmp);
 
 #endif
