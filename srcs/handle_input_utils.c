@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 21:44:17 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 00:39:47 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/10/15 16:20:35 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 extern int	g_termx;
 
-static void	go_left(t_line *line)
+void		go_left(t_line *line)
 {
 	t_lst_in	*elem;
 

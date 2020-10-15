@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/10/13 01:31:39 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/10/15 16:20:57 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ char	*linedit_notty(void);
 void	select_mode(t_line *line, char *prompt);
 int		handle_escape(t_line *line, char *prompt, int edit);
 void	go_right(t_line *line);
+void	go_left(t_line *line);
 void	handle_ctrlu(t_line *line);
 
 /*
