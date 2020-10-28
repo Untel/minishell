@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 15:44:02 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 00:47:55 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/10/15 16:21:54 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ static int	select_handle_sp(t_select *s_sel, t_line *line)
 {
 	if (*line->buff == 'w')
 		go_right(line);
+	else if (*line->buff == 'b')
+		go_left(line);
 	else if (*line->buff == 'u')
 		history_pn(line, HPREV, &(line->edit_history));
 	else if (*line->buff == 0x12)
