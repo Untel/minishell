@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/31 14:22:58 by riblanc          ###   ########.fr       */
+/*   Updated: 2020/10/28 07:49:31 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ int			g_resize = 0;
 char
 	*init_read(t_line *line, int multi, char *prompt, int size_prompt)
 {
-	handle_winch(-1);
-	if (!g_termx)
-		return (linedit_notty());
 	init_sline(line);
 	init_term(&(line->s_term), &(line->s_term_backup));
+	if (!g_termx)
+	{
+		handle_winch(-1);
+		if (!g_termx)
+			return (linedit_notty());
+	}
 	line->ret = 0;
 	line->nb_res = 0;
 	line->multi = multi;
