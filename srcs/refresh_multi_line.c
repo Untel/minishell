@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 22:36:12 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 23:14:22 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 00:46:18 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ static void	refresh_edit(t_ml *ml, t_line *line, int edit)
 
 	ft_sprintf(nb_lines, "%d", g_sh.term.height);
 	while (++ml->i <= ml->rows)
-		append(&line->buf, ft_strdup("\x1b[B"));
-	append(&line->buf, ft_strdup("\n\x1b[s\x1b[0m\x1b["));
-	append(&line->buf, ft_strdup(nb_lines));
-	append(&line->buf, ft_strdup(";0H\r\x1b[0K"));
+		append(&line->buf, "\x1b[B");
+	append(&line->buf, "\n\x1b[s\x1b[0m\x1b[");
+	append(&line->buf, nb_lines);
+	append(&line->buf, ";0H\r\x1b[0K");
 	if (edit)
-		append(&line->buf, ft_strdup("\x1b[1m -- EDIT MODE --"));
-	append(&line->buf, ft_strdup("\x1b[u\x1b[A"));
+		append(&line->buf, "\x1b[1m -- EDIT MODE --");
+	append(&line->buf, "\x1b[u\x1b[A");
 	ml->i = ml->rpos;
 	while (++ml->i <= ml->rows)
-		append(&line->buf, ft_strdup("\x1b[A"));
+		append(&line->buf, "\x1b[A");
 }
 
 static void	init_phase(t_ml *ml, t_line *line)
@@ -53,19 +53,19 @@ static void	clear_old_rows(t_ml *ml, t_line *line, char *prompt)
 	if (ml->old_rows - ml->rpos > 0)
 	{
 		ft_sprintf(line->seq, "\x1b[%dB", ml->old_rows - ml->rpos);
-		append(&line->buf, ft_strdup(line->seq));
+		append(&line->buf, line->seq);
 	}
 	ml->i = -1;
 	while (++ml->i < ml->old_rows - 1)
-		append(&line->buf, ft_strdup("\r\x1b[0K\x1b[1A"));
-	append(&line->buf, ft_strdup("\r\x1b[0K"));
-	append(&line->buf, ft_strdup(prompt));
+		append(&line->buf, "\r\x1b[0K\x1b[1A");
+	append(&line->buf, "\r\x1b[0K");
+	append(&line->buf, prompt);
 	append_multi_cmd(line, ml->len);
-	append(&line->buf, ft_strdup("\x1b[0m"));
+	append(&line->buf, "\x1b[0m");
 	if (ml->pos && ml->pos == ml->len
 			&& (ml->pos + ml->offset) % g_sh.term.width == 0)
 	{
-		append(&line->buf, ft_strdup("\n\r"));
+		append(&line->buf, "\n\r");
 		++ml->rows;
 		if (ml->rows > line->maxrows)
 			line->maxrows = ml->rows;
@@ -83,14 +83,14 @@ void		refresh_multi_line(t_line *line, char *prompt, int edit)
 	if (ml.rows - ml.rpos2 > 0)
 	{
 		ft_sprintf(line->seq, "\x1b[%dA", ml.rows - ml.rpos2);
-		append(&line->buf, ft_strdup(line->seq));
+		append(&line->buf, line->seq);
 	}
 	ml.col = (ml.offset + ml.pos) % g_sh.term.width;
 	if (ml.col)
 		ft_sprintf(line->seq, "\r\x1b[%dC", ml.col);
 	else
 		ft_sprintf(line->seq, "\r");
-	append(&line->buf, ft_strdup(line->seq));
+	append(&line->buf, line->seq);
 	line->old_pos = ml.pos;
 	write(1, line->buf, ft_strlen(line->buf));
 	ft_memdel((void **)&line->buf);

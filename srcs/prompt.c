@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:53:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/07/03 14:51:44 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 00:54:00 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int
 	prompt = NULL;
 	ft_sprintf(tmp, sh->last_ret == EXIT_SUCCESS ?
 		MSG_PROMPT : MSG_PROMPT_ERR, sh->printed_dir);
-	append(&prompt, ft_strdup(tmp));
+	append(&prompt, tmp);
 	sh->input = read_input(sh, prompt, MULTI, ft_strlen(sh->printed_dir) + 3);
 	ft_memdel((void **)&prompt);
 	if (sh->input == (char*)-3)

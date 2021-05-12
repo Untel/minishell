@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 23:13:15 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 22:58:05 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 00:43:31 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,10 @@ void	append(char **s1, char *s2)
 	else if (!(*s1) && s2)
 	{
 		*s1 = ft_strdup(s2);
-		ft_memdel((void **)&s2);
 	}
 	else if (*s1 && s2)
 	{
 		tmp = ft_strjoin(*s1, s2);
-		ft_memdel((void **)&s2);
 		free(*s1);
 		*s1 = tmp;
 	}

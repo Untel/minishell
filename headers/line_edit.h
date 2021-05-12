@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 23:07:54 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 01:00:38 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void	handle_ctrl_darrow(t_line *line, int edit, int n);
 char	*get_str_by_pos(t_line *line, int del);
 void	past(t_line *line, int before);
 void	handle_select_x(t_select *s_sel, t_line *line, char **yank, int maj);
+void	ft_swap(int *a, int *b);
 
 /*
 ** auto_complete utils

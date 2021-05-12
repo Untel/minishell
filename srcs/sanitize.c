@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 17:14:01 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/09/29 15:40:29 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 00:54:08 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int
 
 	prompt = NULL;
 	sh->term.size_prt = ft_sprintf(seq, "%s> ", ask);
-	append(&prompt, ft_strdup(seq));
+	append(&prompt, seq);
 	buffer = read_input(sh, prompt, MULTI, sh->term.size_prt);
 	ft_memdel((void **)&prompt);
 	if (buffer == (char *)ERR)

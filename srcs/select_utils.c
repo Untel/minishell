@@ -6,14 +6,14 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 16:24:32 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 21:42:35 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 01:00:13 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "line_edit.h"
 #include <stdlib.h>
 
-static void	ft_swap(int *a, int *b)
+void		ft_swap(int *a, int *b)
 {
 	*a ^= *b;
 	*b ^= *a;
