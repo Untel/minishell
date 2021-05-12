@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 22:36:12 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 15:59:03 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 20:39:07 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@
 
 static void	refresh_edit(t_ml *ml, t_line *line, int edit)
 {
+	char nb_lines[16];
+
+	ft_sprintf(nb_lines, "%d", g_termy);
 	while (++ml->i <= ml->rows)
 		append(&line->buf, ft_strdup("\x1b[B"));
-	append(&line->buf, ft_strdup("\n\x1b[s\x1b[0m\x1b[999B\r\x1b[0K"));
+	append(&line->buf, ft_strdup("\n\x1b[s\x1b[0m\x1b["));
+	append(&line->buf, ft_strdup(nb_lines));
+	append(&line->buf, ft_strdup(";0H\r\x1b[0K"));
 	if (edit)
 		append(&line->buf, ft_strdup("\x1b[1m -- EDIT MODE --"));
 	append(&line->buf, ft_strdup("\x1b[u\x1b[A"));
