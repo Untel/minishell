@@ -6,14 +6,12 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/11 21:21:43 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:19:10 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
 
 int
 	try_exec(t_shell *sh, char *path, t_cmd *cmd, pid_t child)
@@ -43,28 +41,6 @@ int
 		return (ret);
 	}
 	return (ERR);
-}
-
-int
-	check_if_executable(char *path, char *cmd)
-{
-	char *tmp[2];
-	char *filename;
-	struct stat statbuf;
-
-	tmp[0] = path;
-	tmp[1] = cmd;
-	filename = ft_strmjoin(2, tmp, "/");
-
-	if (!filename)
-		return (1);
-	stat(filename, &statbuf);
-	if (statbuf.st_mode & S_IFLNK)
-		lstat(filename, &statbuf);
-	free(filename);
-	return !(((statbuf.st_mode & S_IFREG) == S_IFREG
-		|| (statbuf.st_mode & S_IFLNK) == S_IFLNK) &&
-		(statbuf.st_mode & S_IXUSR) == S_IXUSR);
 }
 
 int

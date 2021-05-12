@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 22:36:12 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 22:27:14 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:14:22 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static void	clear_old_rows(t_ml *ml, t_line *line, char *prompt)
 	append(&line->buf, ft_strdup(prompt));
 	append_multi_cmd(line, ml->len);
 	append(&line->buf, ft_strdup("\x1b[0m"));
-	if (ml->pos && ml->pos == ml->len && (ml->pos + ml->offset) % g_sh.term.width == 0)
+	if (ml->pos && ml->pos == ml->len
+			&& (ml->pos + ml->offset) % g_sh.term.width == 0)
 	{
 		append(&line->buf, ft_strdup("\n\r"));
 		++ml->rows;

@@ -6,11 +6,14 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 19:48:08 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 19:54:16 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:20:36 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
 
 int		fe_init(t_shell *sh, t_cmd *cmd, char **paths)
 {
@@ -35,4 +38,24 @@ int		fe_init(t_shell *sh, t_cmd *cmd, char **paths)
 	}
 	ret = fork_exec(sh, cmd, tmp, 2);
 	return (0);
+}
+
+int		check_if_executable(char *path, char *cmd)
+{
+	char		*tmp[2];
+	char		*filename;
+	struct stat	statbuf;
+
+	tmp[0] = path;
+	tmp[1] = cmd;
+	filename = ft_strmjoin(2, tmp, "/");
+	if (!filename)
+		return (1);
+	stat(filename, &statbuf);
+	if (statbuf.st_mode & S_IFLNK)
+		lstat(filename, &statbuf);
+	free(filename);
+	return (!(((statbuf.st_mode & S_IFREG) == S_IFREG
+		|| (statbuf.st_mode & S_IFLNK) == S_IFLNK) &&
+		(statbuf.st_mode & S_IXUSR) == S_IXUSR));
 }

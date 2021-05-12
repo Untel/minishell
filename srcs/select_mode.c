@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 15:44:02 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 22:27:59 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:16:19 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void		select_mode_lp(t_select *s_sel, t_line *line, char *prompt)
 
 void		select_mode(t_line *line, char *prompt)
 {
-	t_select s_sel;
-	static int nb = 0;
+	t_select	s_sel;
+	static int	nb = 0;
 
 	init_select(&s_sel, line, prompt);
 	while ((s_sel.ret = read(0, line->buff, 1)) >= 0)

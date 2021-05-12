@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 10:58:52 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 22:22:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:14:43 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 static int		winch(void)
 {
 	struct winsize ws;
+
 	ioctl(0, TIOCGWINSZ, &ws);
 	g_sh.term.height = ws.ws_row;
 	g_sh.term.width = ws.ws_col;

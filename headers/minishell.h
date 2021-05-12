@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2021/05/12 23:03:54 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:18:25 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,7 @@ int				fork_exec(t_shell *sh, t_cmd *cmd, char *tmp[2], int nb);
 int				test_dir(char *path, char *cmd);
 int				exec_bin(t_shell *sh, t_cmd *cmd);
 int				fe_init(t_shell *sh, t_cmd *cmd, char **paths);
+int				check_if_executable(char *path, char *cmd);
 
 /*
 **	Redirections / Pipelines
@@ -306,9 +307,6 @@ void			init_child_signals(pid_t child);
 */
 
 extern t_shell	g_sh;
-extern int		g_termx;
-extern int		g_termy;
-extern int		g_resize;
 
 /*
 ** Alias utils
