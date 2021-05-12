@@ -6,12 +6,13 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 01:56:11 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/24 19:54:12 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/11 21:21:43 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <dirent.h>
 
 int
@@ -45,6 +46,28 @@ int
 }
 
 int
+	check_if_executable(char *path, char *cmd)
+{
+	char *tmp[2];
+	char *filename;
+	struct stat statbuf;
+
+	tmp[0] = path;
+	tmp[1] = cmd;
+	filename = ft_strmjoin(2, tmp, "/");
+
+	if (!filename)
+		return (1);
+	stat(filename, &statbuf);
+	if (statbuf.st_mode & S_IFLNK)
+		lstat(filename, &statbuf);
+	free(filename);
+	return !(((statbuf.st_mode & S_IFREG) == S_IFREG
+		|| (statbuf.st_mode & S_IFLNK) == S_IFLNK) &&
+		(statbuf.st_mode & S_IXUSR) == S_IXUSR);
+}
+
+int
 	test_dir(char *path, char *cmd)
 {
 	struct dirent	*file;
@@ -58,6 +81,8 @@ int
 	{
 		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
 		{
+			if (check_if_executable(path, cmd))
+				return (FALSE);
 			if (closedir(rep) == ERR)
 				return (ERR);
 			return (SUC);
