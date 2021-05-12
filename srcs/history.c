@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/21 23:15:52 by riblanc           #+#    #+#             */
-/*   Updated: 2020/04/28 00:11:45 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/12 23:07:38 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-
-t_history	g_history = {.filename = ".history"};
 
 void	add_history(t_history *history, char *cmd, int arg, size_t pos)
 {
@@ -52,6 +50,8 @@ void	load_history(const char *filename, t_history *history)
 	int		ret;
 	char	*cmd;
 
+	if (filename == NULL)
+		filename = ".history";
 	if ((fd = open(filename, O_RDWR | O_CREAT, 0664)) == -1)
 		return ;
 	add_history(history, ft_strdup(""), H_NONE, 1);

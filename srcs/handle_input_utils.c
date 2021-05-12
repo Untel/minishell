@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 21:44:17 by riblanc           #+#    #+#             */
-/*   Updated: 2020/10/15 16:20:35 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 22:25:18 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 #include "list.h"
 #include <unistd.h>
 
-extern int	g_termx;
-
-void		go_left(t_line *line)
+void		go_elem_left(t_line *line)
 {
 	t_lst_in	*elem;
 
@@ -33,7 +31,7 @@ void		go_left(t_line *line)
 	}
 }
 
-void		go_right(t_line *line)
+void		go_elem_right(t_line *line)
 {
 	t_lst_in	*elem;
 
@@ -68,24 +66,24 @@ void		handle_ctrll(t_line *line, char *prompt)
 	refresh_line(line, prompt, 0);
 }
 
-void		handle_escape_sp(t_line *line, int edit, int *ret)
+void		handle_escape_sp(t_line *line, int edit, int *ret, int n)
 {
 	if (!strcmp(line->buff, "\x1b[D"))
 		line->pos -= line->pos > 1 ? 1 : 0;
 	else if (!strcmp(line->buff, "\x1b[C"))
 		line->pos += line->pos < line->lst_input->size ? 1 : 0;
 	else if (!strcmp(line->buff, "\x1b[1;5B") && line->multi)
-		handle_ctrl_darrow(line, edit);
+		handle_ctrl_darrow(line, edit, n);
 	else if (!strcmp(line->buff, "\x1b[1;5A") && line->multi)
-		handle_ctrl_uarrow(line);
+		handle_ctrl_uarrow(line, n);
 	else if (!strcmp(line->buff, "\x1b[1;5D"))
-		go_left(line);
+		go_elem_left(line);
 	else if (!strcmp(line->buff, "\x1b[1;5C"))
-		go_right(line);
+		go_elem_right(line);
 	else if (!strcmp(line->buff, "\x1b[A"))
-		handle_uarrow(line, edit);
+		handle_uarrow(line, edit, n);
 	else if (!strcmp(line->buff, "\x1b[B"))
-		handle_darrow(line, edit);
+		handle_darrow(line, edit, n);
 	else if (!strcmp(line->buff, "\x1b[H"))
 		line->pos = 1;
 	else if (!strcmp(line->buff, "\x1b[F"))

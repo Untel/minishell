@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/09/29 15:40:01 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:03:54 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,19 @@ typedef struct	s_term
 	int			pos_aff;
 	int			size_prt;
 	t_termios	term;
+	int			width;
+	int			height;
+	int			resize;
 }				t_term;
+
+typedef struct	s_hstry
+{
+	t_list	*lst;
+	t_list	*cursor_pos;
+	int		len;
+	int		index;
+	char	*filename;
+}				t_hstry;
 
 typedef struct	s_alias
 {
@@ -128,20 +140,21 @@ typedef struct	s_alias
 
 typedef struct	s_shell
 {
-	char	*input;
-	int		stop;
-	int		exit_val;
-	char	dir[BUFFER_SIZE];
-	char	printed_dir[BUFFER_SIZE];
-	int		last_ret;
-	int		inline_fd;
-	t_list	*cmds;
-	t_list	*env;
-	t_list	*heredocs;
-	t_alias	*alias;
-	int		hd_index;
-	t_term	term;
-	int		sub;
+	char		*input;
+	t_hstry		cmd_history;
+	int			stop;
+	int			exit_val;
+	char		dir[BUFFER_SIZE];
+	char		printed_dir[BUFFER_SIZE];
+	int			last_ret;
+	int			inline_fd;
+	t_list		*cmds;
+	t_list		*env;
+	t_list		*heredocs;
+	t_alias		*alias;
+	int			hd_index;
+	t_term		term;
+	int			sub;
 }				t_shell;
 
 typedef struct	s_key

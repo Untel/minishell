@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 22:15:26 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/13 17:56:10 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 22:26:24 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static void	refresh_edit(t_line *line, int edit)
 
 static void	compute_offset(int *offset, int *pos, int *buf, int *len)
 {
-	while ((*offset + *pos) >= g_termx)
+	while ((*offset + *pos) >= g_sh.term.width)
 	{
 		++(*buf);
 		--(*pos);
 		--(*len);
 	}
-	while ((*offset + *len) > g_termx)
+	while ((*offset + *len) > g_sh.term.width)
 		--(*len);
 }
 
@@ -48,7 +48,7 @@ void		refresh_single_line(t_line *line, int edit)
 		(line->complete.str ? ft_strlen(line->complete.str) : 0);
 	input_len = len;
 	buf = 0;
-	offset = line->size_prompt % g_termx;
+	offset = line->size_prompt % g_sh.term.width;
 	line->buf = NULL;
 	refresh_edit(line, edit);
 	compute_offset(&offset, &pos, &buf, &len);

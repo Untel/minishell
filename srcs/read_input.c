@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2020/10/28 07:49:31 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:09:15 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,26 @@
 #include <stdlib.h>
 #include "minishell.h"
 
-int			g_termx = 0;
-int			g_termy = 0;
-int			g_resize = 0;
-
 char
-	*init_read(t_line *line, int multi, char *prompt, int size_prompt)
+	*init_read(t_line *line, char *prompt, int multi, int size_prompt)
 {
 	init_sline(line);
+	line->multi = multi;
+	line->prompt = prompt;
+	line->size_prompt = size_prompt;
 	init_term(&(line->s_term), &(line->s_term_backup));
-	if (!g_termx)
+	if (!g_sh.term.width)
 	{
 		handle_winch(-1);
-		if (!g_termx)
+		if (!g_sh.term.width)
 			return (linedit_notty());
 	}
 	line->ret = 0;
 	line->nb_res = 0;
-	line->multi = multi;
-	line->prompt = prompt;
-	line->size_prompt = size_prompt;
-	write(1, prompt, ft_strlen(prompt));
+	write(1, line->prompt, ft_strlen(line->prompt));
 	line->complete.pos = -1;
 	line->complete.str = 0;
-	refresh_line(line, prompt, 0);
-	g_history.index = g_history.len ? g_history.len : 1;
+	refresh_line(line, line->prompt, 0);
 	return ((char *)-1);
 }
 
@@ -62,7 +57,7 @@ char
 			if (ret != 2)
 			{
 				line->str = convert_to_str(line->lst_input, 1);
-				add_history(&g_history, ft_strdup(line->str), H_SAVE,
+				add_history(line->input_history, ft_strdup(line->str), H_SAVE,
 					ft_strlen(line->str) + 1);
 			}
 			else if (ret == 2)
@@ -81,7 +76,7 @@ char
 static int
 	manage_resize(int nb_res, t_line *line, char *prompt)
 {
-	if (g_resize && !(g_resize = 0))
+	if (g_sh.term.resize && !(g_sh.term.resize = 0))
 	{
 		if (!MULTI)
 		{
@@ -103,8 +98,11 @@ char
 {
 	t_line	line;
 
-	if ((line.str = init_read(&line, multi, prompt, size_prompt)) != (char *)-1)
+	if ((line.str = init_read(&line, prompt, multi, size_prompt)) != (char *)-1)
 		return (line.str);
+	line.input_history = (t_history *)&sh->cmd_history;
+	line.input_history->index = line.input_history->len
+		? line.input_history->len : 1;
 	while ((line.ret = read(0, line.buff, 1)) >= 0)
 	{
 		if (line.ret > 0)

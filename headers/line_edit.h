@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2020/10/15 16:20:57 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:07:54 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_cplutils	t_cplutils;
 struct	s_line
 {
 	char			*prompt;
+	char			**yank;
 	int				old_size;
 	int				pos;
 	int				old_pos;
@@ -107,13 +108,13 @@ struct	s_line
 	struct termios	s_term;
 	struct termios	s_term_backup;
 	t_history		edit_history;
+	t_history		*input_history;
 	char			*buf;
 	char			seq[64];
 	t_complete		complete;
 	int				ret;
 	char			*str;
 	int				nb_res;
-
 };
 
 typedef struct s_line	t_line;
@@ -132,11 +133,6 @@ struct	s_ml
 };
 
 typedef struct s_ml	t_ml;
-
-extern t_history	g_history;
-extern int			g_termx;
-extern int			g_termy;
-extern int			g_resize;
 
 char	*read_input(t_shell *sh, char *prompt, int multi, int size_prompt);
 int		init_term(struct termios *s_term, struct termios *s_term_b);
@@ -161,9 +157,12 @@ int		init_sline(t_line *line);
 char	*linedit_notty(void);
 
 void	select_mode(t_line *line, char *prompt);
-int		handle_escape(t_line *line, char *prompt, int edit);
-void	go_right(t_line *line);
-void	go_left(t_line *line);
+int		handle_escape(t_line *line, char *prompt, int edit, int n);
+void	go_elem_right(t_line *line);
+void	go_elem_left(t_line *line);
+void	go_lr(t_line *line, int dir, int n);
+void	go_elem_right(t_line *line);
+void	go_elem_left(t_line *line);
 void	handle_ctrlu(t_line *line);
 
 /*
@@ -172,13 +171,13 @@ void	handle_ctrlu(t_line *line);
 
 void	handle_winch(int sig);
 int		handle_input(t_shell *sh, t_line *line, char *prompt);
-void	handle_escape_sp(t_line *line, int edit, int *ret);
+void	handle_escape_sp(t_line *line, int edit, int *ret, int n);
 void	handle_ctrll(t_line *line, char *prompt);
 int		handle_ctrld(t_line *line);
-void	handle_uarrow(t_line *line, int edit);
-void	handle_darrow(t_line *line, int edit);
-void	handle_ctrl_uarrow(t_line *line);
-void	handle_ctrl_darrow(t_line *line, int edit);
+void	handle_uarrow(t_line *line, int edit, int n);
+void	handle_darrow(t_line *line, int edit, int n);
+void	handle_ctrl_uarrow(t_line *line, int n);
+void	handle_ctrl_darrow(t_line *line, int edit, int n);
 
 /*
 ** select_utils

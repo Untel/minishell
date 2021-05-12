@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 11:04:29 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/15 22:50:39 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 21:17:30 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ int			handle_ctrld(t_line *line)
 	return (0);
 }
 
-int			handle_escape(t_line *line, char *prompt, int edit)
+int			handle_escape(t_line *line, char *prompt, int edit, int n)
 {
 	int		ret;
 
 	ret = -1;
 	if ((ret = read(0, line->buff + 1, 5)) > 0)
-		handle_escape_sp(line, edit, &ret);
+		handle_escape_sp(line, edit, &ret, n);
 	if (!ret || ret == -1)
 	{
 		if (!edit)
@@ -75,7 +75,7 @@ int			handle_input(t_shell *sh, t_line *line, char *prompt)
 	if (line->buff[0] == 127 || line->buff[0] == 8)
 		handle_backspace(line);
 	else if (line->buff[0] == 27)
-		handle_escape(line, prompt, 0);
+		handle_escape(line, prompt, 0, 1);
 	else if (line->buff[0] == 21)
 		handle_ctrlu(line);
 	else if (line->buff[0] == 10 || line->buff[0] == 3)

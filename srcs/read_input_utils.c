@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 23:13:15 by riblanc           #+#    #+#             */
-/*   Updated: 2020/05/28 17:23:54 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 22:58:05 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "get_next_line.h"
 #include <unistd.h>
 #include <stdlib.h>
-
-extern char	*g_yank;
 
 char	*linedit_notty(void)
 {
@@ -36,9 +34,12 @@ char	*linedit_notty(void)
 
 int		init_sline(t_line *line)
 {
+	static char *yank = NULL;
+
 	ft_memset(line, 0, sizeof(*line));
-	if (g_yank)
-		line->copy_buff = g_yank;
+	line->yank = &yank;
+	if (line->yank && *line->yank)
+		line->copy_buff = *line->yank;
 	if (!(line->lst_input = malloc(sizeof(t_data))))
 		return (-1);
 	init_lst(line->lst_input);
@@ -52,11 +53,11 @@ char	*free_input(t_line *line, int free_yank)
 	if (free_yank && line->copy_buff)
 	{
 		ft_memdel((void **)&(line->copy_buff));
-		g_yank = NULL;
+		*line->yank = NULL;
 	}
 	free_all(line->lst_input);
 	ft_memdel((void **)&(line->lst_input));
-	free_history(&g_history, 0);
+	free_history(line->input_history, 0);
 	free_history(&(line->edit_history), 0);
 	write(1, "\n", 1);
 	return ((char *)-1);
