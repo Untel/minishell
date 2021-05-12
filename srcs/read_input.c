@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 23:09:15 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 01:29:20 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ char
 	line->prompt = prompt;
 	line->size_prompt = size_prompt;
 	init_term(&(line->s_term), &(line->s_term_backup));
-	if (!g_sh.term.width)
+	if (!g_term_size.width)
 	{
 		handle_winch(-1);
-		if (!g_sh.term.width)
+		if (!g_term_size.width)
 			return (linedit_notty());
 	}
 	line->ret = 0;
@@ -76,7 +76,7 @@ char
 static int
 	manage_resize(int nb_res, t_line *line, char *prompt)
 {
-	if (g_sh.term.resize && !(g_sh.term.resize = 0))
+	if (g_term_size.resize && !(g_term_size.resize = 0))
 	{
 		if (!MULTI)
 		{

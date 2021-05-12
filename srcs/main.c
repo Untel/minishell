@@ -6,15 +6,13 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2021/05/12 23:24:43 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 01:24:33 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <termios.h>
 #include "minishell.h"
 #include "line_edit.h"
-
-t_shell		g_sh;
 
 /*
 ** __attribute__((destructor)) void lul(void)
@@ -90,23 +88,25 @@ int
 int
 	main(int ac, char **av, char **envp)
 {
-	g_sh = (t_shell) {
+	t_shell sh;
+
+	sh = (t_shell) {
 		.input = NULL, .dir = "", .stop = 0, .cmds = NULL,
 		.printed_dir = "", .last_ret = 0, .hd_index = 0,
 		.env = create_env_list(envp), .exit_val = EXIT_SUCCESS,
 		.heredocs = NULL, .inline_fd = -1, .sub = 0,
 		.cmd_history.filename = ".history",
 	};
-	load_history(g_sh.cmd_history.filename, (t_history *)&g_sh.cmd_history);
-	initialize_shell(&g_sh);
+	load_history(sh.cmd_history.filename, (t_history *)&sh.cmd_history);
+	initialize_shell(&sh);
 	if (ac > 1)
-		inline_mode(&g_sh, *(av + 1));
+		inline_mode(&sh, *(av + 1));
 	else if (isatty(STDIN_FILENO))
-		run(&g_sh);
+		run(&sh);
 	else
-		inline_mode(&g_sh, NULL);
-	free_env_list(&g_sh.env);
-	free_history((t_history *)&g_sh.cmd_history, 0);
-	free_alias(&g_sh);
-	return (g_sh.exit_val);
+		inline_mode(&sh, NULL);
+	free_env_list(&sh.env);
+	free_history((t_history *)&sh.cmd_history, 0);
+	free_alias(&sh);
+	return (sh.exit_val);
 }

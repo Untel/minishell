@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 15:44:02 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/12 23:16:19 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 01:28:05 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void		select_mode_lp(t_select *s_sel, t_line *line, char *prompt)
 	if (line->pos > 1)
 		line->pos = line->pos >= line->lst_input->size ?
 			line->lst_input->size - 1 : line->pos;
-	if (g_sh.term.resize && !((g_sh.term.resize = 0)))
+	if (g_term_size.resize && !((g_term_size.resize = 0)))
 		ft_printf("\r\x1b[0K%s", prompt);
 	refresh_line(line, prompt, 1);
 	ft_bzero(line->buff, 6);
