@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2021/05/12 23:07:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/12 23:24:43 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,6 @@ int
 }
 
 int
-	is_a_tty(void)
-{
-	struct termios	term;
-
-	return (tcgetattr(0, &term) == 0);
-}
-
-int
 	main(int ac, char **av, char **envp)
 {
 	g_sh = (t_shell) {
@@ -109,7 +101,7 @@ int
 	initialize_shell(&g_sh);
 	if (ac > 1)
 		inline_mode(&g_sh, *(av + 1));
-	else if (is_a_tty())
+	else if (isatty(STDIN_FILENO))
 		run(&g_sh);
 	else
 		inline_mode(&g_sh, NULL);
