@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 23:30:06 by riblanc           #+#    #+#             */
-/*   Updated: 2020/03/06 01:28:23 by adda-sil         ###   ########.fr       */
+/*   Updated: 2021/05/13 03:01:49 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void
 		return (0);
 	while (*lst_env)
 	{
-		if ((*lst_env)->next && (var = (t_key *)(*lst_env)->next->content))
-			if (!ft_strcmp(var->key, key) && (found = 1))
-				break ;
+		var = (t_key *)(*lst_env)->content;
+		if (!ft_strcmp(var->key, key) && (found = 1))
+			break ;
 		lst_env = &(*lst_env)->next;
 	}
 	if (!found)

@@ -6,7 +6,7 @@
 /*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:38:03 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/09 18:23:03 by adda-sil         ###   ########.fr       */
+/*   Updated: 2021/05/13 02:00:51 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,5 @@ int
 		}
 	else
 		export_env_noargs(sh->env);
-	return (EXIT_SUCCESS);
-}
-
-int
-	unset_env(t_shell *sh, t_cmd *cmd)
-{
-	int i;
-
-	if (cmd->argc <= 1)
-	{
-		ft_fprintf(STDERR, MSG_ERROR, "unset: not enough arguments");
-		return (EXIT_FAILURE);
-	}
-	i = 0;
-	while (++i < cmd->argc)
-		unset_key(&sh->env, cmd->argv[i]);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2021/05/13 01:29:47 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 02:06:12 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,7 @@ int				ft_echo(t_shell *sh, t_cmd *cmd);
 int				ft_pwd(t_shell *sh, t_cmd *cmd);
 int				change_directory(t_shell *sh, t_cmd *cmd);
 int				ft_env(t_shell *sh, t_cmd *cmd);
+int				exit_prog(t_shell *sh, t_cmd *cmd);
 
 /*
 ** Environnement

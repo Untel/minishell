@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/03 20:26:21 by riblanc           #+#    #+#              #
-#    Updated: 2020/10/13 01:30:40 by riblanc          ###   ########.fr        #
+#    Updated: 2021/05/13 02:43:18 by riblanc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,55 +16,58 @@ NAME		= minishell
 SRCS_DIR	= srcs
 SRCS_FILES	= \
 	main.c \
-	prompt.c \
-	commands.c \
-	input.c \
-	input2.c \
-	input3.c \
-	env.c \
-	env_utils.c \
-	free_env.c \
-	execute.c \
-	change_directory.c \
-	manage_bin.c \
-	manage_bin_utils.c \
-	export.c \
-	process.c \
-	echo.c \
-	clean.c \
-	clean2.c \
-	match.c \
-	sanitize.c \
-	heredoc.c \
-	signals.c \
-	env_vars.c \
-	redirections.c \
-	wildcards.c \
-	winch.c \
-	read_input.c \
-	read_input_utils.c \
-	refresh_single_line.c \
-	refresh_multi_line.c \
-	handle_input.c \
-	handle_input_utils.c \
-	handle_input_utils_2.c \
-	list_utils.c \
-	list_utils3.c \
-	list_utils4.c \
-	list_utils2.c \
-	init_termios.c \
-	get_next_line.c \
-	get_next_line_utils.c \
-	history.c \
-	history_utils.c \
-	select_mode.c \
-	select_utils.c \
-	append_cmd.c \
-	auto_complete.c \
-	auto_complete_utils.c \
-	aliases.c \
-	aliases_utils.c \
-	aliases_utils_2.c
+	aliases/aliases.c \
+	aliases/utils/aliases_utils.c \
+	aliases/utils/aliases_utils_2.c \
+	builtins/cd.c \
+	builtins/echo.c \
+	builtins/env.c \
+	builtins/exit.c \
+	builtins/export.c \
+	builtins/pwd.c \
+	builtins/unset.c \
+	cmd/commands.c \
+	cmd/wildcards.c \
+	env/env_manager.c \
+	env/env_utils.c \
+	env/env_vars.c \
+	env/free_env.c \
+	input_parsing/input.c \
+	input_parsing/input2.c \
+	input_parsing/input3.c \
+	input_parsing/sanitize.c \
+	line_edit/append_cmd.c \
+	line_edit/auto_complete.c \
+	line_edit/handle_input.c \
+	line_edit/history.c \
+	line_edit/init_termios.c \
+	line_edit/read_input.c \
+	line_edit/refresh_multi_line.c \
+	line_edit/refresh_single_line.c \
+	line_edit/select_mode.c \
+	line_edit/utils/auto_complete_utils.c \
+	line_edit/utils/handle_input_utils.c \
+	line_edit/utils/handle_input_utils_2.c \
+	line_edit/utils/history_utils.c \
+	line_edit/utils/read_input_utils.c \
+	line_edit/utils/select_utils.c \
+	process/execute.c \
+	process/manage_bin.c \
+	process/process.c \
+	process/utils/manage_bin_utils.c \
+	shell_redirect/heredoc.c \
+	shell_redirect/redirections.c \
+	signals/signals.c \
+	signals/winch.c \
+	utils/clean.c \
+	utils/clean2.c \
+	utils/get_next_line.c \
+	utils/get_next_line_utils.c \
+	utils/list_utils.c \
+	utils/list_utils3.c \
+	utils/list_utils4.c \
+	utils/list_utils2.c \
+	utils/match.c
 
 SRCS		=	$(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
@@ -115,6 +118,16 @@ all:		makelib
 -include $(DEP)
 $(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c .ML.$(MULTI) .DBG.$(DEBUG)
 			@mkdir -p $(OBJ_DIR)
+			@mkdir -p $(OBJ_DIR)/aliases/utils
+			@mkdir -p $(OBJ_DIR)/builtins
+			@mkdir -p $(OBJ_DIR)/cmd
+			@mkdir -p $(OBJ_DIR)/env
+			@mkdir -p $(OBJ_DIR)/input_parsing
+			@mkdir -p $(OBJ_DIR)/line_edit/utils
+			@mkdir -p $(OBJ_DIR)/process/utils
+			@mkdir -p $(OBJ_DIR)/shell_redirect
+			@mkdir -p $(OBJ_DIR)/signals
+			@mkdir -p $(OBJ_DIR)/utils
 			$(CC) $(CFLAGS) -MMD -o $@ -c $<
 
 $(NAME):	$(OBJ)

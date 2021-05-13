@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:27:15 by adda-sil          #+#    #+#             */
-/*   Updated: 2021/05/13 01:24:33 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 02:53:45 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,38 +22,45 @@
 ** }
 */
 
-void
-	initialize_shell(t_shell *sh)
+int
+	ft_read(t_shell *sh)
 {
-	char	*tmp;
-	int		shlvl;
+	char	*prompt;
+	char	tmp[4096];
 
-	signal(SIGTSTP, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, SIG_IGN);
-	tmp = get_value(sh->env, "SHLVL", "0");
-	shlvl = ft_str_isnumeric(tmp) ? ft_atoi((char *)tmp) : 0;
-	shlvl = (shlvl < 0 ? 0 : shlvl + 1);
-	if (!(tmp = ft_itoa(shlvl)))
-		err_shutdown(sh, "Cannot upgrade sh_level");
-	tcgetattr(0, &sh->term.term);
-	set_value(&sh->env, "SHLVL", tmp);
-	format_directory(sh);
-	set_value(&sh->env, "PWD", sh->dir);
-	if (!get_value(sh->env, "OLDPWD", NULL))
-		set_value(&sh->env, "OLDPWD", NULL);
-	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
-	ft_memdel((void **)&tmp);
-	sh->alias = load_alias(sh);
+	prompt = NULL;
+	ft_sprintf(tmp, sh->last_ret == EXIT_SUCCESS ?
+		MSG_PROMPT : MSG_PROMPT_ERR, sh->printed_dir);
+	append(&prompt, tmp);
+	sh->input = read_input(sh, prompt, MULTI, ft_strlen(sh->printed_dir) + 3);
+	ft_memdel((void **)&prompt);
+	if (sh->input == (char*)-3)
+	{
+		sh->input = ft_strdup("");
+		sh->last_ret = 130;
+	}
+	if (sh->input == ((char *)-1))
+		sh->input = NULL;
+	return (!!sh->input);
 }
 
-void
-	run(t_shell *sh)
+int
+	prompt_line(t_shell *sh)
 {
-	format_directory(sh);
-	while (!sh->stop)
-		prompt_line(sh);
-	ft_printf(MSG_EXIT);
+	if (!ft_read(sh))
+		sh->stop = 1;
+	if (!sh->stop)
+	{
+		if (sanitize(sh))
+		{
+			parse_input(sh);
+			ft_memdel((void **)&sh->input);
+		}
+	}
+	else
+		ft_memdel((void **)&sh->input);
+	clear_last_prompt(sh);
+	return (SUC);
 }
 
 int
@@ -85,6 +92,31 @@ int
 	return (SUC);
 }
 
+void
+	initialize_shell(t_shell *sh)
+{
+	char	*tmp;
+	int		shlvl;
+
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+	tmp = get_value(sh->env, "SHLVL", "0");
+	shlvl = ft_str_isnumeric(tmp) ? ft_atoi((char *)tmp) : 0;
+	shlvl = (shlvl < 0 ? 0 : shlvl + 1);
+	if (!(tmp = ft_itoa(shlvl)))
+		err_shutdown(sh, "Cannot upgrade sh_level");
+	tcgetattr(0, &sh->term.term);
+	set_value(&sh->env, "SHLVL", tmp);
+	format_directory(sh);
+	set_value(&sh->env, "PWD", sh->dir);
+	if (!get_value(sh->env, "OLDPWD", NULL))
+		set_value(&sh->env, "OLDPWD", NULL);
+	set_value(&sh->env, "GREP_COLOR", "00;38;5;226");
+	ft_memdel((void **)&tmp);
+	sh->alias = load_alias(sh);
+}
+
 int
 	main(int ac, char **av, char **envp)
 {
@@ -102,7 +134,11 @@ int
 	if (ac > 1)
 		inline_mode(&sh, *(av + 1));
 	else if (isatty(STDIN_FILENO))
-		run(&sh);
+	{
+		while (!sh.stop)
+			prompt_line(&sh);
+		ft_printf(MSG_EXIT);
+	}
 	else
 		inline_mode(&sh, NULL);
 	free_env_list(&sh.env);
