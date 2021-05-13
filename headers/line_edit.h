@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:27:00 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/13 01:00:38 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 03:25:49 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,30 +91,28 @@ typedef struct s_cplutils	t_cplutils;
 
 struct	s_line
 {
+	struct termios	s_term;
+	struct termios	s_term_backup;
+	t_history		edit_history;
+	t_complete		complete;
+	t_data			*lst_input;
+	t_history		*input_history;
 	char			*prompt;
 	char			**yank;
-	int				old_size;
+	char			*copy_buff;
+	char			*buf;
+	char			*str;
+	char			seq[32];
+	char			buff[6];
+	int				sel[2];
 	int				pos;
 	int				old_pos;
 	int				size_prompt;
 	int				offset;
 	int				edit;
-	int				sel[2];
 	int				maxrows;
 	int				multi;
-	char			buff[6];
-	char			*copy_buff;
-	t_data			*lst_input;
-	struct termios	s_term;
-	struct termios	s_term_backup;
-	t_history		edit_history;
-	t_history		*input_history;
-	char			*buf;
-	char			seq[64];
-	t_complete		complete;
 	int				ret;
-	char			*str;
-	int				nb_res;
 };
 
 typedef struct s_line	t_line;

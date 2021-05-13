@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 00:22:31 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/13 01:29:20 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 03:59:54 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ char
 	line->prompt = prompt;
 	line->size_prompt = size_prompt;
 	init_term(&(line->s_term), &(line->s_term_backup));
-	if (!g_term_size.width)
+	if (!g_term_infos.width)
 	{
 		handle_winch(-1);
-		if (!g_term_size.width)
+		if (!g_term_infos.width)
 			return (linedit_notty());
 	}
 	line->ret = 0;
-	line->nb_res = 0;
 	write(1, line->prompt, ft_strlen(line->prompt));
 	line->complete.pos = -1;
 	line->complete.str = 0;
@@ -74,9 +73,11 @@ char
 }
 
 static int
-	manage_resize(int nb_res, t_line *line, char *prompt)
+	manage_resize(t_line *line, char *prompt)
 {
-	if (g_term_size.resize && !(g_term_size.resize = 0))
+	static int nb_res = 0;
+
+	if (g_term_infos.resize && !(g_term_infos.resize = 0))
 	{
 		if (!MULTI)
 		{
@@ -107,9 +108,7 @@ char
 	{
 		if (line.ret > 0)
 		{
-			if (manage_resize(line.nb_res, &line, prompt))
-				++line.nb_res;
-			line.old_size = line.lst_input->size;
+			manage_resize(&line, prompt);
 			if ((line.str = check_handle(sh, &line, prompt)) != (char *)-2)
 			{
 				tcsetattr(0, 0, &(line.s_term_backup));

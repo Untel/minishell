@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 22:36:12 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/13 01:36:00 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 03:52:55 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ static void	refresh_edit(t_ml *ml, t_line *line, int edit)
 {
 	char nb_lines[16];
 
-	ft_sprintf(nb_lines, "%d", g_term_size.height);
+	ft_sprintf(nb_lines, "%d", g_term_infos.height);
 	while (++ml->i <= ml->rows)
 		append(&line->buf, "\x1b[B");
 	append(&line->buf, "\n\x1b[s\x1b[0m\x1b[");
 	append(&line->buf, nb_lines);
-	append(&line->buf, ";0H\r\x1b[0K");
+	append(&line->buf, ";0H\x1b[0K");
 	if (edit)
 		append(&line->buf, "\x1b[1m -- EDIT MODE --");
 	append(&line->buf, "\x1b[u\x1b[A");
@@ -38,11 +38,11 @@ static void	init_phase(t_ml *ml, t_line *line)
 	ml->offset = line->size_prompt;
 	ml->len = line->lst_input->size - 1 +
 		(line->complete.str ? ft_strlen(line->complete.str) : 0);
-	ml->rows = (ml->offset + ml->len + g_term_size.width - 1)
-		/ g_term_size.width;
+	ml->rows = (ml->offset + ml->len + g_term_infos.width - 1)
+		/ g_term_infos.width;
 	ml->pos = line->pos - 1;
-	ml->rpos = (ml->offset + line->old_pos + g_term_size.width)
-		/ g_term_size.width;
+	ml->rpos = (ml->offset + line->old_pos + g_term_infos.width)
+		/ g_term_infos.width;
 	ml->old_rows = line->maxrows;
 	if (ml->rows > line->maxrows)
 		line->maxrows = ml->rows;
@@ -65,7 +65,7 @@ static void	clear_old_rows(t_ml *ml, t_line *line, char *prompt)
 	append_multi_cmd(line, ml->len);
 	append(&line->buf, "\x1b[0m");
 	if (ml->pos && ml->pos == ml->len
-			&& (ml->pos + ml->offset) % g_term_size.width == 0)
+			&& (ml->pos + ml->offset) % g_term_infos.width == 0)
 	{
 		append(&line->buf, "\n\r");
 		++ml->rows;
@@ -81,13 +81,13 @@ void		refresh_multi_line(t_line *line, char *prompt, int edit)
 	init_phase(&ml, line);
 	refresh_edit(&ml, line, edit);
 	clear_old_rows(&ml, line, prompt);
-	ml.rpos2 = (ml.offset + ml.pos + g_term_size.width) / g_term_size.width;
+	ml.rpos2 = (ml.offset + ml.pos + g_term_infos.width) / g_term_infos.width;
 	if (ml.rows - ml.rpos2 > 0)
 	{
 		ft_sprintf(line->seq, "\x1b[%dA", ml.rows - ml.rpos2);
 		append(&line->buf, line->seq);
 	}
-	ml.col = (ml.offset + ml.pos) % g_term_size.width;
+	ml.col = (ml.offset + ml.pos) % g_term_infos.width;
 	if (ml.col)
 		ft_sprintf(line->seq, "\r\x1b[%dC", ml.col);
 	else

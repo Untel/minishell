@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 20:32:31 by adda-sil          #+#    #+#             */
-/*   Updated: 2021/05/13 02:06:12 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 03:54:06 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,13 @@ typedef struct	s_point
 	int			y;
 }				t_point;
 
-typedef struct	s_termsize
+typedef struct	s_terminfo
 {
 	int			width;
 	int			height;
 	int			resize;
-}				t_termsize;
+	int			is_edit;
+}				t_terminfos;
 
 typedef struct	s_term
 {
@@ -124,7 +125,7 @@ typedef struct	s_term
 	int			pos_aff;
 	int			size_prt;
 	t_termios	term;
-	t_termsize	size;
+	t_terminfos	size;
 }				t_term;
 
 typedef struct	s_hstry
@@ -312,7 +313,7 @@ void			init_child_signals(pid_t child);
 **	Global vars
 */
 
-extern t_termsize	g_term_size;
+extern t_terminfos	g_term_infos;
 
 /*
 ** Alias utils

@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 00:38:00 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/13 01:29:30 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 03:53:36 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	handle_ctrl_darrow(t_line *line, int edit, int n)
 {
 	if (n == 0)
 		n = 1;
-	if (line->pos + (g_term_size.width * n) < line->lst_input->size + !edit)
-		line->pos += g_term_size.width * n;
+	if (line->pos + (g_term_infos.width * n) < line->lst_input->size + !edit)
+		line->pos += g_term_infos.width * n;
 	else
 		line->pos = line->lst_input->size;
 }
@@ -39,8 +39,8 @@ void	handle_ctrl_uarrow(t_line *line, int n)
 {
 	if (n == 0)
 		n = 1;
-	if (line->pos - (g_term_size.width * n) > 0)
-		line->pos -= (g_term_size.width * n);
+	if (line->pos - (g_term_infos.width * n) > 0)
+		line->pos -= (g_term_infos.width * n);
 	else
 		line->pos = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 15:44:02 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/13 01:28:05 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/13 03:55:14 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	init_select(t_select *s_sel, t_line *line, char *prompt)
 	free(s_sel->str);
 	s_sel->str = NULL;
 	line->edit = 1;
+	g_term_infos.is_edit = 1;
 }
 
 static	int	select_handle_fp(t_select *s_sel, t_line *line, char *prompt, int n)
@@ -99,7 +100,7 @@ void		select_mode_lp(t_select *s_sel, t_line *line, char *prompt)
 	if (line->pos > 1)
 		line->pos = line->pos >= line->lst_input->size ?
 			line->lst_input->size - 1 : line->pos;
-	if (g_term_size.resize && !((g_term_size.resize = 0)))
+	if (g_term_infos.resize && !((g_term_infos.resize = 0)))
 		ft_printf("\r\x1b[0K%s", prompt);
 	refresh_line(line, prompt, 1);
 	ft_bzero(line->buff, 6);
@@ -128,6 +129,7 @@ void		select_mode(t_line *line, char *prompt)
 		}
 	}
 	line->edit = 0;
+	g_term_infos.is_edit = 0;
 	ft_bzero(line->sel, sizeof(line->sel));
 	refresh_line(line, prompt, 0);
 }
