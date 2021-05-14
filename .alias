@@ -1,4 +1,3 @@
 grep : grep --color=auto 
 la : ls -lAh
 hello : echo hello $USER! your home is here "$HOME".
-norminette : ~/.norminette/norminette.rb
