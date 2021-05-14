@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adda-sil <adda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: untel <untel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:57:27 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/03/26 15:01:13 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/14 17:12:18 by untel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ int
 		set_value(&sh->env, "OLDPWD", sh->dir);
 		format_directory(sh);
 	}
-	return (ret != ERR ? 0 : ERR);
+	return (ret != ERR ? 0 : 1);
 }
