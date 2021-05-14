@@ -6,7 +6,7 @@
 /*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 15:44:02 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/13 03:55:14 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/14 17:20:23 by riblanc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,9 @@ void		select_mode(t_line *line, char *prompt)
 	{
 		if (s_sel.ret > 0)
 		{
-			if (ft_isdigit(*line->buff) && nb < 5000)
+			if (ft_isdigit(*line->buff) && nb < 8388608)
 				nb = nb * 10 + (*line->buff - 48);
-			else
+			else if (!ft_isdigit(*line->buff))
 			{
 				if (!select_handle_fp(&s_sel, line, prompt, nb))
 					if (select_handle_sp(&s_sel, line) == -1)
