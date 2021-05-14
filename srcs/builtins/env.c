@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: riblanc <riblanc@student.42.fr>            +#+  +:+       +#+        */
+/*   By: untel <untel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 01:53:59 by riblanc           #+#    #+#             */
-/*   Updated: 2021/05/13 02:10:44 by riblanc          ###   ########.fr       */
+/*   Updated: 2021/05/14 17:13:37 by untel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		ft_env(t_shell *sh, t_cmd *cmd)
 	if (cmd->argc > 1)
 	{
 		ft_fprintf(STDERR, MSG_ERROR, "env: to many arguments");
-		return (EXIT_FAILURE);
+		return (127);
 	}
 	while (lst_env)
 	{
