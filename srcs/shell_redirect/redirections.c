@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: untel <untel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 17:33:37 by adda-sil          #+#    #+#             */
-/*   Updated: 2020/04/28 00:11:41 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/16 17:54:06 by untel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@ int
 	while ((ret = read(from, &buff, BUFFER_SIZE)))
 		write(to, buff, ret);
 	return (SUC);
+}
+
+int
+	can_read_file(char *filename)
+{
+	if (opendir(filename) == NULL)
+		return (SUC);
+	else
+	{
+		ft_fprintf(STDERR, "Is a directory");
+		return (FALSE);
+	}
 }
 
 void
@@ -40,7 +52,7 @@ void
 		{
 			if (redir->fd == STDIN_FILENO)
 				redir->fd = p[PIPE_IN];
-			if (redir->type == IN_REDIR
+			if (redir->type == IN_REDIR && can_read_file(redir->filename)
 				&& (fd = open(redir->filename, O_RDONLY)) > 2
 				&& redirect_buffer(fd, redir->fd))
 				close(fd);
